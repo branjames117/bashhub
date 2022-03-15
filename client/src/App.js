@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import { SocketContext, socket } from './context/socket';
 
 import {
   ApolloProvider,
@@ -9,6 +11,9 @@ import {
 } from '@apollo/client';
 
 import { setContext } from '@apollo/client/link/context';
+
+import Home from './pages/Home';
+import Navbar from './components/Navbar';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -32,7 +37,18 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div>Hi</div>
+      <Router>
+        <SocketContext.Provider value={socket}>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route
+              path='*'
+              element={<h1 className='display-2'>Wrong page!</h1>}
+            />
+          </Routes>
+        </SocketContext.Provider>
+      </Router>
     </ApolloProvider>
   );
 }

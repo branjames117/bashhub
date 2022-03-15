@@ -1,5 +1,13 @@
 require('dotenv').config();
 const express = require('express');
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+});
+const cors = require('cors');
 const path = require('path');
 
 const { ApolloServer } = require('apollo-server-express');
@@ -9,7 +17,6 @@ const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
-const app = express();
 
 const startServer = async () => {
   const server = new ApolloServer({
@@ -31,8 +38,17 @@ const startServer = async () => {
 // initialize the Apollo server
 startServer();
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
+
+io.on('connection', (socket) => {
+  console.log('User connected.');
+
+  socket.on('disconnect', () => {
+    console.log('User has disconnected');
+  });
+});
 
 // serve up static assets
 if (process.env.NODE_ENV === 'production') {
@@ -40,12 +56,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // deliver built index.html when deployed
-app.get('*', (req, res) => {
-  res.sendFile(path.join(_dirname, '../client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// });
 
 db.once('open', () => {
-  app.listen(PORT, () => {
+  http.listen(PORT, () => {
     if (process.env.NODE_ENV !== 'production') {
       console.log(`Server running at http://localhost:${PORT}`);
     }
