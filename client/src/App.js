@@ -35,6 +35,8 @@ const client = new ApolloClient({
 });
 
 function App() {
+  socket.emit()
+
   return (
     <ApolloProvider client={client}>
       <Router>
