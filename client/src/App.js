@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { SocketContext, socket } from './context/socket';
 
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme';
+
 import {
   ApolloProvider,
   ApolloClient,
@@ -43,14 +46,16 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <SocketContext.Provider value={socket}>
-          <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route
-              path='*'
-              element={<h1 className='display-2'>Wrong page!</h1>}
-            />
-          </Routes>
+          <ThemeProvider theme={theme}>
+            <Routes>
+              <Route path='/' element={<Login />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route
+                path='*'
+                element={<h1 className='display-2'>Wrong page!</h1>}
+              />
+            </Routes>
+          </ThemeProvider>
         </SocketContext.Provider>
       </Router>
     </ApolloProvider>
