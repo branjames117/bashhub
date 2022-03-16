@@ -65,7 +65,6 @@ export default function Dashboard() {
                 onClick={toggleDrawer}
                 sx={{
                   marginRight: '36px',
-                  ...(open && { display: 'none' }),
                 }}
               >
                 <MenuIcon />
@@ -108,8 +107,9 @@ export default function Dashboard() {
             </Toolbar>
             <Divider />
             <List component='nav'>
-              1
-              <Divider sx={{ my: 1 }} />2
+              Events I'm Managing
+              <Divider sx={{ my: 1 }} />
+              Events I'm Attending
             </List>
           </Drawer>
           <Box
