@@ -39,7 +39,7 @@ class AuthService {
     // saves user token to localStorage
     localStorage.setItem('id_token', idToken);
 
-    window.location.assign('/');
+    window.location.assign('/dashboard');
   }
 
   // clear token from localStorage and force logout with reload
@@ -47,7 +47,7 @@ class AuthService {
     // clear user token and profile data from localStorage
     localStorage.removeItem('id_token');
     // reload page and reset state of application
-    window.location.assign('/');
+    window.location.assign('/login');
   }
 }
 

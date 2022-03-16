@@ -13,7 +13,8 @@ import {
 import { setContext } from '@apollo/client/link/context';
 
 import Home from './pages/Home';
-import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Auth from './utils/auth';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -35,15 +36,16 @@ const client = new ApolloClient({
 });
 
 function App() {
-  socket.emit()
+  socket.emit();
+  console.log('Logged in? ', Auth.loggedIn());
 
   return (
     <ApolloProvider client={client}>
       <Router>
         <SocketContext.Provider value={socket}>
-          <Navbar />
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/login' element={<Login />} />
             <Route
               path='*'
               element={<h1 className='display-2'>Wrong page!</h1>}
