@@ -12,8 +12,8 @@ import {
 
 import { setContext } from '@apollo/client/link/context';
 
-import Home from './pages/Home';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import Auth from './utils/auth';
 
 const httpLink = createHttpLink({
@@ -44,8 +44,8 @@ function App() {
       <Router>
         <SocketContext.Provider value={socket}>
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/login' element={<Login />} />
+            <Route path='/' element={<Login />} />
+            <Route path='/dashboard' element={<Dashboard />} />
             <Route
               path='*'
               element={<h1 className='display-2'>Wrong page!</h1>}

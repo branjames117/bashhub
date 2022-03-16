@@ -1,18 +1,21 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER, LOGIN_USER } from '../utils/mutations';
-import Auth from '../utils/auth';
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import Auth from '../utils/auth';
 
 const theme = createTheme();
 
@@ -28,6 +31,9 @@ export default function Login() {
 
   const [login] = useMutation(LOGIN_USER);
   const [register] = useMutation(ADD_USER);
+
+  // if user is already logged in, kick them back to dashboard page
+  if (Auth.loggedIn()) window.location.assign('/dashboard');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -116,8 +122,9 @@ export default function Login() {
           xs={false}
           sm={4}
           md={7}
+          lg={8}
           sx={{
-            backgroundImage: 'url(./images/concert.jpg)',
+            backgroundImage: 'url(./images/festival.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
@@ -127,7 +134,16 @@ export default function Login() {
             backgroundPosition: 'center',
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={5}
+          lg={4}
+          component={Paper}
+          elevation={6}
+          square
+        >
           <Box
             sx={{
               my: 8,
@@ -139,13 +155,16 @@ export default function Login() {
           >
             <Avatar sx={{ m: 1, bgcolor: 'crimson' }}></Avatar>
             <Typography component='h1' variant='h5'>
-              {loginMode ? 'Sign in ' : 'Log in '} to Bash
+              {loginMode ? 'Log in to ' : 'Sign up for '} Bash
+            </Typography>
+            <Typography component='h2' variant='h6'>
+              Because this is where it happens.
             </Typography>
             <Box
               component='form'
               noValidate
               onSubmit={handleLogin}
-              sx={{ mt: 1 }}
+              sx={{ mt: 1, width: '100%' }}
             >
               <TextField
                 margin='normal'

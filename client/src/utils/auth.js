@@ -47,7 +47,7 @@ class AuthService {
     // clear user token and profile data from localStorage
     localStorage.removeItem('id_token');
     // reload page and reset state of application
-    window.location.assign('/login');
+    window.location.assign('/');
   }
 }
 
