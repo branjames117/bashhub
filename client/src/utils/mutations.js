@@ -25,3 +25,11 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const EDIT_BIO = gql`
+  mutation editBio($bio: String!) {
+    editBio(bio: $bio) {
+      bio
+    }
+  }
+`;

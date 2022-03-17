@@ -22,7 +22,6 @@ const resolvers = {
     },
     me: async (parent, args, context) => {
       if (context.user) {
-        console.log(context.user);
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
           .populate('comments')
@@ -60,6 +59,21 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
+    },
+    editBio: async (parent, { bio }, context) => {
+      console.log('attempt update bio');
+      if (context.user) {
+        console.log(context.user);
+        const user = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { bio }
+        );
+        console.log(user.bio);
+
+        return user;
+      }
+
+      throw new AuthenticationError('Not logged in');
     },
   },
 };

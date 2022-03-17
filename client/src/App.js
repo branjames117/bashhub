@@ -17,7 +17,6 @@ import { setContext } from '@apollo/client/link/context';
 
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Auth from './utils/auth';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -40,7 +39,6 @@ const client = new ApolloClient({
 
 function App() {
   socket.emit();
-  console.log('Logged in? ', Auth.loggedIn());
 
   return (
     <ApolloProvider client={client}>
@@ -49,7 +47,23 @@ function App() {
           <ThemeProvider theme={theme}>
             <Routes>
               <Route path='/' element={<Login />} />
-              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/bash' element={<Dashboard />} />
+              <Route
+                path='/bash/u/:username'
+                element={<Dashboard variant='user' />}
+              />
+              <Route
+                path='/bash/e/:eventName'
+                element={<Dashboard variant='event' />}
+              />
+              <Route
+                path='/bash/create'
+                element={<Dashboard variant='creator' />}
+              />
+              <Route
+                path='/bash/e/:eventName/:subeventName'
+                element={<Dashboard variant='subevent' />}
+              />
               <Route
                 path='*'
                 element={<h1 className='display-2'>Wrong page!</h1>}

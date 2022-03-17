@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { QUERY_ME } from '../utils/queries';
+import Auth from '../utils/auth';
+
+// materials
 import {
   CssBaseline,
   Box,
   Toolbar,
-  List,
   Typography,
   Divider,
   IconButton,
@@ -16,15 +20,17 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+
+// components
 import AppBar from '../components/AppBar';
 import Drawer from '../components/Drawer';
+import SideMenu from '../components/SideMenu';
+import UserProfile from '../components/UserProfile';
+import Event from '../components/Event';
+import SubEvent from '../components/SubEvent';
+import Creator from '../components/Creator';
 
-import Auth from '../utils/auth';
-
-import { useQuery } from '@apollo/client';
-import { QUERY_ME } from '../utils/queries';
-
-export default function Dashboard() {
+export default function Dashboard({ variant }) {
   // if user is not logged in, kick them back to login page
   if (!Auth.loggedIn()) window.location.assign('/');
 
@@ -32,16 +38,14 @@ export default function Dashboard() {
 
   const { data, loading } = useQuery(QUERY_ME);
 
+  console.log(variant);
+
   if (data) {
-    console.log(data.me);
+    // console.log(data.me);
   }
 
   const toggleDrawer = () => {
     setOpen(!open);
-  };
-
-  const logoutHandler = () => {
-    Auth.logout();
   };
 
   return loading ? (
@@ -73,7 +77,7 @@ export default function Dashboard() {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Bash Hub | Events
+            Bash @ {Auth.getProfile().data.username}
           </Typography>
           <IconButton color='inherit'>
             <Badge badgeContent={4} color='secondary'>
@@ -83,7 +87,7 @@ export default function Dashboard() {
           <Button
             variant='text'
             sx={{ color: '#fff', pl: 3 }}
-            onClick={logoutHandler}
+            onClick={() => Auth.logout()}
           >
             Logout
           </Button>
@@ -103,11 +107,7 @@ export default function Dashboard() {
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component='nav'>
-          Events I'm Managing
-          <Divider sx={{ my: 1 }} />
-          Events I'm Attending
-        </List>
+        <SideMenu />
       </Drawer>
       <Box
         component='main'
@@ -119,40 +119,12 @@ export default function Dashboard() {
       >
         <Toolbar />
         <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240,
-                }}
-              >
-                1
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240,
-                }}
-              >
-                2
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                3
-              </Paper>
-            </Grid>
-          </Grid>
+          {variant === 'user' && (
+            <UserProfile myUsername={Auth.getProfile().data.username} />
+          )}
+          {variant === 'event' && <Event />}
+          {variant === 'subevent' && <SubEvent />}
+          {variant === 'creator' && <Creator />}
         </Container>
       </Box>
     </Box>
