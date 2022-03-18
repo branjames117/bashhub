@@ -1,9 +1,12 @@
-import { Input, Paper, Button } from '@mui/material';
-import { useState } from 'react';
-import Auth from '../utils/auth';
+import { Paper, Button } from '@mui/material';
+import { useState, useRef } from 'react';
+import Auth from '../../utils/auth';
 
 export default function UserProfilePicture({ owned, currAvatar }) {
   const [avatar, setAvatar] = useState(currAvatar);
+  const [filename, setFilename] = useState('');
+
+  const fileInput = useRef();
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
@@ -24,6 +27,7 @@ export default function UserProfilePicture({ owned, currAvatar }) {
       const data = await response.json();
 
       setAvatar(data.url);
+      setFilename('');
     } catch (err) {
       console.error(err);
     }
@@ -35,7 +39,7 @@ export default function UserProfilePicture({ owned, currAvatar }) {
         p: 0.5,
         display: 'flex',
         flexDirection: 'column',
-        height: 240,
+        height: 350,
       }}
     >
       <div
@@ -64,15 +68,32 @@ export default function UserProfilePicture({ owned, currAvatar }) {
           method='post'
           onSubmit={handleImageUpload}
         >
-          <Input
+          <input
+            ref={fileInput}
             type='file'
             name='image'
             id='file-input'
-            disableUnderline={true}
+            style={{ display: 'none' }}
+            onChange={(e) => {
+              const newFilename = e.target.value.split('\\').pop();
+              console.log(newFilename);
+              setFilename(newFilename);
+            }}
           />
-          <Button type='submit' variant='contained'>
-            Upload Image
+          <Button
+            variant='contained'
+            sx={{ width: '100%', my: 1 }}
+            onClick={() => {
+              fileInput.current.click();
+            }}
+          >
+            Select Image
           </Button>
+          {filename && (
+            <Button type='submit' variant='contained' sx={{ width: '100%' }}>
+              Upload {filename}
+            </Button>
+          )}
         </form>
       )}
     </Paper>

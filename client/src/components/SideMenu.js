@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
-import { List, Button, Divider } from '@mui/material';
+import { Typography, List, Button, Divider } from '@mui/material';
+import {
+  AddCircle,
+  AccountCircle,
+  Assignment,
+  DirectionsCar,
+} from '@mui/icons-material';
 import Auth from '../utils/auth';
 
 export default function SideMenu() {
@@ -7,15 +13,39 @@ export default function SideMenu() {
     <List component='nav'>
       <Button variant='text'>
         <Link to={`/bash/u/${Auth.getProfile().data.username}`}>
-          View/Edit My Profile
+          <AccountCircle sx={{ transform: 'translateY(7px)' }} />
+          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
+            View/Edit My Profile
+          </Typography>
         </Link>
       </Button>
       <Divider sx={{ my: 1 }} />
-      <Button variant='text'>Create New Event</Button>
+      <Button variant='text'>
+        <Link to={`/bash/create`}>
+          <AddCircle sx={{ transform: 'translateY(7px)' }} />
+          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
+            Create New Event
+          </Typography>
+        </Link>
+      </Button>
       <Divider sx={{ my: 1 }} />
-      <Button variant='text'>Events I'm Managing</Button>
+      <Button variant='text'>
+        <Link to={`/bash/create`}>
+          <Assignment sx={{ transform: 'translateY(7px)' }} />
+          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
+            Events I'm Managing
+          </Typography>
+        </Link>
+      </Button>
       <Divider sx={{ my: 1 }} />
-      <Button variant='text'>Events I'm Attending</Button>
+      <Button variant='text'>
+        <Link to={`/bash/create`}>
+          <DirectionsCar sx={{ transform: 'translateY(7px)' }} />
+          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
+            Events I'm Attending
+          </Typography>
+        </Link>
+      </Button>
     </List>
   );
 }

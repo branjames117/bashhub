@@ -22,6 +22,14 @@ const userSchema = new Schema(
       minlength: 8,
     },
     comments: [commentSchema],
+    location: {
+      type: String,
+      trim: true,
+    },
+    birthday: {
+      type: String,
+      trim: true,
+    },
     bio: {
       type: String,
       trim: true,
@@ -87,6 +95,18 @@ userSchema.methods.isCorrectPassword = async function (password) {
 
 userSchema.virtual('eventsCount').get(function () {
   return this.events_attending.length;
+});
+
+userSchema.virtual('age').get(function () {
+  if (!this.birthday) {
+    return null;
+  }
+
+  let dob = new Date(this.birthday);
+  let month_diff = Date.now() - dob.getTime();
+  let age_dt = new Date(month_diff);
+  let year = age_dt.getUTCFullYear();
+  return Math.abs(year - 1970);
 });
 
 const User = model('User', userSchema);

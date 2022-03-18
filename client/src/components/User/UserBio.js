@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { EDIT_BIO } from '../utils/mutations';
+import { EDIT_BIO } from '../../utils/mutations';
 import { Paper, Typography, Button } from '@mui/material';
 import { TextareaAutosize } from '@mui/base';
 
@@ -29,7 +29,6 @@ export default function UserBio({ username, owned, currBio }) {
         p: 2,
         display: 'flex',
         flexDirection: 'column',
-        height: 240,
       }}
     >
       <Typography variant='h5'>Hi, I'm {username}</Typography>

@@ -13,8 +13,6 @@ import {
   IconButton,
   Badge,
   Container,
-  Grid,
-  Paper,
   Button,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -25,10 +23,10 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AppBar from '../components/AppBar';
 import Drawer from '../components/Drawer';
 import SideMenu from '../components/SideMenu';
-import UserProfile from '../components/UserProfile';
+import UserProfile from '../components/User/UserProfile';
 import Event from '../components/Event';
 import SubEvent from '../components/SubEvent';
-import Creator from '../components/Creator';
+import Creator from '../components/Creator/Creator';
 
 export default function Dashboard({ variant }) {
   // if user is not logged in, kick them back to login page

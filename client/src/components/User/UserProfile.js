@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useQuery } from '@apollo/client';
-import { QUERY_USER } from '../utils/queries';
+import { QUERY_USER } from '../../utils/queries';
 
 import { Button, Grid, Paper } from '@mui/material';
 import UserBio from './UserBio';
@@ -33,7 +33,11 @@ export default function UserProfile({ myUsername }) {
 
   return (
     <Grid container spacing={3}>
-      {/* Biographical */}
+      {/* Profile Picture */}
+      <Grid item xs={12} md={4} lg={3}>
+        <UserProfilePicture owned={owned} currAvatar={userData?.user?.avatar} />
+      </Grid>
+      {/* Bio */}
       <Grid item xs={12} md={8} lg={9}>
         <UserBio
           username={username}
@@ -41,13 +45,19 @@ export default function UserProfile({ myUsername }) {
           currBio={userData?.user?.bio}
         />
       </Grid>
-      {/* Profile Picture */}
-      <Grid item xs={12} md={4} lg={3}>
-        <UserProfilePicture owned={owned} currAvatar={userData?.user?.avatar} />
-      </Grid>
-      {/* Recent Orders */}
+
+      {/* My Events */}
       <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>3</Paper>
+        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+          My Events
+        </Paper>
+      </Grid>
+
+      {/* My Comments */}
+      <Grid item xs={12}>
+        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+          My Comments
+        </Paper>
       </Grid>
     </Grid>
   );

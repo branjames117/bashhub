@@ -17,6 +17,10 @@ const eventSchema = new Schema(
       minlength: 1,
       maxlength: 128,
     },
+    eventType: {
+      type: String,
+      required: true,
+    },
     startDate: {
       type: Date,
       get: (timestamp) => dateFormat(timestamp),

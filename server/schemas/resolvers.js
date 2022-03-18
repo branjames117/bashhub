@@ -43,7 +43,6 @@ const resolvers = {
       return { token, user };
     },
     login: async (parent, { email, password }) => {
-      console.log('Called');
       const user = await User.findOne({ email });
 
       if (!user) {
@@ -61,14 +60,12 @@ const resolvers = {
       return { token, user };
     },
     editBio: async (parent, { bio }, context) => {
-      console.log('attempt update bio');
       if (context.user) {
         console.log(context.user);
         const user = await User.findOneAndUpdate(
           { _id: context.user._id },
           { bio }
         );
-        console.log(user.bio);
 
         return user;
       }

@@ -21,7 +21,7 @@ const Drawer = styled(MuiDrawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: 0,
+      width: 40,
     }),
   },
 }));

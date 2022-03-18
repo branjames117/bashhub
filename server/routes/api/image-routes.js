@@ -24,7 +24,6 @@ router.post('/upload', upload.single('image'), async (req, res) => {
     }
 
     const user = await User.findOne({ username }).select('-__v -password');
-    console.log('Found user: ', user);
     // if user already uploaded an image to their profile...
     if (user.avatarId) {
       // then delete their previous image from our cloudinary store
@@ -34,7 +33,6 @@ router.post('/upload', upload.single('image'), async (req, res) => {
     // upload their new image, extracting url and public_id from the returned object
     const { url, public_id } = await cloudinary.uploader.upload(req.file.path);
 
-    console.log('Updated picture: ', url, public_id);
     user.avatar = url;
     user.avatarId = public_id;
 
