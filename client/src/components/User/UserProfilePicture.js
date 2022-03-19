@@ -4,9 +4,10 @@ import Auth from '../../utils/auth';
 
 export default function UserProfilePicture({ owned, currAvatar }) {
   const [avatar, setAvatar] = useState(currAvatar);
-  const [filename, setFilename] = useState('');
+  const [buttonText, setButtonText] = useState('Upload Image');
 
   const fileInput = useRef();
+  const fileUpload = useRef();
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
@@ -27,7 +28,6 @@ export default function UserProfilePicture({ owned, currAvatar }) {
       const data = await response.json();
 
       setAvatar(data.url);
-      setFilename('');
     } catch (err) {
       console.error(err);
     }
@@ -76,8 +76,18 @@ export default function UserProfilePicture({ owned, currAvatar }) {
             style={{ display: 'none' }}
             onChange={(e) => {
               const newFilename = e.target.value.split('\\').pop();
-              console.log(newFilename);
-              setFilename(newFilename);
+              const filenameArr = newFilename.split('.');
+              const fileExt = filenameArr[filenameArr.length - 1];
+              if (
+                fileExt === 'jpg' ||
+                fileExt === 'jpeg' ||
+                fileExt === 'png'
+              ) {
+                fileUpload.current.click();
+                setButtonText('Image Uploaded');
+              } else {
+                setButtonText('File must be JPEG or PNG!');
+              }
             }}
           />
           <Button
@@ -87,13 +97,16 @@ export default function UserProfilePicture({ owned, currAvatar }) {
               fileInput.current.click();
             }}
           >
-            Select Image
+            {buttonText}
           </Button>
-          {filename && (
-            <Button type='submit' variant='contained' sx={{ width: '100%' }}>
-              Upload {filename}
-            </Button>
-          )}
+          {/* Hidden submit button, clicked after file is chosen. */}
+          <button
+            ref={fileUpload}
+            type='submit'
+            name='upload'
+            id='upload'
+            style={{ display: 'none' }}
+          ></button>
         </form>
       )}
     </Paper>

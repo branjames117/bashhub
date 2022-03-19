@@ -36,8 +36,6 @@ export default function Dashboard({ variant }) {
 
   const { data, loading } = useQuery(QUERY_ME);
 
-  console.log(variant);
-
   if (data) {
     // console.log(data.me);
   }

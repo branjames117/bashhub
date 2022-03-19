@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Stepper,
@@ -8,27 +8,35 @@ import {
   Button,
   Paper,
   Typography,
-  TextareaAutosize,
 } from '@mui/material';
+
+import Auth from '../../utils/auth';
 
 import EventType from './EventType';
 import StepperButtons from './StepperButtons';
 import EventTime from './EventTime';
 import EventLocation from './EventLocation';
+import EventDescription from './EventDescription';
+
+const defaultEvent = {
+  eventType: 'Other',
+  startDate: new Date(),
+  startTime: '',
+  endDate: '',
+  endTime: '',
+  description: '',
+  tags: [],
+  ownerId: Auth.getProfile().data._id,
+  ownerName: Auth.getProfile().data.username,
+};
 
 export default function Creator() {
   const [activeStep, setActiveStep] = useState(0);
-  const [eventData, setEventData] = useState({
-    eventType: '',
-    startDate: new Date(),
-    startTime: new Date(),
-    endDate: new Date(),
-    endTime: new Date(),
-  });
+  const [eventData, setEventData] = useState(defaultEvent);
 
   const handleReset = () => {
     setActiveStep(0);
-    setEventData({});
+    setEventData(defaultEvent);
   };
 
   return (
@@ -53,6 +61,7 @@ export default function Creator() {
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}
+              eventData={eventData}
             />
           </StepContent>
         </Step>
@@ -65,6 +74,7 @@ export default function Creator() {
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}
+              eventData={eventData}
             />
           </StepContent>
         </Step>
@@ -77,28 +87,53 @@ export default function Creator() {
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}
+              eventData={eventData}
             />
           </StepContent>
         </Step>
+
+        {/* Step 4 - Event Description */}
         <Step>
-          <StepLabel
-            optional={<Typography variant='caption'>Last step</Typography>}
-          >
-            First step
+          <StepLabel>
+            Describe the event to potential attendees, then drop some tags so
+            your event is easier to find.
           </StepLabel>
           <StepContent>
-            <Typography>Description</Typography>
+            <EventDescription
+              eventData={eventData}
+              setEventData={setEventData}
+            />
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}
+              eventData={eventData}
+            />
+          </StepContent>
+        </Step>
+
+        {/* Step 5 - Final Details */}
+        <Step>
+          <StepLabel>Nail down some final details.</StepLabel>
+          <StepContent>
+            <EventDescription
+              eventData={eventData}
+              setEventData={setEventData}
+            />
+            <StepperButtons
+              activeStep={activeStep}
+              setActiveStep={setActiveStep}
+              eventData={eventData}
             />
           </StepContent>
         </Step>
       </Stepper>
-      {activeStep === 4 && (
+      {activeStep === 5 && (
         <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>All steps completed!</Typography>
-          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+          <Typography>
+            Event created! You can manage your event by clicking EVENTS I'M
+            MANAGING in the sidebar.
+          </Typography>
+          <Button onClick={handleReset} sx={{ mt: 3, ml: 2 }}>
             Create Another Event
           </Button>
         </Paper>

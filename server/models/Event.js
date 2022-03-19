@@ -35,10 +35,14 @@ const eventSchema = new Schema(
     endTime: {
       type: Number,
     },
-    owner: {
+    ownerId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
+    },
+    ownerName: {
+      type: String,
+      required: true,
     },
     url: {
       type: String,

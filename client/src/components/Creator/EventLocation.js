@@ -10,7 +10,8 @@ export default function EventLocation({ eventData, setEventData }) {
         aria-label='empty textarea'
         placeholder={`1640 Riverside Drive
 Hill Valley, CA
-USA`}
+USA
+There's a DeLorean parked out front. Don't use the doorbell.`}
         minRows={4}
         maxRows={4}
         style={{ resize: 'none', width: '100%' }}

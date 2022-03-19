@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../../utils/queries';
 
-import { Button, Grid, Paper } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import UserBio from './UserBio';
 import UserProfilePicture from './UserProfilePicture';
 

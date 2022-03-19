@@ -7,10 +7,10 @@ import {
 } from '@mui/material';
 
 const eventTypes = [
+  'Party',
   'Festival',
   'Concert',
   'Convention',
-  'Party',
   'Game Night',
   'Movie Night',
   'Date Night',
@@ -21,7 +21,6 @@ const eventTypes = [
 export default function EventType({ eventData, setEventData }) {
   const handleChange = (e) => {
     setEventData({ ...eventData, eventType: e.target.value });
-    console.log(eventData);
   };
 
   return (
@@ -29,7 +28,7 @@ export default function EventType({ eventData, setEventData }) {
       <FormLabel id='eventType'>
         Choose the event type that best describes your event. This makes it
         easier for other users to find your event. Choose 'Other' if you've got
-        something else in mind.
+        something else in mind. You'll be able to add <em>sub-events</em> later.
       </FormLabel>
       <RadioGroup
         row
