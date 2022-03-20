@@ -4,7 +4,6 @@ import EventHeroPicture from './EventHeroPicture';
 export default function EventDetails({ eventData, setEventData }) {
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
-    console.log(name);
     setEventData({
       ...eventData,
       [name]:
@@ -12,7 +11,6 @@ export default function EventDetails({ eventData, setEventData }) {
           ? checked
           : value,
     });
-    console.log(eventData);
   };
 
   return (
@@ -23,6 +21,10 @@ export default function EventDetails({ eventData, setEventData }) {
         label='Official URL'
         placeholder='https://archive.org/details/back-to-the-future_20210824'
         name='url'
+        error={eventData.url.length > 128}
+        helperText={
+          eventData.url.length > 128 ? 'URL must be < 128 characters.' : ''
+        }
         value={eventData.url}
         onChange={handleChange}
         sx={{ width: '100%', my: 2 }}
@@ -33,6 +35,12 @@ export default function EventDetails({ eventData, setEventData }) {
         label='Purchase Tickets URL'
         placeholder='https://www.backtothefuturemusical.com/tickets/'
         name='ticketsUrl'
+        error={eventData.ticketsUrl.length > 128}
+        helperText={
+          eventData.ticketsUrl.length > 128
+            ? 'URL must be < 128 characters.'
+            : ''
+        }
         value={eventData.ticketsUrl}
         onChange={handleChange}
         sx={{ width: '100%', my: 2 }}
@@ -43,6 +51,12 @@ export default function EventDetails({ eventData, setEventData }) {
         label='Ticket Price Range'
         placeholder='$9.99 - $99.99'
         name='pricing'
+        error={eventData.pricing.length > 64}
+        helperText={
+          eventData.pricing.length > 64
+            ? 'Pricing must be < 64 characters.'
+            : ''
+        }
         value={eventData.pricing}
         onChange={handleChange}
         sx={{ width: '100%', my: 2 }}

@@ -10,8 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import Auth from '../../utils/auth';
-
 import EventType from './EventType';
 import StepperButtons from './StepperButtons';
 import EventTime from './EventTime';
@@ -28,8 +26,8 @@ const defaultEvent = {
   description: '',
   tags: [],
   location: '',
-  ownerId: Auth.getProfile().data._id,
-  ownerName: Auth.getProfile().data.username,
+  ownerId: '',
+  ownerName: '',
   url: '',
   ticketsUrl: '',
   pricing: '',
@@ -44,6 +42,7 @@ const defaultEvent = {
 export default function Creator() {
   const [activeStep, setActiveStep] = useState(0);
   const [eventData, setEventData] = useState(defaultEvent);
+  const [slugTaken, setSlugTaken] = useState(false);
 
   const handleReset = () => {
     setActiveStep(0);
@@ -68,11 +67,17 @@ export default function Creator() {
         <Step>
           <StepLabel>Choose a name, URL, and type for your event. *</StepLabel>
           <StepContent>
-            <EventType eventData={eventData} setEventData={setEventData} />
+            <EventType
+              eventData={eventData}
+              setEventData={setEventData}
+              slugTaken={slugTaken}
+              setSlugTaken={setSlugTaken}
+            />
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}
               eventData={eventData}
+              slugTaken={slugTaken}
             />
           </StepContent>
         </Step>
@@ -81,7 +86,12 @@ export default function Creator() {
         <Step>
           <StepLabel>Let's talk dates and times. *</StepLabel>
           <StepContent>
-            <EventTime eventData={eventData} setEventData={setEventData} />
+            <EventTime
+              eventData={eventData}
+              setEventData={setEventData}
+              slugTaken={slugTaken}
+              setActiveStep={setActiveStep}
+            />
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}

@@ -25,6 +25,9 @@ const commentSchema = new Schema(
     },
   },
   {
+    timestamps: true,
+  },
+  {
     toJSON: {
       getters: true,
     },

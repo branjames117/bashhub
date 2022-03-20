@@ -1,3 +1,6 @@
+import { useLazyQuery } from '@apollo/client';
+import { QUERY_SLUG } from '../../utils/queries';
+
 import {
   FormControl,
   FormLabel,
@@ -6,6 +9,7 @@ import {
   Radio,
   TextField,
 } from '@mui/material';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const eventTypes = [
   'Party',
@@ -19,11 +23,32 @@ const eventTypes = [
   'Other',
 ];
 
-export default function EventType({ eventData, setEventData }) {
+export default function EventType({
+  eventData,
+  setEventData,
+  slugTaken,
+  setSlugTaken,
+}) {
+  const slugRef = useRef();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
+    if (name === 'slug') {
+      checkSlugAvailability();
+    }
   };
+
+  const [slug, { data }] = useLazyQuery(QUERY_SLUG);
+
+  const checkSlugAvailability = useCallback(async () => {
+    await slug({ variables: { slug: slugRef.current.value } });
+    setSlugTaken(data?.slug?._id ? true : false);
+  }, [setSlugTaken, slug, data]);
+
+  useEffect(() => {
+    checkSlugAvailability();
+  }, [data, checkSlugAvailability]);
 
   return (
     <>
@@ -32,6 +57,12 @@ export default function EventType({ eventData, setEventData }) {
         variant='outlined'
         label='Event Name *'
         autoComplete='off'
+        error={eventData.name.length > 64}
+        helperText={
+          eventData.name.length > 64
+            ? 'Event name must be < 64 characters.'
+            : ''
+        }
         placeholder='DeLorean Summer Daze'
         name='name'
         value={eventData.name}
@@ -42,12 +73,16 @@ export default function EventType({ eventData, setEventData }) {
         variant='outlined'
         label='Event Slug (Generates URL) *'
         autoComplete='off'
+        inputRef={slugRef}
         placeholder='delorean-summer-daze'
+        error={slugTaken}
+        helperText={slugTaken ? 'Slug already in use.' : ''}
         name='slug'
         value={eventData.slug}
         onChange={handleChange}
         sx={{ width: '100%', my: 2 }}
       />
+      {slugTaken && <div>Slug taken</div>}
       <FormControl>
         <FormLabel id='eventType'>
           Choose the event type that best describes your event. This makes it

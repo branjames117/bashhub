@@ -21,6 +21,7 @@ export default function EventDescription({ eventData, setEventData }) {
         minRows={4}
         maxRows={4}
         style={{ resize: 'none', width: '100%', marginTop: '12px' }}
+        maxLength={256}
         value={eventData.description}
         onChange={(e) => {
           setEventData({ ...eventData, description: e.target.value });
@@ -28,12 +29,14 @@ export default function EventDescription({ eventData, setEventData }) {
       />
       <Typography sx={{ mt: 2 }}>
         Create a few tags to give potential attendees a quick overview. After
-        adding a tag, you can click it to remove it. (Limit 5)
+        adding a tag, you can click it to remove it. (Limit 5 tags, 16
+        characters each.)
       </Typography>
       <Input
         sx={{ mt: 2 }}
         placeholder='Create Tag'
         value={tag}
+        error={tag.length > 16}
         onChange={(e) => {
           setTag(e.target.value.trim());
         }}
@@ -41,6 +44,7 @@ export default function EventDescription({ eventData, setEventData }) {
       <Button
         type='submit'
         variant='text'
+        disabled={!tag || tag.length > 16}
         onClick={() => {
           if (
             tag.trim() !== '' &&

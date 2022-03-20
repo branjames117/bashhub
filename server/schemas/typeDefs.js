@@ -60,6 +60,7 @@ const typeDefs = gql`
     me: User
     users: [User]
     user(username: String!): User
+    slug(slug: String!): Event
   }
 
   type Auth {

@@ -14,10 +14,22 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
-export default function EventTime({ eventData, setEventData }) {
+export default function EventTime({
+  eventData,
+  setEventData,
+  slugTaken,
+  setActiveStep,
+}) {
   const [startTimeEnabled, setStartTimeEnabled] = useState(false);
   const [endDateEnabled, setEndDateEnabled] = useState(false);
   const [endTimeEnabled, setEndTimeEnabled] = useState(false);
+
+  // if user tried to sneak to step 2 with an in-use slug, knock them back
+  if (slugTaken) {
+    setTimeout(() => {
+      setActiveStep(0);
+    }, 0);
+  }
 
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
@@ -28,7 +40,12 @@ export default function EventTime({ eventData, setEventData }) {
           aria-labelledby='startDate'
           inputFormat='MM/DD/yyyy'
           value={eventData.startDate}
-          onChange={(value) => setEventData({ ...eventData, startDate: value })}
+          onChange={(value) => {
+            const date = new Date(value);
+            if (date.getTime()) {
+              setEventData({ ...eventData, startDate: value });
+            }
+          }}
           renderInput={(params) => <TextField {...params} />}
         />
         <FormGroup>
@@ -55,9 +72,12 @@ export default function EventTime({ eventData, setEventData }) {
           <TimePicker
             label='Start Time'
             value={eventData.startTime}
-            onChange={(value) =>
-              setEventData({ ...eventData, startTime: value })
-            }
+            onChange={(value) => {
+              const date = new Date(value);
+              if (date.getTime()) {
+                setEventData({ ...eventData, startTime: value });
+              }
+            }}
             renderInput={(params) => <TextField {...params} />}
           />
         )}
@@ -88,7 +108,12 @@ export default function EventTime({ eventData, setEventData }) {
             label='End Date'
             inputFormat='MM/DD/yyyy'
             value={eventData.endDate}
-            onChange={(value) => setEventData({ ...eventData, endDate: value })}
+            onChange={(value) => {
+              const date = new Date(value);
+              if (date.getTime()) {
+                setEventData({ ...eventData, endDate: value });
+              }
+            }}
             renderInput={(params) => <TextField {...params} />}
           />
         )}
@@ -115,7 +140,12 @@ export default function EventTime({ eventData, setEventData }) {
           <TimePicker
             label='End Time'
             value={eventData.endTime}
-            onChange={(value) => setEventData({ ...eventData, endTime: value })}
+            onChange={(value) => {
+              const date = new Date(value);
+              if (date.getTime()) {
+                setEventData({ ...eventData, endTime: value });
+              }
+            }}
             renderInput={(params) => <TextField {...params} />}
           />
         )}

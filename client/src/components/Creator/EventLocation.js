@@ -19,7 +19,12 @@ USA
 There's a DeLorean parked out front. Don't use the doorbell.`}
         minRows={4}
         maxRows={4}
-        style={{ resize: 'none', width: '100%', marginTop: '20px' }}
+        style={{
+          resize: 'none',
+          width: '100%',
+          marginTop: '20px',
+        }}
+        maxLength={256}
         value={eventData.location}
         onChange={(e) => {
           setEventData({ ...eventData, location: e.target.value });

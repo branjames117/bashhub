@@ -12,6 +12,14 @@ export const QUERY_USER = gql`
   }
 `;
 
+export const QUERY_SLUG = gql`
+  query slug($slug: String!) {
+    slug(slug: $slug) {
+      _id
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
   {
     me {

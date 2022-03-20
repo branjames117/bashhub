@@ -34,6 +34,12 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
+    slug: async (parent, { slug }) => {
+      console.log(slug);
+      const event = Event.findOne({ slug }).select('slug');
+
+      return event;
+    },
   },
   Mutation: {
     addUser: async (parent, args) => {

@@ -7,22 +7,21 @@ const eventSchema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
       minlength: 1,
-      maxlength: 128,
+      maxlength: 64,
     },
     slug: {
       type: String,
       required: true,
       unique: true,
       minlength: 1,
-      maxlength: 128,
+      maxlength: 64,
     },
     location: {
       type: String,
       required: true,
       minlength: 1,
-      maxlength: 128,
+      maxlength: 256,
     },
     eventType: {
       type: String,
@@ -53,12 +52,15 @@ const eventSchema = new Schema(
     },
     url: {
       type: String,
+      maxlength: 128,
     },
     ticketsUrl: {
       type: String,
+      maxlength: 128,
     },
     pricing: {
       type: String,
+      maxlength: 64,
     },
     tags: [
       {
@@ -68,6 +70,7 @@ const eventSchema = new Schema(
     ],
     description: {
       type: String,
+      maxlength: 256,
     },
     hero: {
       type: String,
