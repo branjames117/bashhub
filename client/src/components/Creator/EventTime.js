@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {
   FormGroup,
   FormControlLabel,
-  Typography,
+  FormLabel,
   Stack,
   TextField,
   Checkbox,
@@ -22,11 +22,10 @@ export default function EventTime({ eventData, setEventData }) {
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <Stack spacing={3}>
-        <Typography variant='inherit'>
-          Choose the date of your event.
-        </Typography>
+        <FormLabel id='startDate'>Choose the date of your event. *</FormLabel>
         <MobileDatePicker
           label='Start Date'
+          aria-labelledby='startDate'
           inputFormat='MM/DD/yyyy'
           value={eventData.startDate}
           onChange={(value) => setEventData({ ...eventData, startDate: value })}
@@ -49,7 +48,7 @@ export default function EventTime({ eventData, setEventData }) {
                 }}
               />
             }
-            label='Check to start at a specified time.'
+            label='Start at a specified time.'
           />
         </FormGroup>
         {startTimeEnabled && (
@@ -81,7 +80,7 @@ export default function EventTime({ eventData, setEventData }) {
                 }}
               />
             }
-            label='Check to end on a different day.'
+            label='End on a different day.'
           />
         </FormGroup>
         {endDateEnabled && (
@@ -109,7 +108,7 @@ export default function EventTime({ eventData, setEventData }) {
                 }}
               />
             }
-            label='Check to end at a specified time.'
+            label='End at a specified time.'
           />
         </FormGroup>
         {endTimeEnabled && (

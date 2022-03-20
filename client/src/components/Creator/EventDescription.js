@@ -28,24 +28,28 @@ export default function EventDescription({ eventData, setEventData }) {
       />
       <Typography sx={{ mt: 2 }}>
         Create a few tags to give potential attendees a quick overview. After
-        adding a tag, you can click it to remove it.
+        adding a tag, you can click it to remove it. (Limit 5)
       </Typography>
       <Input
         sx={{ mt: 2 }}
         placeholder='Create Tag'
         value={tag}
         onChange={(e) => {
-          setTag(e.target.value);
+          setTag(e.target.value.trim());
         }}
       />
       <Button
         type='submit'
         variant='text'
         onClick={() => {
-          if (tag.trim() !== '' && eventData.tags.indexOf(tag) === -1) {
+          if (
+            tag.trim() !== '' &&
+            eventData.tags.indexOf(tag) === -1 &&
+            eventData.tags.length < 5
+          ) {
             setEventData({
               ...eventData,
-              tags: [...eventData.tags, tag.toLowerCase()],
+              tags: [...eventData.tags, tag.trim().toLowerCase()],
             });
           }
           setTag('');

@@ -33,3 +33,30 @@ export const EDIT_BIO = gql`
     }
   }
 `;
+
+export const ADD_EVENT = gql`
+  mutation addEvent($eventInput: EventInput!) {
+    addEvent(eventInput: $eventInput) {
+      _id
+      name
+      slug
+      location
+      eventType
+      startDate
+      startTime
+      endDate
+      endTime
+      ownerId
+      ownerName
+      url
+      ticketsUrl
+      pricing
+      tags
+      description
+      hero
+      heroId
+      commentsEnabled
+      publicEnabled
+    }
+  }
+`;

@@ -1,3 +1,7 @@
+import { useMutation } from '@apollo/client';
+
+import { ADD_EVENT } from '../../utils/mutations';
+
 import { Box, Button } from '@mui/material';
 
 export default function StepperButtons({
@@ -5,11 +9,20 @@ export default function StepperButtons({
   activeStep,
   setActiveStep,
 }) {
-  const handleNext = () => {
+  const [addEvent] = useMutation(ADD_EVENT);
+
+  const handleNext = async () => {
     if (activeStep === 4) {
-      // call on ApolloServer to create the event
+      try {
+        await addEvent({
+          variables: {
+            eventInput: eventData,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
-    console.log(eventData);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -20,7 +33,16 @@ export default function StepperButtons({
   return (
     <Box sx={{ my: 2 }}>
       <div>
-        <Button variant='contained' onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
+        <Button
+          variant='contained'
+          disabled={
+            (activeStep === 0 && !eventData.name.trim()) ||
+            (activeStep === 0 && !eventData.slug.trim()) ||
+            (activeStep === 2 && !eventData.location.trim())
+          }
+          onClick={handleNext}
+          sx={{ mt: 1, mr: 1 }}
+        >
           {activeStep === 4 ? 'Publish Event' : 'Next'}
         </Button>
         <Button

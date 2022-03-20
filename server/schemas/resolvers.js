@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User } = require('../models');
+const { User, Event, Tag } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -71,6 +71,36 @@ const resolvers = {
       }
 
       throw new AuthenticationError('Not logged in');
+    },
+    addEvent: async (parent, { eventInput }, context) => {
+      try {
+        // create the tags in the database first, if they don't already exist
+        tagsIdArr = [];
+
+        for (tag of eventInput.tags) {
+          const newTag = await Tag.findOneAndUpdate(
+            { name: tag },
+            { name: tag },
+            { upsert: true, returnDocument: 'after' }
+          );
+
+          tagsIdArr.push(newTag._id);
+        }
+
+        eventInput.tags = tagsIdArr;
+
+        // then create the event itself using an array of the updated tag IDs
+        const event = await Event.create(eventInput);
+
+        // then add the created events ID to the user's eventsManaged array
+        await User.findByIdAndUpdate(context.user._id, {
+          $push: { eventsManaged: event._id },
+        });
+        return event;
+      } catch (err) {
+        console.log(err);
+        throw new Error('Event not created');
+      }
     },
   },
 };

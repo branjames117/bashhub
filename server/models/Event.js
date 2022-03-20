@@ -11,6 +11,13 @@ const eventSchema = new Schema(
       minlength: 1,
       maxlength: 128,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 1,
+      maxlength: 128,
+    },
     location: {
       type: String,
       required: true,
@@ -30,10 +37,10 @@ const eventSchema = new Schema(
       get: (timestamp) => dateFormat(timestamp),
     },
     startTime: {
-      type: Number,
+      type: Date,
     },
     endTime: {
-      type: Number,
+      type: Date,
     },
     ownerId: {
       type: Schema.Types.ObjectId,
@@ -72,6 +79,10 @@ const eventSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    publicEnabled: {
+      type: Boolean,
+      default: true,
+    },
     comments: [commentSchema],
     // null unless subevent
     eventParent: {
@@ -91,6 +102,9 @@ const eventSchema = new Schema(
     videoTerm: {
       type: String,
     },
+  },
+  {
+    timestamps: true,
   },
   {
     toJSON: {

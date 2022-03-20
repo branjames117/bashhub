@@ -32,7 +32,7 @@ export default function Dashboard({ variant }) {
   // if user is not logged in, kick them back to login page
   if (!Auth.loggedIn()) window.location.assign('/');
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const { data, loading } = useQuery(QUERY_ME);
 
@@ -52,7 +52,7 @@ export default function Dashboard({ variant }) {
       <AppBar position='absolute' open={open}>
         <Toolbar
           sx={{
-            pr: '24px', // keep right padding when drawer closed
+            pr: '10px', // keep right padding when drawer closed
           }}
         >
           <IconButton
@@ -61,7 +61,7 @@ export default function Dashboard({ variant }) {
             aria-label='open drawer'
             onClick={toggleDrawer}
             sx={{
-              marginRight: '36px',
+              marginRight: '10px',
             }}
           >
             {open ? <ChevronLeftIcon /> : <MenuIcon />}
@@ -73,7 +73,7 @@ export default function Dashboard({ variant }) {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Bash @ {Auth.getProfile().data.username}
+            Bash Hub
           </Typography>
           <IconButton color='inherit'>
             <Badge badgeContent={4} color='secondary'>
@@ -103,7 +103,7 @@ export default function Dashboard({ variant }) {
           </IconButton>
         </Toolbar>
         <Divider />
-        <SideMenu />
+        <SideMenu setOpen={setOpen} />
       </Drawer>
       <Box
         component='main'
@@ -112,6 +112,8 @@ export default function Dashboard({ variant }) {
           height: '100vh',
           overflow: 'auto',
         }}
+        // close side menu if main content box is clicked on
+        onClick={() => setOpen(false)}
       >
         <Toolbar />
         <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>

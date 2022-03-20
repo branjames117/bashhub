@@ -17,6 +17,7 @@ import StepperButtons from './StepperButtons';
 import EventTime from './EventTime';
 import EventLocation from './EventLocation';
 import EventDescription from './EventDescription';
+import EventDetails from './EventDetails';
 
 const defaultEvent = {
   eventType: 'Other',
@@ -26,8 +27,18 @@ const defaultEvent = {
   endTime: '',
   description: '',
   tags: [],
+  location: '',
   ownerId: Auth.getProfile().data._id,
   ownerName: Auth.getProfile().data.username,
+  url: '',
+  ticketsUrl: '',
+  pricing: '',
+  hero: '',
+  heroId: '',
+  commentsEnabled: true,
+  publicEnabled: true,
+  name: '',
+  slug: '',
 };
 
 export default function Creator() {
@@ -49,13 +60,13 @@ export default function Creator() {
     >
       <Typography variant='h4'>Create New Event</Typography>
       <Typography variant='inherit'>
-        Follow these steps to get your event page ready to share with other
-        users.
+        Follow these steps to get your Event page ready to share with other
+        users. Required fields are marked with *.
       </Typography>
       <Stepper activeStep={activeStep} orientation='vertical' sx={{ mt: 3 }}>
         {/* Step 1 - Event Type */}
         <Step>
-          <StepLabel>What type of event is this?</StepLabel>
+          <StepLabel>Choose a name, URL, and type for your event. *</StepLabel>
           <StepContent>
             <EventType eventData={eventData} setEventData={setEventData} />
             <StepperButtons
@@ -68,7 +79,7 @@ export default function Creator() {
 
         {/* Step 2 - Event Time */}
         <Step>
-          <StepLabel>Let's talk dates and times.</StepLabel>
+          <StepLabel>Let's talk dates and times. *</StepLabel>
           <StepContent>
             <EventTime eventData={eventData} setEventData={setEventData} />
             <StepperButtons
@@ -81,7 +92,7 @@ export default function Creator() {
 
         {/* Step 3 - Event Location */}
         <Step>
-          <StepLabel>Where is it happening?</StepLabel>
+          <StepLabel>Where is it happening? *</StepLabel>
           <StepContent>
             <EventLocation eventData={eventData} setEventData={setEventData} />
             <StepperButtons
@@ -113,12 +124,12 @@ export default function Creator() {
 
         {/* Step 5 - Final Details */}
         <Step>
-          <StepLabel>Nail down some final details.</StepLabel>
+          <StepLabel>
+            Nail down some final details and customize the look of your Event
+            page with a custom hero image.
+          </StepLabel>
           <StepContent>
-            <EventDescription
-              eventData={eventData}
-              setEventData={setEventData}
-            />
+            <EventDetails eventData={eventData} setEventData={setEventData} />
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}

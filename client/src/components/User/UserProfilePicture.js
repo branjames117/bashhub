@@ -15,6 +15,7 @@ export default function UserProfilePicture({ owned, currAvatar }) {
     const imageData = document.querySelector('input[type="file"]').files[0];
 
     formData.append('image', imageData);
+    formData.append('uploadType', 'avatar');
 
     try {
       const response = await fetch('/api/images/upload', {

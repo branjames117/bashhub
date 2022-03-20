@@ -34,11 +34,11 @@ export default function UserProfile({ myUsername }) {
   return (
     <Grid container spacing={3}>
       {/* Profile Picture */}
-      <Grid item xs={12} md={4} lg={3}>
+      <Grid item xs={12} sm={5} md={4} lg={3}>
         <UserProfilePicture owned={owned} currAvatar={userData?.user?.avatar} />
       </Grid>
       {/* Bio */}
-      <Grid item xs={12} md={8} lg={9}>
+      <Grid item xs={12} sm={7} md={8} lg={9}>
         <UserBio
           username={username}
           owned={owned}
