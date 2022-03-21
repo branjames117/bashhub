@@ -8,7 +8,6 @@ import {
   Button,
   Paper,
   Typography,
-  CircularProgress,
 } from '@mui/material';
 
 import EventType from './EventType';
@@ -21,6 +20,7 @@ import Loading from '../Loading';
 
 const defaultEvent = {
   eventType: 'Other',
+  createdAt: new Date(),
   startDate: new Date(),
   startTime: '',
   endDate: '',
@@ -51,7 +51,11 @@ export default function Creator({ variant, _id }) {
 
   const handleReset = () => {
     setActiveStep(0);
-    setEventData(defaultEvent);
+    if (variant === 'subevent') {
+      setEventData({ ...defaultEvent, eventParent: _id });
+    } else {
+      setEventData(defaultEvent);
+    }
   };
 
   useEffect(() => {

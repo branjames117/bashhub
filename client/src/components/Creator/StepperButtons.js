@@ -1,6 +1,8 @@
 import { useMutation } from '@apollo/client';
 
 import { ADD_EVENT } from '../../utils/mutations';
+import { QUERY_ME } from '../../utils/queries';
+import { QUERY_EVENT } from '../../utils/queries';
 
 import { Box, Button } from '@mui/material';
 import Auth from '../../utils/auth';
@@ -11,12 +13,45 @@ export default function StepperButtons({
   setActiveStep,
   slugTaken,
 }) {
-  const [addEvent] = useMutation(ADD_EVENT);
+  const [addEvent] = useMutation(ADD_EVENT, {
+    update(cache, { data: { addEvent } }) {
+      try {
+        // if event is just an event, update the QUERY_ME cache
+        if (!addEvent.eventParent) {
+          const { me } = cache.readQuery({ query: QUERY_ME });
+
+          cache.writeQuery({
+            query: QUERY_ME,
+            data: {
+              me: { ...me, eventsManaged: [addEvent, ...me.eventsManaged] },
+            },
+          });
+        } else {
+          // otherwise, update the query QUERY_EVENT cache
+          const { event } = cache.readQuery({
+            query: QUERY_EVENT,
+            variables: {
+              slug: addEvent.eventParent.slug,
+            },
+          });
+
+          cache.writeQuery({
+            query: QUERY_EVENT,
+            variables: { slug: addEvent.eventParent.slug },
+            data: {
+              event: { ...event, subevents: [addEvent, ...event.subevents] },
+            },
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  });
 
   const handleNext = async () => {
     if (activeStep === 4) {
       try {
-        console.log(eventData);
         await addEvent({
           variables: {
             eventInput: {

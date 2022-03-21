@@ -25,13 +25,13 @@ const typeDefs = gql`
     eventType: String
     startDate: String
     startTime: String
+    createdAt: String
     endDate: String
     endTime: String
     ownerId: ID
     ownerName: String
     url: String
     ticketsUrl: String
-    createdAt: String
     pricing: String
     tags: [Tag]
     description: String
@@ -48,6 +48,7 @@ const typeDefs = gql`
     name: String!
     slug: String!
     location: String!
+    createdAt: String
     eventType: String
     startDate: String
     startTime: String

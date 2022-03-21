@@ -37,6 +37,8 @@ const resolvers = {
         .populate('eventParent')
         .populate('subevents');
 
+      console.log(eventData);
+
       return eventData;
     },
     me: async (parent, args, context) => {
@@ -52,6 +54,8 @@ const resolvers = {
         userData.eventsManaged = userData.eventsManaged.filter(
           (event) => !event.eventParent
         );
+
+        console.log(userData);
 
         return userData;
       }
@@ -133,7 +137,13 @@ const resolvers = {
           $push: { eventsManaged: event._id },
         });
 
-        return event;
+        const returnedEvent = await Event.findById(event._id).populate(
+          'eventParent'
+        );
+
+        console.log(returnedEvent);
+
+        return returnedEvent;
       } catch (err) {
         console.log(err);
         throw new Error('Event not created');

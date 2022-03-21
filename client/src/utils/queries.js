@@ -107,6 +107,7 @@ export const QUERY_EVENT = gql`
       eventParent {
         _id
         name
+        slug
       }
       tags {
         _id

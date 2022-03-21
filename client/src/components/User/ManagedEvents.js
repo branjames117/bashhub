@@ -11,6 +11,8 @@ export default function ManagedEvents() {
 
   const { data, loading } = useQuery(QUERY_ME);
 
+  console.log(data);
+
   if (loading) {
     return <>Loading...</>;
   }

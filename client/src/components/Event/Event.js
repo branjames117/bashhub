@@ -9,7 +9,6 @@ import Hero from './Hero';
 import Details from './Details';
 import Description from './Description';
 import Loading from '../Loading';
-import Subevent from './Subevents';
 
 export default function Event() {
   const { slug } = useParams();
@@ -22,6 +21,7 @@ export default function Event() {
   useEffect(() => {
     if (!loading) {
       const { event } = data;
+      console.log(event);
       console.log(event.subevents);
       setEventData(event);
     }

@@ -51,6 +51,7 @@ export const ADD_EVENT = gql`
       url
       ticketsUrl
       pricing
+      createdAt
       tags {
         _id
         name
@@ -64,6 +65,7 @@ export const ADD_EVENT = gql`
       eventParent {
         _id
         name
+        slug
       }
     }
   }
