@@ -9,7 +9,7 @@ import UserBio from './UserBio';
 import UserProfilePicture from './UserProfilePicture';
 import Banner from './Banner';
 import Loading from '../Loading';
-import { getDate, getTime } from '../../utils/dateFormat';
+import { DateFormatter } from '../../utils/dateFormat';
 
 export default function UserProfile({ myUsername }) {
   const { username } = useParams();
@@ -57,10 +57,10 @@ export default function UserProfile({ myUsername }) {
                 hero={event.hero}
                 name={event.name}
                 eventType={event.eventType}
-                startDate={getDate(event.startDate)}
-                startTime={getTime(event.startTime)}
-                endDate={getDate(event.endDate)}
-                endTime={getTime(event.endTime)}
+                startDate={DateFormatter.getDate(event.startDate)}
+                startTime={DateFormatter.getTime(event.startTime)}
+                endDate={DateFormatter.getDate(event.endDate)}
+                endTime={DateFormatter.getTime(event.endTime)}
                 location={event.location}
               />
             ))}

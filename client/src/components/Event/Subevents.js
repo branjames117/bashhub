@@ -1,58 +1,99 @@
-import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { QUERY_SUBEVENTS } from '../../utils/queries';
+import { Link } from 'react-router-dom';
+import { Box, Typography, Grid } from '@mui/material';
+import { DateFormatter } from '../../utils/dateFormat';
 
 import Loading from '../Loading';
+import Subevent from './Subevent';
 
 const sortSubevents = (input) => {
-  // find out how many unique dates there are among subevents and create an array containing each unique date
+  // get ready for the least efficient sorting algorithm you've ever seen
+
+  // find out how many unique dates there are among subevents and create a set containing each unique date
   const [...subevents] = input;
-  const dates = [];
+  const dates = new Set();
 
-  // subevents.sort((a, b) => b.startDate - a.startDate);
-
+  // find out how many unique dates there are among the subevents
   subevents.forEach((e) =>
-    dates.push(new Date(e.startDate - 0).toString().slice(0, 15))
+    dates.add(new Date(e.startDate - 0).toString().slice(0, 15))
   );
-  subevents.sort((a, b) => {
-    return (
-      new Date(a.startDate - 0).getDate() - new Date(b.startDate - 0).getDate()
-    );
+
+  // if there's only one date, just return the sorted subevents
+  if (dates.size === 1) {
+    subevents.sort((a, b) => {
+      const startA =
+        new Date(a.startTime - 0).getTime() ||
+        new Date(a.startDate - 0).getTime();
+      const startB =
+        new Date(b.startTime - 0).getTime() ||
+        new Date(b.startDate - 0).getTime();
+      return startB - startA;
+    });
+
+    return subevents;
+  }
+
+  const datesArr = [...dates];
+
+  const dailyPlan = [];
+
+  datesArr.forEach((date) => {
+    dailyPlan.push({ date, subevents: [] });
   });
 
-  console.log(dates);
+  subevents.forEach((subevent) => {
+    const date = new Date(subevent.startDate - 0).toString().slice(0, 15);
+    const index = dailyPlan.findIndex((dateObj) => {
+      return dateObj.date === date;
+    });
 
-  // if the array is only one date long, return the array
+    dailyPlan[index].subevents.push(subevent);
+  });
 
-  // if the array is more than one date long, create now a 2-dimensional array, sorting each subevent into its proper array position
-
-  // then return the newly sorted 2-dimensional array
-
-  console.log(subevents);
-  return subevents;
+  return dailyPlan;
 };
 
-export default function Subevent({ _id }) {
-  const [subevents, setSubevents] = useState([]);
-  const { data, loading } = useQuery(QUERY_SUBEVENTS, {
-    variables: { _id: _id },
-  });
-
+export default function Subevents({ subevents, setSubevents }) {
   useEffect(() => {
-    if (data?.subevents) {
-      if (data?.subevents.length > 0) {
-        setSubevents(sortSubevents(data.subevents));
-      }
-    }
-  }, [loading, data]);
+    setSubevents(sortSubevents(subevents));
+  }, [setSubevents]);
 
-  return !subevents ? (
-    <Loading variant='contained' />
-  ) : (
-    <>
-      {subevents.map((subevent) => (
-        <div key={subevent._id}>{subevent.name}</div>
-      ))}
-    </>
-  );
+  console.log(subevents);
+
+  if (!subevents) {
+    setSubevents([]);
+    return <Loading variant='contained' />;
+  }
+
+  // if subevents is just an array of subevents,
+  if (subevents[0]?.date === null) {
+    return (
+      <>
+        {subevents.map((subevent) => (
+          <Subevent key={subevent._id} subevent={subevent} />
+        ))}
+      </>
+    );
+  } else {
+    return (
+      <>
+        {subevents.map((day) => (
+          <Box key={Math.random()} sx={{ py: 1 }}>
+            <Typography
+              sx={{ textAlign: 'center' }}
+              variant='h6'
+              key={day.date}
+            >
+              {day?.date}
+            </Typography>
+            <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
+              {day?.subevents?.map((subevent) => (
+                <Subevent key={subevent._id} subevent={subevent} />
+              ))}
+            </Grid>
+          </Box>
+        ))}
+      </>
+    );
+  }
 }

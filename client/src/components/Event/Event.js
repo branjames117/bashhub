@@ -9,10 +9,12 @@ import Hero from './Hero';
 import Details from './Details';
 import Description from './Description';
 import Loading from '../Loading';
+import Subevents from './Subevents';
 
 export default function Event() {
   const { slug } = useParams();
   const [eventData, setEventData] = useState({});
+  const [subevents, setSubevents] = useState([]);
 
   const { data, loading } = useQuery(QUERY_EVENT, {
     variables: { slug: slug },
@@ -21,11 +23,12 @@ export default function Event() {
   useEffect(() => {
     if (!loading) {
       const { event } = data;
-      console.log(event);
-      console.log(event.subevents);
       setEventData(event);
+      setSubevents(event.subevents);
     }
   }, [data, loading]);
+
+  console.log(eventData);
 
   return loading || !eventData ? (
     <Loading />
@@ -34,9 +37,17 @@ export default function Event() {
       <Hero
         name={eventData.name}
         hero={eventData.hero}
-        eventType={eventData.eventType}
+        eventType={`${eventData.eventParent ? '' : eventData.eventType}`}
+        eventParent={eventData.eventParent}
       />
       <Grid container spacing={3}>
+        {/* Top menu */}
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            Hey
+          </Paper>
+        </Grid>
+
         {/* Details */}
         <Details
           startDate={eventData.startDate}
@@ -62,7 +73,9 @@ export default function Event() {
         {/* Subevents */}
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            Subevents
+            {subevents.length > 0 && (
+              <Subevents subevents={subevents} setSubevents={setSubevents} />
+            )}
           </Paper>
         </Grid>
 

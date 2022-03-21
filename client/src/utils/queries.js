@@ -108,6 +108,8 @@ export const QUERY_EVENT = gql`
         _id
         name
         slug
+        hero
+        eventType
       }
       tags {
         _id
