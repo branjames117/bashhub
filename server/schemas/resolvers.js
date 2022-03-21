@@ -1,4 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
+const { default: mongoose } = require('mongoose');
 const { User, Event, Tag } = require('../models');
 const { signToken } = require('../utils/auth');
 
@@ -149,25 +150,39 @@ const resolvers = {
     },
     addAttendee: async (parent, { event_id }, context) => {
       try {
-        // first update the user
-        const user = await User.findByIdAndUpdate(context.user._id, {
-          $push: { eventsAttending: event_id },
+        const eventId = mongoose.Types.ObjectId(event_id);
+
+        // first find if the user is already attending this event
+        const user = await User.findOne({
+          _id: context.user._id,
+          eventsAttending: eventId,
         });
 
-        // then update the event
-        const event = await Event.findByIdAndUpdate(event_id, {
-          $push: { attendees: context.user._id },
-        });
+        // user does not already have this event in their attending array
+        if (!user) {
+          console.log('user not attending, updating');
+          // so update the user
+          await User.findByIdAndUpdate(context.user._id, {
+            $push: { eventsAttending: eventId },
+          });
+          // then update the event
+          await Event.findByIdAndUpdate(eventId, {
+            $push: { attendees: context.user._id },
+          });
+        } else {
+          console.log('user attending already, not updating');
+        }
 
-        const returnedEvent = await Event.findById(event_id).populate(
-          'attendees'
-        );
-
+        // then find and populate them both for return
         const returnedUser = await User.findById(context.user._id).populate(
           'eventsAttending'
         );
 
-        return { event: returnedEvent, user: returnedUser };
+        const returnedEvent = await Event.findById(eventId).populate(
+          'attendees'
+        );
+
+        return { user: returnedUser, event: returnedEvent };
       } catch (err) {
         console.log(err);
         throw new Error('User and event not updated');
