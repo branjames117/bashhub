@@ -125,6 +125,7 @@ export const QUERY_EVENT = gql`
         _id
         username
         email
+        avatar
       }
       subevents {
         _id

@@ -10,11 +10,13 @@ import Details from './Details';
 import Description from './Description';
 import Loading from '../Loading';
 import Subevents from './Subevents';
+import Attendees from './Attendees';
 
 export default function Event() {
   const { slug } = useParams();
   const [eventData, setEventData] = useState({});
   const [subevents, setSubevents] = useState([]);
+  const [attendees, setAttendees] = useState([]);
 
   const { data, loading } = useQuery(QUERY_EVENT, {
     variables: { slug: slug },
@@ -25,8 +27,11 @@ export default function Event() {
       const { event } = data;
       setEventData(event);
       setSubevents(event?.subevents);
+      setAttendees(event?.attendees);
     }
   }, [data, loading]);
+
+  console.log(subevents === true);
 
   return loading || !eventData ? (
     <Loading />
@@ -63,20 +68,22 @@ export default function Event() {
         />
 
         {/* Subevents */}
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            {subevents.length > 0 && (
+        {subevents.length !== 0 && (
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
               <Subevents subevents={subevents} setSubevents={setSubevents} />
-            )}
-          </Paper>
-        </Grid>
+            </Paper>
+          </Grid>
+        )}
 
         {/* Attendees */}
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            Attendees
-          </Paper>
-        </Grid>
+        {attendees.length !== 0 && (
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <Attendees attendees={eventData.attendees} />
+            </Paper>
+          </Grid>
+        )}
 
         {/* My Comments */}
         <Grid item xs={12}>

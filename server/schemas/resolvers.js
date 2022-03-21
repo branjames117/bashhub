@@ -160,7 +160,6 @@ const resolvers = {
 
         // user does not already have this event in their attending array
         if (!user) {
-          console.log('user not attending, updating');
           // so update the user
           await User.findByIdAndUpdate(context.user._id, {
             $push: { eventsAttending: eventId },
@@ -169,8 +168,6 @@ const resolvers = {
           await Event.findByIdAndUpdate(eventId, {
             $push: { attendees: context.user._id },
           });
-        } else {
-          console.log('user attending already, not updating');
         }
 
         // then find and populate them both for return
