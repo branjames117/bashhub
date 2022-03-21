@@ -4,11 +4,12 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../../utils/queries';
 
-import { Grid, Paper, Typography, Box, CircularProgress } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import UserBio from './UserBio';
 import UserProfilePicture from './UserProfilePicture';
 import Banner from './Banner';
 import Loading from '../Loading';
+import { getDate, getTime } from '../../utils/dateFormat';
 
 export default function UserProfile({ myUsername }) {
   const { username } = useParams();
@@ -56,10 +57,10 @@ export default function UserProfile({ myUsername }) {
                 hero={event.hero}
                 name={event.name}
                 eventType={event.eventType}
-                startDate={event.startDate}
-                startTime={event.startTime}
-                endDate={event.endDate}
-                endTime={event.endTime}
+                startDate={getDate(event.startDate)}
+                startTime={getTime(event.startTime)}
+                endDate={getDate(event.endDate)}
+                endTime={getTime(event.endTime)}
                 location={event.location}
               />
             ))}

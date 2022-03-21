@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Button, Paper, Typography, Chip } from '@mui/material';
 
 import Auth from '../../utils/auth';
+import { getDate, getTime } from '../../utils/dateFormat';
 
 export default function Details({
   startDate,
@@ -30,13 +31,13 @@ export default function Details({
       >
         <Typography variant='h5'>Details</Typography>
         <Typography>
-          {startDate} {startTime && `@ ${startTime}`}
+          {getDate(startDate)} {startTime && `@ ${getTime(startTime)}`}
         </Typography>
         {endDate ||
           (endTime && (
             <Typography>
-              to {endDate}
-              {endTime && `@ ${endTime}`}
+              to {getDate(endDate)}
+              {endTime && `@ ${getTime(endTime)}`}
             </Typography>
           ))}
         <Typography sx={{ overflowX: 'hidden', whiteSpace: 'pre-line' }}>

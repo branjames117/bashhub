@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../../utils/queries';
-import { Paper, Typography, Button, Box } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import Auth from '../../utils/auth';
+import { getDate, getTime } from '../../utils/dateFormat';
 
 import Banner from './Banner';
 
@@ -9,10 +10,6 @@ export default function ManagedEvents() {
   if (!Auth.loggedIn()) window.location.assign('/');
 
   const { data, loading } = useQuery(QUERY_ME);
-
-  if (data) {
-    console.log(data.me.eventsManaged);
-  }
 
   if (loading) {
     return <>Loading...</>;
@@ -36,10 +33,10 @@ export default function ManagedEvents() {
             hero={event.hero}
             name={event.name}
             eventType={event.eventType}
-            startDate={event.startDate}
-            startTime={event.startTime}
-            endDate={event.endDate}
-            endTime={event.endTime}
+            startDate={getDate(event.startDate)}
+            startTime={getTime(event.startTime)}
+            endDate={getDate(event.endDate)}
+            endTime={getTime(event.endTime)}
             location={event.location}
           />
         ))}

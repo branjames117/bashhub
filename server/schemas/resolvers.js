@@ -34,14 +34,10 @@ const resolvers = {
         slug,
       })
         .populate('tags')
-        .populate('eventParent');
+        .populate('eventParent')
+        .populate('subevents');
 
       return eventData;
-    },
-    subevents: async (parent, { _id }) => {
-      const subeventsData = await Event.find({ eventParent: _id });
-      console.log(subeventsData);
-      return subeventsData;
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -124,6 +120,13 @@ const resolvers = {
 
         // then create the event itself using an array of the updated tag IDs
         const event = await Event.create(eventInput);
+
+        // then, if the event is a child of another event, add its id to the subevents field of the parent
+        if (event.eventParent) {
+          await Event.findByIdAndUpdate(event.eventParent, {
+            $push: { subevents: event._id },
+          });
+        }
 
         // then add the created events ID to the user's eventsManaged array
         await User.findByIdAndUpdate(context.user._id, {

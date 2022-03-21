@@ -41,6 +41,7 @@ const typeDefs = gql`
     commentsEnabled: Boolean
     publicEnabled: Boolean
     eventParent: Event
+    subevents: [Event]
   }
 
   input EventInput {

@@ -93,6 +93,17 @@ export const QUERY_EVENT = gql`
       commentsEnabled
       publicEnabled
       createdAt
+      subevents {
+        _id
+        name
+        slug
+        location
+        description
+        startDate
+        startTime
+        endDate
+        endTime
+      }
       eventParent {
         _id
         name

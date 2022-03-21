@@ -22,9 +22,10 @@ export default function Event() {
   useEffect(() => {
     if (!loading) {
       const { event } = data;
+      console.log(event.subevents);
       setEventData(event);
     }
-  }, [loading]);
+  }, [data, loading]);
 
   return loading || !eventData ? (
     <Loading />
@@ -61,7 +62,7 @@ export default function Event() {
         {/* Subevents */}
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            {eventData?._id && <Subevent _id={eventData._id} />}
+            Subevents
           </Paper>
         </Grid>
 

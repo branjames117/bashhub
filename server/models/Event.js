@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const commentSchema = require('./Comment');
-const { getDate, getTime } = require('../utils/dateFormat');
 
 const eventSchema = new Schema(
   {
@@ -29,19 +28,15 @@ const eventSchema = new Schema(
     },
     startDate: {
       type: Date,
-      get: (timestamp) => getDate(timestamp),
     },
     endDate: {
       type: Date,
-      get: (timestamp) => getDate(timestamp),
     },
     startTime: {
       type: Date,
-      get: (timestamp) => getTime(timestamp),
     },
     endTime: {
       type: Date,
-      get: (timestamp) => getTime(timestamp),
     },
     ownerId: {
       type: Schema.Types.ObjectId,
@@ -94,6 +89,12 @@ const eventSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Event',
     },
+    subevents: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Event',
+      },
+    ],
     videoUrl: {
       type: String,
       maxlength: 128,
