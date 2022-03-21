@@ -33,7 +33,7 @@ export default function SideMenu({ setOpen }) {
       </Button>
       <Divider sx={{ my: 1 }} />
       <Button variant='text'>
-        <Link to={`/bash/create`} onClick={() => setOpen(false)}>
+        <Link to={`/bash/manage-events`} onClick={() => setOpen(false)}>
           <Assignment sx={{ transform: 'translateY(7px)' }} />
           <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
             Events I'm Managing

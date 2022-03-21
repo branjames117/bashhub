@@ -24,9 +24,10 @@ import AppBar from '../components/AppBar';
 import Drawer from '../components/Drawer';
 import SideMenu from '../components/SideMenu';
 import UserProfile from '../components/User/UserProfile';
-import Event from '../components/Event';
+import Event from '../components/Event/Event';
 import SubEvent from '../components/SubEvent';
 import Creator from '../components/Creator/Creator';
+import ManagedEvents from '../components/User/ManagedEvents';
 
 export default function Dashboard({ variant }) {
   // if user is not logged in, kick them back to login page
@@ -35,10 +36,6 @@ export default function Dashboard({ variant }) {
   const [open, setOpen] = useState(false);
 
   const { data, loading } = useQuery(QUERY_ME);
-
-  if (data) {
-    // console.log(data.me);
-  }
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -120,6 +117,7 @@ export default function Dashboard({ variant }) {
           {variant === 'user' && (
             <UserProfile myUsername={Auth.getProfile().data.username} />
           )}
+          {variant === 'manager' && <ManagedEvents />}
           {variant === 'event' && <Event />}
           {variant === 'subevent' && <SubEvent />}
           {variant === 'creator' && <Creator />}

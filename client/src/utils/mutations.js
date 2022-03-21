@@ -55,6 +55,7 @@ export const ADD_EVENT = gql`
       description
       hero
       heroId
+      videoUrl
       commentsEnabled
       publicEnabled
     }

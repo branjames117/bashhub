@@ -29,8 +29,9 @@ export default function Login() {
   const [login] = useMutation(LOGIN_USER);
   const [register] = useMutation(ADD_USER);
 
-  // if user is already logged in, kick them back to dashboard page
-  if (Auth.loggedIn()) window.location.assign('/bash');
+  // if user is already logged in, kick them back to their profile
+  if (Auth.loggedIn())
+    window.location.assign(`/bash/u/${Auth.getProfile().data.username}`);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

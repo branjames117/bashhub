@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../../utils/queries';
 
-import { Grid, Paper } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import UserBio from './UserBio';
 import UserProfilePicture from './UserProfilePicture';
+import Banner from './Banner';
 
 export default function UserProfile({ myUsername }) {
   const { username } = useParams();
@@ -49,7 +50,23 @@ export default function UserProfile({ myUsername }) {
       {/* My Events */}
       <Grid item xs={12}>
         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-          My Events
+          <Typography variant='h5'>Events I'm Managing</Typography>
+          {userData &&
+            userData.user.eventsManaged.map((event) => (
+              <Banner
+                key={event._id}
+                _id={event._id}
+                slug={event.slug}
+                hero={event.hero}
+                name={event.name}
+                eventType={event.eventType}
+                startDate={event.startDate}
+                startTime={event.startTime}
+                endDate={event.endDate}
+                endTime={event.endTime}
+                location={event.location}
+              />
+            ))}
         </Paper>
       </Grid>
 

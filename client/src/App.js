@@ -53,7 +53,11 @@ function App() {
                 element={<Dashboard variant='user' />}
               />
               <Route
-                path='/bash/e/:eventName'
+                path='/bash/manage-events'
+                element={<Dashboard variant='manager' />}
+              />
+              <Route
+                path='/bash/e/:slug'
                 element={<Dashboard variant='event' />}
               />
               <Route

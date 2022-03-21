@@ -39,7 +39,7 @@ class AuthService {
     // saves user token to localStorage
     localStorage.setItem('id_token', idToken);
 
-    window.location.assign('/bash');
+    window.location.assign(`/bash/u/${this.getProfile().data.username}`);
   }
 
   // clear token from localStorage and force logout with reload

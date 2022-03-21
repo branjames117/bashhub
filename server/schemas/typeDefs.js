@@ -9,6 +9,12 @@ const typeDefs = gql`
     username: String
     bio: String
     avatar: String
+    eventsManaged: [Event]
+  }
+
+  type Tag {
+    _id: ID
+    name: String
   }
 
   type Event {
@@ -25,11 +31,13 @@ const typeDefs = gql`
     ownerName: String
     url: String
     ticketsUrl: String
+    createdAt: String
     pricing: String
-    tags: [String]
+    tags: [Tag]
     description: String
     hero: String
     heroId: String
+    videoUrl: String
     commentsEnabled: Boolean
     publicEnabled: Boolean
   }
@@ -37,7 +45,7 @@ const typeDefs = gql`
   input EventInput {
     name: String!
     slug: String!
-    location: String
+    location: String!
     eventType: String
     startDate: String
     startTime: String
@@ -52,6 +60,7 @@ const typeDefs = gql`
     description: String
     hero: String
     heroId: String
+    videoUrl: String
     commentsEnabled: Boolean
     publicEnabled: Boolean
   }
@@ -60,6 +69,7 @@ const typeDefs = gql`
     me: User
     users: [User]
     user(username: String!): User
+    event(slug: String!): Event
     slug(slug: String!): Event
   }
 

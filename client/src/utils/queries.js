@@ -8,6 +8,20 @@ export const QUERY_USER = gql`
       email
       bio
       avatar
+      eventsManaged {
+        _id
+        name
+        slug
+        hero
+        startDate
+        startTime
+        endDate
+        endTime
+        description
+        location
+        eventType
+        createdAt
+      }
     }
   }
 `;
@@ -28,6 +42,20 @@ export const QUERY_ME = gql`
       email
       bio
       avatar
+      eventsManaged {
+        _id
+        name
+        slug
+        hero
+        startDate
+        startTime
+        endDate
+        endTime
+        description
+        location
+        eventType
+        createdAt
+      }
     }
   }
 `;
@@ -38,6 +66,37 @@ export const QUERY_ME_BASIC = gql`
       _id
       username
       email
+    }
+  }
+`;
+
+export const QUERY_EVENT = gql`
+  query event($slug: String!) {
+    event(slug: $slug) {
+      _id
+      name
+      slug
+      location
+      eventType
+      description
+      hero
+      videoUrl
+      startDate
+      startTime
+      endDate
+      endTime
+      ownerId
+      ownerName
+      url
+      ticketsUrl
+      pricing
+      commentsEnabled
+      publicEnabled
+      createdAt
+      tags {
+        _id
+        name
+      }
     }
   }
 `;

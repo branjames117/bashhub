@@ -78,7 +78,7 @@ export default function EventType({
         error={slugTaken}
         helperText={slugTaken ? 'Slug already in use.' : ''}
         name='slug'
-        value={eventData.slug}
+        value={eventData.slug.trim()}
         onChange={handleChange}
         sx={{ width: '100%', my: 2 }}
       />

@@ -13,7 +13,9 @@ export default function EventDescription({ eventData, setEventData }) {
 
   return (
     <>
-      <Typography>What's this event all about? What can we expect?</Typography>
+      <Typography>
+        What's this event all about? What can we expect? (Limit 512 characters.)
+      </Typography>
       <TextareaAutosize
         aria-label='empty textarea'
         placeholder={`This is an exhibition of a new machine with the potential to change the future. We're starting at my place, then heading over to the Twin Pines Mall parking lot. Wear sunglasses, bring body armor.
@@ -21,7 +23,7 @@ export default function EventDescription({ eventData, setEventData }) {
         minRows={4}
         maxRows={4}
         style={{ resize: 'none', width: '100%', marginTop: '12px' }}
-        maxLength={256}
+        maxLength={512}
         value={eventData.description}
         onChange={(e) => {
           setEventData({ ...eventData, description: e.target.value });
@@ -38,7 +40,7 @@ export default function EventDescription({ eventData, setEventData }) {
         value={tag}
         error={tag.length > 16}
         onChange={(e) => {
-          setTag(e.target.value.trim());
+          setTag(e.target.value);
         }}
       />
       <Button

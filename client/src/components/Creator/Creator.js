@@ -33,6 +33,7 @@ const defaultEvent = {
   pricing: '',
   hero: '',
   heroId: '',
+  videoUrl: '',
   commentsEnabled: true,
   publicEnabled: true,
   name: '',

@@ -5,20 +5,29 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
   Query: {
     users: async () => {
-      return User.find()
+      const userData = await User.find()
         .select('-__v -password')
         .populate('comments')
         .populate('eventsManaged')
         .populate('eventsAttending')
         .populate('eventsInterested');
+
+      return userData;
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username })
+      const userData = await User.findOne({ username })
         .select('-__v -password')
         .populate('comments')
         .populate('eventsManaged')
         .populate('eventsAttending')
         .populate('eventsInterested');
+
+      return userData;
+    },
+    event: async (parent, { slug }) => {
+      const eventData = await Event.findOne({ slug }).populate('tags');
+
+      return eventData;
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -35,7 +44,6 @@ const resolvers = {
       throw new AuthenticationError('Not logged in');
     },
     slug: async (parent, { slug }) => {
-      console.log(slug);
       const event = Event.findOne({ slug }).select('slug');
 
       return event;
