@@ -42,7 +42,7 @@ export default function SideMenu({ setOpen }) {
       </Button>
       <Divider sx={{ my: 1 }} />
       <Button variant='text'>
-        <Link to={`/bash/create`} onClick={() => setOpen(false)}>
+        <Link to={`/bash/attending`} onClick={() => setOpen(false)}>
           <DirectionsCar sx={{ transform: 'translateY(7px)' }} />
           <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
             Events I'm Attending

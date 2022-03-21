@@ -24,11 +24,9 @@ export default function Event() {
     if (!loading) {
       const { event } = data;
       setEventData(event);
-      setSubevents(event.subevents);
+      setSubevents(event?.subevents);
     }
   }, [data, loading]);
-
-  console.log(eventData);
 
   return loading || !eventData ? (
     <Loading />
@@ -41,15 +39,9 @@ export default function Event() {
         eventParent={eventData.eventParent}
       />
       <Grid container spacing={3}>
-        {/* Top menu */}
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            Hey
-          </Paper>
-        </Grid>
-
         {/* Details */}
         <Details
+          _id={eventData._id}
           startDate={eventData.startDate}
           startTime={eventData.startTime}
           endDate={eventData.endDate}

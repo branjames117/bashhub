@@ -57,6 +57,10 @@ function App() {
                 element={<Dashboard variant='manager' />}
               />
               <Route
+                path='/bash/attending'
+                element={<Dashboard variant='attending' />}
+              />
+              <Route
                 path='/bash/e/:slug'
                 element={<Dashboard variant='event' />}
               />

@@ -9,8 +9,7 @@ const resolvers = {
         .select('-__v -password')
         .populate('comments')
         .populate('eventsManaged')
-        .populate('eventsAttending')
-        .populate('eventsInterested');
+        .populate('eventsAttending');
 
       return userData;
     },
@@ -19,8 +18,7 @@ const resolvers = {
         .select('-__v -password')
         .populate('comments')
         .populate('eventsManaged')
-        .populate('eventsAttending')
-        .populate('eventsInterested');
+        .populate('eventsAttending');
 
       // filter out events with parents
       userData.eventsManaged = userData.eventsManaged.filter(
@@ -35,7 +33,8 @@ const resolvers = {
       })
         .populate('tags')
         .populate('eventParent')
-        .populate('subevents');
+        .populate('subevents')
+        .populate('attendees');
 
       console.log(eventData);
 
@@ -47,8 +46,7 @@ const resolvers = {
           .select('-__v -password')
           .populate('comments')
           .populate('eventsManaged')
-          .populate('eventsAttending')
-          .populate('eventsInterested');
+          .populate('eventsAttending');
 
         // filter out any events that have parents (are subevents)
         userData.eventsManaged = userData.eventsManaged.filter(
@@ -147,6 +145,32 @@ const resolvers = {
       } catch (err) {
         console.log(err);
         throw new Error('Event not created');
+      }
+    },
+    addAttendee: async (parent, { event_id }, context) => {
+      try {
+        // first update the user
+        const user = await User.findByIdAndUpdate(context.user._id, {
+          $push: { eventsAttending: event_id },
+        });
+
+        // then update the event
+        const event = await Event.findByIdAndUpdate(event_id, {
+          $push: { attendees: context.user._id },
+        });
+
+        const returnedEvent = await Event.findById(event_id).populate(
+          'attendees'
+        );
+
+        const returnedUser = await User.findById(context.user._id).populate(
+          'eventsAttending'
+        );
+
+        return { event: returnedEvent, user: returnedUser };
+      } catch (err) {
+        console.log(err);
+        throw new Error('User and event not updated');
       }
     },
   },

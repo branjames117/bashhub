@@ -4,7 +4,10 @@ import { Grid, Button, Paper, Typography, Chip } from '@mui/material';
 import Auth from '../../utils/auth';
 import { DateFormatter } from '../../utils/dateFormat';
 
+import AttendButton from './AttendButton';
+
 export default function Details({
+  _id,
   startDate,
   startTime,
   endDate,
@@ -19,7 +22,7 @@ export default function Details({
   eventParent,
 }) {
   return (
-    <Grid item sm={12} md={4} lg={4}>
+    <Grid item xs={12} sm={12} md={4} lg={4}>
       <Paper
         sx={{
           p: 2,
@@ -54,15 +57,24 @@ export default function Details({
                 variant='outlined'
                 label={tag.name}
                 key={tag.name}
-                sx={{ mx: 1 }}
+                sx={{ m: 1 }}
                 onClick={() => {}}
               />
             ))}
         </div>
-        <Typography>
-          Bash page managed by{' '}
-          <Link to={`/bash/u/${ownerName}`}>{ownerName}</Link>
-        </Typography>
+        {eventParent && (
+          <Link to={`/bash/e/${eventParent.slug}`}>
+            <Button variant='contained' sx={{ width: '100%', my: 1 }}>
+              {eventParent.name}
+            </Button>
+          </Link>
+        )}
+        {!eventParent && <AttendButton event_id={_id} />}
+        <Link to={`/bash/u/${ownerName}`}>
+          <Button variant='contained' sx={{ width: '100%', my: 1 }}>
+            Visit Manager's Profile
+          </Button>
+        </Link>
         {Auth.getProfile().data.username === ownerName && !eventParent && (
           <Link to={`/bash/create/${slug}`}>
             <Button variant='contained' sx={{ width: '100%', my: 1 }}>

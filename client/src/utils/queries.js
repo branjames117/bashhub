@@ -22,6 +22,20 @@ export const QUERY_USER = gql`
         eventType
         createdAt
       }
+      eventsAttending {
+        _id
+        name
+        slug
+        hero
+        startDate
+        startTime
+        endDate
+        endTime
+        description
+        location
+        eventType
+        createdAt
+      }
     }
   }
 `;
@@ -43,6 +57,20 @@ export const QUERY_ME = gql`
       bio
       avatar
       eventsManaged {
+        _id
+        name
+        slug
+        hero
+        startDate
+        startTime
+        endDate
+        endTime
+        description
+        location
+        eventType
+        createdAt
+      }
+      eventsAttending {
         _id
         name
         slug
@@ -93,6 +121,11 @@ export const QUERY_EVENT = gql`
       commentsEnabled
       publicEnabled
       createdAt
+      attendees {
+        _id
+        username
+        email
+      }
       subevents {
         _id
         name

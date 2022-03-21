@@ -29,6 +29,7 @@ import SubEvent from '../components/SubEvent';
 import Creator from '../components/Creator/Creator';
 import SubeventCreator from '../components/Creator/SubeventCreator';
 import ManagedEvents from '../components/User/ManagedEvents';
+import AttendingEvents from '../components/User/AttendingEvents';
 
 export default function Dashboard({ variant }) {
   // if user is not logged in, kick them back to login page
@@ -119,6 +120,7 @@ export default function Dashboard({ variant }) {
             <UserProfile myUsername={Auth.getProfile().data.username} />
           )}
           {variant === 'manager' && <ManagedEvents />}
+          {variant === 'attending' && <AttendingEvents />}
           {variant === 'event' && <Event />}
           {variant === 'subevent' && <SubEvent />}
           {variant === 'creator' && <Creator />}

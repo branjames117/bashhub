@@ -47,6 +47,12 @@ const eventSchema = new Schema(
       type: String,
       required: true,
     },
+    attendees: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     url: {
       type: String,
       maxlength: 128,

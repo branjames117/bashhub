@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Box, Typography, Grid } from '@mui/material';
-import { DateFormatter } from '../../utils/dateFormat';
 
 import Loading from '../Loading';
 import Subevent from './Subevent';
@@ -57,8 +55,6 @@ export default function Subevents({ subevents, setSubevents }) {
   useEffect(() => {
     setSubevents(sortSubevents(subevents));
   }, [setSubevents]);
-
-  console.log(subevents);
 
   if (!subevents) {
     setSubevents([]);

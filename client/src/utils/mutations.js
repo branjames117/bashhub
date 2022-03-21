@@ -70,3 +70,29 @@ export const ADD_EVENT = gql`
     }
   }
 `;
+
+export const ADD_ATTENDEE = gql`
+  mutation addAttendee($event_id: ID!) {
+    addAttendee(event_id: $event_id) {
+      user {
+        _id
+        email
+        username
+        eventsAttending {
+          _id
+          name
+          slug
+        }
+      }
+      event {
+        _id
+        slug
+        attendees {
+          _id
+          email
+          username
+        }
+      }
+    }
+  }
+`;

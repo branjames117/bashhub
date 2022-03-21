@@ -10,6 +10,7 @@ const typeDefs = gql`
     bio: String
     avatar: String
     eventsManaged: [Event]
+    eventsAttending: [Event]
   }
 
   type Tag {
@@ -30,6 +31,7 @@ const typeDefs = gql`
     endTime: String
     ownerId: ID
     ownerName: String
+    attendees: [User]
     url: String
     ticketsUrl: String
     pricing: String
@@ -83,11 +85,17 @@ const typeDefs = gql`
     user: User
   }
 
+  type AttendanceUpdate {
+    event: Event
+    user: User
+  }
+
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(email: String!, username: String, password: String!): Auth
     editBio(bio: String): User
     addEvent(eventInput: EventInput): Event
+    addAttendee(event_id: ID!): AttendanceUpdate
   }
 `;
 

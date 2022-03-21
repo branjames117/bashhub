@@ -41,12 +41,6 @@ const userSchema = new Schema(
         ref: 'Event',
       },
     ],
-    eventsInterested: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Event',
-      },
-    ],
     eventsAttending: [
       {
         type: Schema.Types.ObjectId,
