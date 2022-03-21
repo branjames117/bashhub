@@ -4,10 +4,11 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../../utils/queries';
 
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography, Box, CircularProgress } from '@mui/material';
 import UserBio from './UserBio';
 import UserProfilePicture from './UserProfilePicture';
 import Banner from './Banner';
+import Loading from '../Loading';
 
 export default function UserProfile({ myUsername }) {
   const { username } = useParams();
@@ -23,16 +24,11 @@ export default function UserProfile({ myUsername }) {
     if (username === myUsername) {
       setOwned(true);
     }
-    if (!loading && !userData.user) {
-      window.location.assign('/bash');
-    }
   }, [myUsername, username, loading, userData]);
 
-  if (loading || !userData.user) {
-    return <></>;
-  }
-
-  return (
+  return loading || !userData.user ? (
+    <Loading />
+  ) : (
     <Grid container spacing={3}>
       {/* Profile Picture */}
       <Grid item xs={12} sm={5} md={4} lg={3}>
@@ -52,7 +48,7 @@ export default function UserProfile({ myUsername }) {
         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
           <Typography variant='h5'>Events I'm Managing</Typography>
           {userData &&
-            userData.user.eventsManaged.map((event) => (
+            userData?.user?.eventsManaged.map((event) => (
               <Banner
                 key={event._id}
                 _id={event._id}

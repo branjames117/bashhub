@@ -93,6 +93,45 @@ export const QUERY_EVENT = gql`
       commentsEnabled
       publicEnabled
       createdAt
+      eventParent {
+        _id
+        name
+      }
+      tags {
+        _id
+        name
+      }
+    }
+  }
+`;
+
+export const QUERY_SUBEVENTS = gql`
+  query subevents($_id: ID!) {
+    subevents(_id: $_id) {
+      _id
+      name
+      slug
+      location
+      eventType
+      description
+      hero
+      videoUrl
+      startDate
+      startTime
+      endDate
+      endTime
+      ownerId
+      ownerName
+      url
+      ticketsUrl
+      pricing
+      commentsEnabled
+      publicEnabled
+      createdAt
+      eventParent {
+        _id
+        name
+      }
       tags {
         _id
         name

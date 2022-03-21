@@ -27,6 +27,7 @@ import UserProfile from '../components/User/UserProfile';
 import Event from '../components/Event/Event';
 import SubEvent from '../components/SubEvent';
 import Creator from '../components/Creator/Creator';
+import SubeventCreator from '../components/Creator/SubeventCreator';
 import ManagedEvents from '../components/User/ManagedEvents';
 
 export default function Dashboard({ variant }) {
@@ -121,6 +122,7 @@ export default function Dashboard({ variant }) {
           {variant === 'event' && <Event />}
           {variant === 'subevent' && <SubEvent />}
           {variant === 'creator' && <Creator />}
+          {variant === 'subeventCreator' && <SubeventCreator />}
         </Container>
       </Box>
     </Box>

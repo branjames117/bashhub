@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Grid, Paper, Typography, Chip } from '@mui/material';
+import { Grid, Button, Paper, Typography, Chip } from '@mui/material';
+
+import Auth from '../../utils/auth';
 
 export default function Details({
   startDate,
@@ -12,6 +14,8 @@ export default function Details({
   pricing,
   tags,
   ownerName,
+  slug,
+  eventParent,
 }) {
   return (
     <Grid item sm={12} md={4} lg={4}>
@@ -57,6 +61,13 @@ export default function Details({
           Bash page managed by{' '}
           <Link to={`/bash/u/${ownerName}`}>{ownerName}</Link>
         </Typography>
+        {Auth.getProfile().data.username === ownerName && !eventParent && (
+          <Link to={`/bash/create/${slug}`}>
+            <Button variant='contained' sx={{ width: '100%', my: 1 }}>
+              Add Subevent
+            </Button>
+          </Link>
+        )}
       </Paper>
     </Grid>
   );

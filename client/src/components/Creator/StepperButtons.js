@@ -16,6 +16,7 @@ export default function StepperButtons({
   const handleNext = async () => {
     if (activeStep === 4) {
       try {
+        console.log(eventData);
         await addEvent({
           variables: {
             eventInput: {

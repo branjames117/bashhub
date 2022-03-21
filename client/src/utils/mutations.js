@@ -51,13 +51,20 @@ export const ADD_EVENT = gql`
       url
       ticketsUrl
       pricing
-      tags
+      tags {
+        _id
+        name
+      }
       description
       hero
       heroId
       videoUrl
       commentsEnabled
       publicEnabled
+      eventParent {
+        _id
+        name
+      }
     }
   }
 `;

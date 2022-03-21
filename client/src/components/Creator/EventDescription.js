@@ -8,18 +8,29 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-export default function EventDescription({ eventData, setEventData }) {
+export default function EventDescription({
+  eventData,
+  setEventData,
+  isSubevent,
+}) {
   const [tag, setTag] = useState('');
 
   return (
     <>
       <Typography>
-        What's this event all about? What can we expect? (Limit 512 characters.)
+        What's this {isSubevent ? 'sub' : ''}event all about? What can we
+        expect? (Limit 512 characters.)
       </Typography>
       <TextareaAutosize
         aria-label='empty textarea'
-        placeholder={`This is an exhibition of a new machine with the potential to change the future. We're starting at my place, then heading over to the Twin Pines Mall parking lot. Wear sunglasses, bring body armor.
-`}
+        placeholder={
+          isSubevent
+            ? `For the first movie in our trilogy marathon, we will be watching Back to the Future, with popcorn, frittatas, and Diet Sunkist.
+            
+The bathroom isn't working, so don't drink too much before you get here.`
+            : `This is an exhibition of a new machine with the potential to change the future. We're starting at my place, then heading over to the Twin Pines Mall parking lot. Wear sunglasses, bring body armor.
+`
+        }
         minRows={4}
         maxRows={4}
         style={{ resize: 'none', width: '100%', marginTop: '12px' }}
@@ -34,6 +45,14 @@ export default function EventDescription({ eventData, setEventData }) {
         adding a tag, you can click it to remove it. (Limit 5 tags, 16
         characters each.)
       </Typography>
+      {isSubevent && (
+        <Typography sx={{ mt: 2 }}>
+          Be even more specific than you were with the tags of the event itself.
+          Is this a musical performance of some specific genres? a movie with a
+          hard-R rating? a little basement get-together with adult beverages
+          where the kids aren't allowed?
+        </Typography>
+      )}
       <Input
         sx={{ mt: 2 }}
         placeholder='Create Tag'

@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_EVENT } from '../../utils/queries';
 
-import { Grid, Box, Paper, Typography, Chip } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 
 import Hero from './Hero';
 import Details from './Details';
 import Description from './Description';
+import Loading from '../Loading';
+import Subevent from './Subevents';
 
 export default function Event() {
   const { slug } = useParams();
@@ -22,10 +24,10 @@ export default function Event() {
       const { event } = data;
       setEventData(event);
     }
-  }, [data, loading]);
+  }, [loading]);
 
-  return !eventData ? (
-    <>Loading...</>
+  return loading || !eventData ? (
+    <Loading />
   ) : (
     <>
       <Hero
@@ -46,6 +48,8 @@ export default function Event() {
           pricing={eventData.pricing}
           tags={eventData.tags}
           ownerName={eventData.ownerName}
+          slug={eventData.slug}
+          eventParent={eventData.eventParent}
         />
 
         {/* Description */}
@@ -53,6 +57,13 @@ export default function Event() {
           description={eventData.description}
           videoUrl={eventData.videoUrl}
         />
+
+        {/* Subevents */}
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            {eventData?._id && <Subevent _id={eventData._id} />}
+          </Paper>
+        </Grid>
 
         {/* Attendees */}
         <Grid item xs={12}>

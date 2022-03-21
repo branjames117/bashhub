@@ -92,7 +92,6 @@ const eventSchema = new Schema(
     // null unless subevent
     eventParent: {
       type: Schema.Types.ObjectId,
-      default: null,
       ref: 'Event',
     },
     videoUrl: {

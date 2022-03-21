@@ -65,8 +65,8 @@ function App() {
                 element={<Dashboard variant='creator' />}
               />
               <Route
-                path='/bash/e/:eventName/:subeventName'
-                element={<Dashboard variant='subevent' />}
+                path='/bash/create/:slug'
+                element={<Dashboard variant='subeventCreator' />}
               />
               <Route
                 path='*'

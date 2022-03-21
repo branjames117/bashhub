@@ -40,6 +40,7 @@ const typeDefs = gql`
     videoUrl: String
     commentsEnabled: Boolean
     publicEnabled: Boolean
+    eventParent: Event
   }
 
   input EventInput {
@@ -63,6 +64,7 @@ const typeDefs = gql`
     videoUrl: String
     commentsEnabled: Boolean
     publicEnabled: Boolean
+    eventParent: ID
   }
 
   type Query {
@@ -71,6 +73,7 @@ const typeDefs = gql`
     user(username: String!): User
     event(slug: String!): Event
     slug(slug: String!): Event
+    subevents(_id: ID!): [Event]
   }
 
   type Auth {

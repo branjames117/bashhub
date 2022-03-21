@@ -1,24 +1,28 @@
 import { FormLabel, TextareaAutosize } from '@mui/material';
 
-export default function EventLocation({ eventData, setEventData }) {
+export default function EventLocation({ eventData, setEventData, isSubevent }) {
   return (
     <>
       <FormLabel id='locationDetails'>
-        Provide location details.{' '}
-        <em>
-          Do not share your home address. If this is an event for your friends,
-          just say 'My place.' They know the way.
-        </em>
+        Provide location details
+        {isSubevent
+          ? ', more specific than the address of the actual event, which was already provided when the Event was created. Does this subevent take place in a specific room, on a specific stage, atop a specific volcano?'
+          : `. Do not share your home address. If this is an event for your friends,
+          just say 'My place.' They know the way.`}
       </FormLabel>
       <TextareaAutosize
         aria-labelledby='locationDetails'
         aria-label='empty textarea'
-        placeholder={`1640 Riverside Drive
+        placeholder={
+          isSubevent
+            ? 'The DeLorean Stage'
+            : `1640 Riverside Drive
 Hill Valley, CA
 USA
-There's a DeLorean parked out front. Don't use the doorbell.`}
-        minRows={4}
-        maxRows={4}
+There's a DeLorean parked out front. Don't use the doorbell.`
+        }
+        minRows={isSubevent ? 2 : 4}
+        maxRows={isSubevent ? 2 : 4}
         style={{
           resize: 'none',
           width: '100%',

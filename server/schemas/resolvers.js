@@ -22,12 +22,26 @@ const resolvers = {
         .populate('eventsAttending')
         .populate('eventsInterested');
 
+      // filter out events with parents
+      userData.eventsManaged = userData.eventsManaged.filter(
+        (event) => !event.eventParent
+      );
+
       return userData;
     },
     event: async (parent, { slug }) => {
-      const eventData = await Event.findOne({ slug }).populate('tags');
+      const eventData = await Event.findOne({
+        slug,
+      })
+        .populate('tags')
+        .populate('eventParent');
 
       return eventData;
+    },
+    subevents: async (parent, { _id }) => {
+      const subeventsData = await Event.find({ eventParent: _id });
+      console.log(subeventsData);
+      return subeventsData;
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -37,6 +51,11 @@ const resolvers = {
           .populate('eventsManaged')
           .populate('eventsAttending')
           .populate('eventsInterested');
+
+        // filter out any events that have parents (are subevents)
+        userData.eventsManaged = userData.eventsManaged.filter(
+          (event) => !event.eventParent
+        );
 
         return userData;
       }
@@ -110,6 +129,7 @@ const resolvers = {
         await User.findByIdAndUpdate(context.user._id, {
           $push: { eventsManaged: event._id },
         });
+
         return event;
       } catch (err) {
         console.log(err);

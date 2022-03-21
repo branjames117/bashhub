@@ -19,6 +19,7 @@ export default function EventTime({
   setEventData,
   slugTaken,
   setActiveStep,
+  isSubevent,
 }) {
   const [startTimeEnabled, setStartTimeEnabled] = useState(false);
   const [endDateEnabled, setEndDateEnabled] = useState(false);
@@ -34,7 +35,9 @@ export default function EventTime({
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <Stack spacing={3}>
-        <FormLabel id='startDate'>Choose the date of your event. *</FormLabel>
+        <FormLabel id='startDate'>
+          Choose the date of your {isSubevent ? 'sub' : ''}event. *
+        </FormLabel>
         <MobileDatePicker
           label='Start Date'
           aria-labelledby='startDate'

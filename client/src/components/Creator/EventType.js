@@ -28,6 +28,7 @@ export default function EventType({
   setEventData,
   slugTaken,
   setSlugTaken,
+  isSubevent,
 }) {
   const slugRef = useRef();
 
@@ -55,15 +56,13 @@ export default function EventType({
       {' '}
       <TextField
         variant='outlined'
-        label='Event Name *'
+        label={isSubevent ? 'Subevent Name *' : 'Event Name *'}
         autoComplete='off'
         error={eventData.name.length > 64}
         helperText={
-          eventData.name.length > 64
-            ? 'Event name must be < 64 characters.'
-            : ''
+          eventData.name.length > 64 ? 'Name must be < 64 characters.' : ''
         }
-        placeholder='DeLorean Summer Daze'
+        placeholder={isSubevent ? 'The Foo Fighters' : 'DeLorean Summer Daze'}
         name='name'
         value={eventData.name}
         onChange={handleChange}
@@ -83,36 +82,38 @@ export default function EventType({
         sx={{ width: '100%', my: 2 }}
       />
       {slugTaken && <div>Slug taken</div>}
-      <FormControl>
-        <FormLabel id='eventType'>
-          Choose the event type that best describes your event. This makes it
-          easier for other users to find your event. Choose 'Other' if you've
-          got something else in mind. You'll be able to add <em>sub-events</em>{' '}
-          later. *
-        </FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby='eventType'
-          defaultValue='other'
-          name='eventType'
-        >
-          {eventTypes.map((type) => {
-            return (
-              <FormControlLabel
-                key={type}
-                value={type}
-                control={
-                  <Radio
-                    checked={eventData.eventType === type}
-                    onChange={handleChange}
-                  />
-                }
-                label={type}
-              />
-            );
-          })}
-        </RadioGroup>
-      </FormControl>
+      {!isSubevent && (
+        <FormControl>
+          <FormLabel id='eventType'>
+            Choose the event type that best describes your event. This makes it
+            easier for other users to find your event. Choose 'Other' if you've
+            got something else in mind. You'll be able to add{' '}
+            <em>sub-events</em> later. *
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby='eventType'
+            defaultValue='other'
+            name='eventType'
+          >
+            {eventTypes.map((type) => {
+              return (
+                <FormControlLabel
+                  key={type}
+                  value={type}
+                  control={
+                    <Radio
+                      checked={eventData.eventType === type}
+                      onChange={handleChange}
+                    />
+                  }
+                  label={type}
+                />
+              );
+            })}
+          </RadioGroup>
+        </FormControl>
+      )}
     </>
   );
 }

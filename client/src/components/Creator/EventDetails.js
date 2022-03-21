@@ -1,7 +1,7 @@
 import { TextField, FormGroup, FormControlLabel, Switch } from '@mui/material';
 import EventHeroPicture from './EventHeroPicture';
 
-export default function EventDetails({ eventData, setEventData }) {
+export default function EventDetails({ eventData, setEventData, isSubevent }) {
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
     setEventData({
@@ -18,7 +18,7 @@ export default function EventDetails({ eventData, setEventData }) {
       <TextField
         variant='outlined'
         autoComplete='off'
-        label='Official URL'
+        label={isSubevent ? 'Relevant URL' : 'Official URL'}
         placeholder='https://archive.org/details/back-to-the-future_20210824'
         name='url'
         error={eventData.url.length > 128}
@@ -29,38 +29,42 @@ export default function EventDetails({ eventData, setEventData }) {
         onChange={handleChange}
         sx={{ width: '100%', my: 2 }}
       />
-      <TextField
-        variant='outlined'
-        autoComplete='off'
-        label='Purchase Tickets URL'
-        placeholder='https://www.backtothefuturemusical.com/tickets/'
-        name='ticketsUrl'
-        error={eventData.ticketsUrl.length > 128}
-        helperText={
-          eventData.ticketsUrl.length > 128
-            ? 'URL must be < 128 characters.'
-            : ''
-        }
-        value={eventData.ticketsUrl}
-        onChange={handleChange}
-        sx={{ width: '100%', my: 2 }}
-      />
-      <TextField
-        variant='outlined'
-        autoComplete='off'
-        label='Ticket Price Range'
-        placeholder='$9.99 - $99.99'
-        name='pricing'
-        error={eventData.pricing.length > 64}
-        helperText={
-          eventData.pricing.length > 64
-            ? 'Pricing must be < 64 characters.'
-            : ''
-        }
-        value={eventData.pricing}
-        onChange={handleChange}
-        sx={{ width: '100%', my: 2 }}
-      />
+      {!isSubevent && (
+        <>
+          <TextField
+            variant='outlined'
+            autoComplete='off'
+            label='Purchase Tickets URL'
+            placeholder='https://www.backtothefuturemusical.com/tickets/'
+            name='ticketsUrl'
+            error={eventData.ticketsUrl.length > 128}
+            helperText={
+              eventData.ticketsUrl.length > 128
+                ? 'URL must be < 128 characters.'
+                : ''
+            }
+            value={eventData.ticketsUrl}
+            onChange={handleChange}
+            sx={{ width: '100%', my: 2 }}
+          />
+          <TextField
+            variant='outlined'
+            autoComplete='off'
+            label='Ticket Price Range'
+            placeholder='$9.99 - $99.99'
+            name='pricing'
+            error={eventData.pricing.length > 64}
+            helperText={
+              eventData.pricing.length > 64
+                ? 'Pricing must be < 64 characters.'
+                : ''
+            }
+            value={eventData.pricing}
+            onChange={handleChange}
+            sx={{ width: '100%', my: 2 }}
+          />
+        </>
+      )}
       <TextField
         variant='outlined'
         autoComplete='off'
@@ -87,17 +91,19 @@ export default function EventDetails({ eventData, setEventData }) {
           sx={{ my: 1 }}
           label='Allow users to leave comments?'
         />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={eventData.publicEnabled}
-              name='publicEnabled'
-              onChange={handleChange}
-            />
-          }
-          sx={{ my: 1 }}
-          label='Allow this event to appear in searches?'
-        />
+        {!isSubevent && (
+          <FormControlLabel
+            control={
+              <Switch
+                checked={eventData.publicEnabled}
+                name='publicEnabled'
+                onChange={handleChange}
+              />
+            }
+            sx={{ my: 1 }}
+            label='Allow this event to appear in searches?'
+          />
+        )}
       </FormGroup>
       <EventHeroPicture eventData={eventData} setEventData={setEventData} />
     </>
