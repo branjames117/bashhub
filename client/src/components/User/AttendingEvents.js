@@ -21,6 +21,7 @@ export default function AttendingEvents() {
         p: 2,
         display: 'flex',
         flexDirection: 'column',
+        mb: 25,
       }}
     >
       <Typography variant='h5'>Events I'm Attending</Typography>

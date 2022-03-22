@@ -37,8 +37,6 @@ const resolvers = {
         .populate('subevents')
         .populate('attendees');
 
-      console.log(eventData);
-
       return eventData;
     },
     me: async (parent, args, context) => {
@@ -53,8 +51,6 @@ const resolvers = {
         userData.eventsManaged = userData.eventsManaged.filter(
           (event) => !event.eventParent
         );
-
-        console.log(userData);
 
         return userData;
       }

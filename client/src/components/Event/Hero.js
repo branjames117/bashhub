@@ -49,7 +49,11 @@ export default function Hero({ hero, name, eventType, eventParent }) {
           margin: '0',
           borderRadius: `${eventParent ? '0 0 10px 10px' : '10px'}`,
           backgroundImage: `${
-            hero ? `url(${hero})` : `url(../../images/Subevent.jpg)`
+            !eventParent
+              ? hero
+                ? `url(${hero})`
+                : `url(../../images/${eventType}.jpg)`
+              : `url(../../images/Subevent.jpg)`
           }`,
           backgroundColor: 'black',
           color: 'white',
@@ -57,7 +61,7 @@ export default function Hero({ hero, name, eventType, eventParent }) {
       >
         <Box
           sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
             color: 'white',
             borderRadius: `${eventParent ? '0 0 10px 10px' : '10px'}`,
             minHeight: 150,

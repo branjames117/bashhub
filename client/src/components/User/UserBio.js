@@ -31,7 +31,9 @@ export default function UserBio({ username, owned, currBio }) {
         flexDirection: 'column',
       }}
     >
-      <Typography variant='h5'>Hi, I'm {username}</Typography>
+      <Typography variant='h5' sx={{ mb: 2 }}>
+        Hi, I'm {username}
+      </Typography>
 
       {changeBio ? (
         <TextareaAutosize
@@ -44,7 +46,6 @@ export default function UserBio({ username, owned, currBio }) {
         />
       ) : (
         <div
-          onClick={() => setChangeBio(!changeBio)}
           style={{
             overflowX: 'hidden',
             whiteSpace: 'pre-line',

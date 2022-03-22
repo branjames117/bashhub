@@ -22,13 +22,17 @@ export default function Banner({
           minHeight: 150,
           margin: '20px 0',
           borderRadius: '10px',
-          backgroundImage: `url(${hero})`,
+          backgroundImage: `${
+            hero ? `url(${hero})` : `url(../../images/${eventType}.jpg)`
+          }`,
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
           color: 'white',
         }}
       >
         <Box
           sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
             color: 'white',
             borderRadius: '10px',
             minHeight: 150,

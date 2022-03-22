@@ -4,13 +4,10 @@ import { yellow, purple } from '@mui/material/colors';
 const theme = createTheme({
   palette: {
     primary: {
-      main: purple[500],
+      main: purple[800],
     },
     secondary: {
       main: yellow[500],
-    },
-    background: {
-      default: '#fff',
     },
   },
 });

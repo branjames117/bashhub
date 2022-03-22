@@ -21,6 +21,7 @@ export default function ManagedEvents() {
         p: 2,
         display: 'flex',
         flexDirection: 'column',
+        mb: 25,
       }}
     >
       <Typography variant='h5'>Events I'm Managing</Typography>

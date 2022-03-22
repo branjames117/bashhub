@@ -13,6 +13,8 @@ import Description from './Description';
 import Loading from '../Loading';
 import Subevents from './Subevents';
 import Attendees from './Attendees';
+import CommentInput from '../Comments/CommentInput';
+import Comment from '../Comments/Comment';
 
 export default function Event() {
   const { slug } = useParams();
@@ -88,9 +90,10 @@ export default function Event() {
         )}
 
         {/* My Comments */}
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ mb: 25 }}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            Comments
+            <CommentInput />
+            <Comment />
           </Paper>
         </Grid>
       </Grid>
