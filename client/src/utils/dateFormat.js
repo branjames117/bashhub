@@ -137,5 +137,37 @@ class DateFormatter {
 
     return formattedTimeStamp;
   }
+
+  sortSubevents(input) {
+    // get ready for the least efficient sorting algorithm you've ever seen
+
+    // find out how many unique dates there are among subevents and create a set containing each unique date
+    const [...subevents] = input;
+    const dates = new Set();
+
+    // find out how many unique dates there are among the subevents
+    subevents.forEach((e) =>
+      dates.add(new Date(e.startDate - 0).toString().slice(0, 15))
+    );
+
+    const datesArr = [...dates];
+
+    const dailyPlan = [];
+
+    datesArr.forEach((date) => {
+      dailyPlan.push({ date, subevents: [] });
+    });
+
+    subevents.forEach((subevent) => {
+      const date = new Date(subevent.startDate - 0).toString().slice(0, 15);
+      const index = dailyPlan.findIndex((dateObj) => {
+        return dateObj.date === date;
+      });
+
+      dailyPlan[index].subevents.push(subevent);
+    });
+
+    return dailyPlan;
+  }
 }
 module.exports = { DateFormatter: new DateFormatter() };

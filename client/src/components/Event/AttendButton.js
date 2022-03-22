@@ -4,7 +4,6 @@ import { Button } from '@mui/material';
 
 import { ADD_ATTENDEE } from '../../utils/mutations';
 import { REMOVE_ATTENDEE } from '../../utils/mutations';
-import { QUERY_EVENT } from '../../utils/queries';
 
 import Auth from '../../utils/auth';
 
@@ -24,22 +23,20 @@ export default function AttendButton({
   useEffect(() => {
     // check if user is already attending event
     const index = attendees?.findIndex((user) => user._id === userId);
-    console.log(index);
-    console.log(attendees);
+
     setAttending(index !== -1 ? true : false);
   }, [attendees, setAttendees, userId]);
 
   const handleClick = async () => {
     try {
       if (!attending) {
-        console.log('attempting add');
+        setAttending(true);
         await addAttendee({
           variables: {
             event_id: event_id,
           },
         });
       } else {
-        console.log('attempting remove');
         setAttending(false);
         const [...updateAttendees] = attendees;
         const filteredAttendees = updateAttendees.filter(

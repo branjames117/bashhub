@@ -5,6 +5,8 @@ import { QUERY_EVENT } from '../../utils/queries';
 
 import { Grid, Paper } from '@mui/material';
 
+import { DateFormatter } from '../../utils/dateFormat';
+
 import Hero from './Hero';
 import Details from './Details';
 import Description from './Description';
@@ -26,8 +28,8 @@ export default function Event() {
     if (!loading) {
       const { event } = data;
       setEventData(event);
-      setSubevents(event?.subevents);
-      setAttendees(event?.attendees);
+      setSubevents(DateFormatter.sortSubevents(event.subevents));
+      setAttendees(event.attendees);
     }
   }, [data, loading]);
 
