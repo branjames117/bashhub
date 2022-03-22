@@ -13,7 +13,9 @@ export default function Hero({ hero, name, eventType, eventParent }) {
               margin: '0',
               borderRadius: '10px 10px 0 0',
               backgroundImage: `${
-                eventParent.hero ? `url(${eventParent.hero})` : ''
+                eventParent.hero
+                  ? `url(${eventParent.hero})`
+                  : `url(../../images/${eventParent.eventType}.jpg)`
               }`,
               backgroundColor: 'black',
               color: 'white',
@@ -46,7 +48,9 @@ export default function Hero({ hero, name, eventType, eventParent }) {
           minHeight: 150,
           margin: '0',
           borderRadius: `${eventParent ? '0 0 10px 10px' : '10px'}`,
-          backgroundImage: `${hero ? `url(${hero})` : ''}`,
+          backgroundImage: `${
+            hero ? `url(${hero})` : `url(../../images/Subevent.jpg)`
+          }`,
           backgroundColor: 'black',
           color: 'white',
         }}

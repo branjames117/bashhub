@@ -111,7 +111,7 @@ export default function Login() {
         md={7}
         lg={8}
         sx={{
-          backgroundImage: 'url(./images/festival.jpg)',
+          backgroundImage: 'url(./images/Login.jpg)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
