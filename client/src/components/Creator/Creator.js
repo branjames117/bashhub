@@ -78,7 +78,7 @@ export default function Creator({ variant, _id }) {
         flexDirection: 'column',
       }}
     >
-      <Typography variant='h4'>
+      <Typography variant='h5' sx={{ mb: 3 }}>
         Create New {isSubevent ? 'Subevent' : 'Event'}
       </Typography>
       <Typography variant='inherit'>

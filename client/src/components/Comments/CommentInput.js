@@ -33,7 +33,7 @@ export default function CommentInput() {
         value={comment}
         onChange={handleChange}
       />
-      <Button variant='text' onClick={handleSubmit}>
+      <Button variant='contained' sx={{ mt: 1 }} onClick={handleSubmit}>
         {buttonText}
       </Button>
     </>

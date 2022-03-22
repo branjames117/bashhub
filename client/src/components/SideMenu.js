@@ -10,45 +10,33 @@ import Auth from '../utils/auth';
 
 export default function SideMenu({ setOpen }) {
   return (
-    <List component='nav'>
-      <Button variant='text'>
-        <Link
-          to={`/bash/u/${Auth.getProfile().data.username}`}
-          onClick={() => setOpen(false)}
-        >
-          <AccountCircle sx={{ transform: 'translateY(7px)' }} />
-          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
-            View/Edit My Profile
-          </Typography>
-        </Link>
-      </Button>
-      <Divider sx={{ my: 1 }} />
-      <Button variant='text'>
-        <Link to={`/bash/create`} onClick={() => setOpen(false)}>
-          <AddCircle sx={{ transform: 'translateY(7px)' }} />
-          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
-            Create New Event
-          </Typography>
-        </Link>
-      </Button>
-      <Divider sx={{ my: 1 }} />
-      <Button variant='text'>
-        <Link to={`/bash/manage-events`} onClick={() => setOpen(false)}>
-          <Assignment sx={{ transform: 'translateY(7px)' }} />
-          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
-            Events I'm Managing
-          </Typography>
-        </Link>
-      </Button>
-      <Divider sx={{ my: 1 }} />
-      <Button variant='text'>
-        <Link to={`/bash/attending`} onClick={() => setOpen(false)}>
-          <DirectionsCar sx={{ transform: 'translateY(7px)' }} />
-          <Typography variant='inherit' display='inline' sx={{ pl: 1 }}>
-            Events I'm Attending
-          </Typography>
-        </Link>
-      </Button>
+    <List component='nav' sx={{ pl: 1 }}>
+      <Link
+        to={`/bash/u/${Auth.getProfile().data.username}`}
+        onClick={() => setOpen(false)}
+      >
+        <Button sx={{ my: 2 }}>
+          <AccountCircle sx={{ mr: 1 }} /> View/Edit My Profile
+        </Button>
+      </Link>
+      <Divider />
+      <Link to={`/bash/create`} onClick={() => setOpen(false)}>
+        <Button sx={{ my: 2 }}>
+          <AddCircle sx={{ mr: 1 }} /> Create New Event
+        </Button>
+      </Link>
+      <Divider />
+      <Link to={`/bash/manage-events`} onClick={() => setOpen(false)}>
+        <Button sx={{ my: 2 }}>
+          <Assignment sx={{ mr: 1 }} /> Events I'm Managing
+        </Button>
+      </Link>
+      <Divider />
+      <Link to={`/bash/attending`} onClick={() => setOpen(false)}>
+        <Button sx={{ my: 2 }}>
+          <DirectionsCar sx={{ mr: 1 }} /> Events I'm Attending
+        </Button>
+      </Link>
     </List>
   );
 }

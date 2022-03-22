@@ -1,12 +1,3 @@
 a {
-  color: '#fff';
   text-decoration: none;
-}
-
-a:visited {
-  color: '#ggg';
-}
-
-a:hover {
-  color: '#ggg';
 }
