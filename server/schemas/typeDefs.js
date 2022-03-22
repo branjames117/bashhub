@@ -96,6 +96,7 @@ const typeDefs = gql`
     editBio(bio: String): User
     addEvent(eventInput: EventInput): Event
     addAttendee(event_id: ID!): AttendanceUpdate
+    removeAttendee(event_id: ID!): AttendanceUpdate
   }
 `;
 

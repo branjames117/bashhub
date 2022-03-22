@@ -20,6 +20,8 @@ export default function Details({
   ownerName,
   slug,
   eventParent,
+  attendees,
+  setAttendees,
 }) {
   return (
     <Grid item xs={12} sm={12} md={4} lg={4}>
@@ -69,7 +71,14 @@ export default function Details({
             </Button>
           </Link>
         )}
-        {!eventParent && <AttendButton event_id={_id} />}
+        {!eventParent && (
+          <AttendButton
+            event_id={_id}
+            attendees={attendees}
+            setAttendees={setAttendees}
+            slug={slug}
+          />
+        )}
         <Link to={`/bash/u/${ownerName}`}>
           <Button variant='contained' sx={{ width: '100%', my: 1 }}>
             Visit Manager's Profile

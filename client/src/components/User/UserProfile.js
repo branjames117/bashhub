@@ -27,8 +27,6 @@ export default function UserProfile({ myUsername }) {
     }
   }, [myUsername, username, loading, userData]);
 
-  console.log(userData);
-
   return loading || !userData.user ? (
     <Loading />
   ) : (

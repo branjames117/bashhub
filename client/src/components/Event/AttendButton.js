@@ -1,25 +1,57 @@
+import { useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { Button } from '@mui/material';
 
-import { useMutation } from '@apollo/client';
-
 import { ADD_ATTENDEE } from '../../utils/mutations';
-import { QUERY_ME } from '../../utils/queries';
+import { REMOVE_ATTENDEE } from '../../utils/mutations';
 import { QUERY_EVENT } from '../../utils/queries';
 
-export default function AttendButton({ event_id }) {
-  const [addAttendee] = useMutation(ADD_ATTENDEE);
+import Auth from '../../utils/auth';
 
-  // to do - need to update cache of other queries when attend this event button is clicked
+export default function AttendButton({
+  event_id,
+  attendees,
+  setAttendees,
+  slug,
+}) {
+  const [attending, setAttending] = useState(false);
+
+  const [addAttendee] = useMutation(ADD_ATTENDEE);
+  const [removeAttendee] = useMutation(REMOVE_ATTENDEE);
+
+  const userId = Auth.getProfile().data._id;
+
+  useEffect(() => {
+    // check if user is already attending event
+    const index = attendees?.findIndex((user) => user._id === userId);
+    console.log(index);
+    console.log(attendees);
+    setAttending(index !== -1 ? true : false);
+  }, [attendees, setAttendees, userId]);
 
   const handleClick = async () => {
     try {
-      const mutationResponse = await addAttendee({
-        variables: {
-          event_id: event_id,
-        },
-      });
-
-      console.log(mutationResponse);
+      if (!attending) {
+        console.log('attempting add');
+        await addAttendee({
+          variables: {
+            event_id: event_id,
+          },
+        });
+      } else {
+        console.log('attempting remove');
+        setAttending(false);
+        const [...updateAttendees] = attendees;
+        const filteredAttendees = updateAttendees.filter(
+          (user) => user._id !== userId
+        );
+        setAttendees(filteredAttendees);
+        await removeAttendee({
+          variables: {
+            event_id: event_id,
+          },
+        });
+      }
     } catch (err) {
       console.error(err);
     }
@@ -31,7 +63,7 @@ export default function AttendButton({ event_id }) {
       sx={{ width: '100%', my: 1 }}
       onClick={handleClick}
     >
-      Attend This Event
+      {attending ? 'Drop Out of This Event' : 'Attend This Event'}
     </Button>
   );
 }

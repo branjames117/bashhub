@@ -87,6 +87,50 @@ export const ADD_ATTENDEE = gql`
       event {
         _id
         slug
+        hero
+        startDate
+        startTime
+        endDate
+        endTime
+        description
+        location
+        eventType
+        createdAt
+        attendees {
+          _id
+          email
+          username
+        }
+      }
+    }
+  }
+`;
+
+export const REMOVE_ATTENDEE = gql`
+  mutation removeAttendee($event_id: ID!) {
+    removeAttendee(event_id: $event_id) {
+      user {
+        _id
+        email
+        username
+        eventsAttending {
+          _id
+          name
+          slug
+        }
+      }
+      event {
+        _id
+        slug
+        hero
+        startDate
+        startTime
+        endDate
+        endTime
+        description
+        location
+        eventType
+        createdAt
         attendees {
           _id
           email

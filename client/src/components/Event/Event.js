@@ -31,8 +31,6 @@ export default function Event() {
     }
   }, [data, loading]);
 
-  console.log(subevents === true);
-
   return loading || !eventData ? (
     <Loading />
   ) : (
@@ -59,6 +57,8 @@ export default function Event() {
           ownerName={eventData.ownerName}
           slug={eventData.slug}
           eventParent={eventData.eventParent}
+          attendees={eventData.attendees}
+          setAttendees={setAttendees}
         />
 
         {/* Description */}
