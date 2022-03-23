@@ -8,7 +8,6 @@ const resolvers = {
     users: async () => {
       const userData = await User.find()
         .select('-__v -password')
-        .populate('comments')
         .populate('eventsManaged')
         .populate('eventsAttending');
 
@@ -17,7 +16,6 @@ const resolvers = {
     user: async (parent, { username }) => {
       const userData = await User.findOne({ username })
         .select('-__v -password')
-        .populate('comments')
         .populate('eventsManaged')
         .populate('eventsAttending');
 
@@ -52,7 +50,6 @@ const resolvers = {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
-          .populate('comments')
           .populate('eventsManaged')
           .populate('eventsAttending');
 
