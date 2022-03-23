@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import {
   Box,
+  Button,
   List,
   ListItem,
   Divider,
@@ -11,8 +12,18 @@ import {
   Typography,
 } from '@mui/material';
 import { DateFormatter } from '../../utils/dateFormat';
+import Auth from '../../utils/auth';
 
-export default function Comment({ comment }) {
+export default function Comment({ comment, removeComment, slug }) {
+  const handleRemove = async () => {
+    await removeComment({
+      variables: {
+        event_slug: slug,
+        _id: comment._id,
+      },
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -57,14 +68,19 @@ export default function Comment({ comment }) {
                     p: 3,
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'flex-end',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
                   }}
                   component='span'
                 >
                   <Link to={`/bash/u/${comment.author.username}`}>
-                    posted by {comment.author.username} on{' '}
-                    {DateFormatter.dateFormat(comment.createdAt)}
+                    {comment.author.username}
                   </Link>
+                  {DateFormatter.dateFormat(comment.createdAt)}
+                  {Auth.getProfile().data.username ===
+                    comment.author.username && (
+                    <Button onClick={handleRemove}>Remove Comment</Button>
+                  )}
                 </Typography>
               </>
             }

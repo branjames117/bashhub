@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { ADD_COMMENT } from '../../utils/mutations';
+import { ADD_COMMENT, REMOVE_COMMENT } from '../../utils/mutations';
 import { QUERY_EVENT } from '../../utils/queries';
 
 import { Grid, Paper } from '@mui/material';
@@ -49,6 +49,32 @@ export default function Event() {
           variables: { slug: slug },
           data: {
             event: { ...event, comments: [...addComment.comments] },
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  });
+
+  const [removeComment] = useMutation(REMOVE_COMMENT, {
+    update(cache, { data: { removeComment } }) {
+      // cache could potentially not exist yet, so wrap in try catch block
+      try {
+        // read what's currently in the cache
+        const { event } = cache.readQuery({
+          query: QUERY_EVENT,
+          variables: { slug: slug },
+        });
+
+        console.log(event);
+
+        // prepend the newest comment to the front of the array
+        cache.writeQuery({
+          query: QUERY_EVENT,
+          variables: { slug: slug },
+          data: {
+            event: { ...event, comments: [...removeComment.comments] },
           },
         });
       } catch (e) {
@@ -128,7 +154,12 @@ export default function Event() {
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
               <CommentInput slug={eventData.slug} addComment={addComment} />
               {comments.map((comment) => (
-                <Comment comment={comment} key={comment._id} />
+                <Comment
+                  comment={comment}
+                  key={comment._id}
+                  removeComment={removeComment}
+                  slug={slug}
+                />
               ))}
             </Paper>
           </Grid>

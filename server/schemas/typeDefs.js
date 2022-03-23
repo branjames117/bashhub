@@ -107,6 +107,7 @@ const typeDefs = gql`
     addAttendee(event_id: ID!): AttendanceUpdate
     removeAttendee(event_id: ID!): AttendanceUpdate
     addComment(event_slug: String!, body: String!): Event
+    removeComment(event_slug: String!, _id: ID): Event
   }
 `;
 
