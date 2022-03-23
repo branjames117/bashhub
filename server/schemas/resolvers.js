@@ -46,8 +46,6 @@ const resolvers = {
         .populate('subevents')
         .populate('attendees');
 
-      console.log(eventData.comments);
-
       return eventData;
     },
     me: async (parent, args, context) => {

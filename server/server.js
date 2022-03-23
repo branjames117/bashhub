@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
+const jwt = require('jsonwebtoken');
 const io = require('socket.io')(http, {
   cors: {
     origin: 'http://localhost:3000',
@@ -19,6 +20,8 @@ const { db } = require('./config/connection');
 const routes = require('./routes');
 
 const PORT = process.env.PORT || 3001;
+
+const onlineUsers = require('./utils/onlineUsers');
 
 const startServer = async () => {
   const server = new ApolloServer({
@@ -45,11 +48,43 @@ app.use(express.json());
 app.use(cors());
 app.use(routes);
 
-io.on('connection', (socket) => {
-  console.log('User connected.');
+io.use((socket, next) => {
+  // verify JWT before allowing user to connect with socket
+  if (socket.handshake?.query?.token) {
+    jwt.verify(
+      socket.handshake?.query?.token,
+      process.env.SECRET,
+      (err, decoded) => {
+        if (err) {
+          return next(new Error('Authentication error'));
+        }
+        socket.decoded = decoded;
+        next();
+      }
+    );
+  } else {
+    next(new Error('Authentication error'));
+  }
+}).on('connection', (socket) => {
+  const user = { ...socket.decoded.data, socket: socket.id };
+
+  // check if user is already in onlineUsers array
+  const index = onlineUsers.findIndex(
+    (onlineUser) => onlineUser.username === user.username
+  );
+
+  // if not, push to array
+  if (index === -1) {
+    onlineUsers.push(user);
+  } else {
+    // otherwise, update that user's socket ID
+    onlineUsers[index].socket = socket.id;
+  }
+
+  console.log(user.username, 'has connected.');
 
   socket.on('disconnect', () => {
-    console.log('User has disconnected');
+    console.log(user.username, 'has disconnected');
   });
 });
 
