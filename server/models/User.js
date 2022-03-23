@@ -21,7 +21,6 @@ const userSchema = new Schema(
       required: true,
       minlength: 8,
     },
-    comments: [commentSchema],
     location: {
       type: String,
       trim: true,

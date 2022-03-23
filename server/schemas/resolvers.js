@@ -222,20 +222,6 @@ const resolvers = {
         throw new AuthenticationError('You need to be logged in!');
       }
 
-      // update user
-      await User.findOneAndUpdate(
-        { _id: context.user._id },
-        {
-          $push: {
-            comments: {
-              body,
-              author: context.user._id,
-              event_slug,
-            },
-          },
-        }
-      );
-
       // update event
       return await Event.findOneAndUpdate(
         { slug: event_slug },
@@ -262,18 +248,6 @@ const resolvers = {
       if (!context.user) {
         throw new AuthenticationError('You need to be logged in!');
       }
-
-      // update user
-      await User.findOneAndUpdate(
-        { _id: context.user._id },
-        {
-          $pull: {
-            comments: {
-              _id,
-            },
-          },
-        }
-      );
 
       // update event
       return await Event.findOneAndUpdate(
