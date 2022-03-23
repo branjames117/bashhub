@@ -83,8 +83,33 @@ io.use((socket, next) => {
 
   console.log(user.username, 'has connected.');
 
+  socket.on('newComment', ({ from, to }) => {
+    console.log(
+      `A new comment was created by ${from}. Notify ${to} immediately!`
+    );
+    // check if TO:user is online
+    const index = onlineUsers.findIndex(
+      (onlineUser) => onlineUser.username === to
+    );
+
+    if (index !== -1) {
+      // to do - create a new notification for the user in the DB, this happens regardless of whether the user is online
+      // if the user IS online, send a signal to them that they have a new notification
+      // to do - add a notifications field to the user
+      // Notification schema needs an _id, event_name, event_slug, createdAt, author, and a read status: 'Author commented on EventName (link: eventslug) at 12 March 2022 at 10:00 PM.'
+      // when user visits their Notifications page, it updates all current Notifications in their array to read = true
+      // A user has a getter to get their current notificationsCount which gets the count of all their unread notifications, so that when the user first logs on, we can get their latest notification count
+    }
+  });
+
   socket.on('disconnect', () => {
-    console.log(user.username, 'has disconnected');
+    // find the user's current index
+    const index = onlineUsers.findIndex(
+      (onlineUser) => onlineUser.socket === user.socket
+    );
+    if (index !== -1) {
+      onlineUsers.splice(index, index >= 0 ? 1 : 0);
+    }
   });
 });
 

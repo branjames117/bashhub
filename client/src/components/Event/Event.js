@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_COMMENT, REMOVE_COMMENT } from '../../utils/mutations';
 import { QUERY_EVENT } from '../../utils/queries';
+import { socket, SocketContext } from '../../context/socket';
 
 import { Grid, Paper } from '@mui/material';
 
@@ -16,9 +17,13 @@ import Subevents from './Subevents';
 import Attendees from './Attendees';
 import CommentInput from '../Comments/CommentInput';
 import Comment from '../Comments/Comment';
+import Auth from '../../utils/auth';
 
 export default function Event() {
   const { slug } = useParams();
+
+  useContext(SocketContext);
+
   const [eventData, setEventData] = useState({});
   const [subevents, setSubevents] = useState([]);
   const [attendees, setAttendees] = useState([]);
@@ -31,6 +36,11 @@ export default function Event() {
 
   const [addComment] = useMutation(ADD_COMMENT, {
     update(cache, { data: { addComment } }) {
+      // send signal to server notifying event owner that a comment was left
+      socket.emit('newComment', {
+        from: Auth.getProfile().data.username,
+        to: eventData.ownerName,
+      });
       // scroll user to bottom upon successful cache update
       bottomRef.current.scrollIntoView({ behavior: 'smooth' });
       // cache could potentially not exist yet, so wrap in try catch block
@@ -41,9 +51,7 @@ export default function Event() {
           variables: { slug: slug },
         });
 
-        console.log(event);
-
-        // prepend the newest comment to the front of the array
+        // overwrite old array with new array
         cache.writeQuery({
           query: QUERY_EVENT,
           variables: { slug: slug },
@@ -67,9 +75,7 @@ export default function Event() {
           variables: { slug: slug },
         });
 
-        console.log(event);
-
-        // prepend the newest comment to the front of the array
+        // overwrite old array with new array
         cache.writeQuery({
           query: QUERY_EVENT,
           variables: { slug: slug },
@@ -151,7 +157,13 @@ export default function Event() {
         {/* Comments */}
         {eventData.commentsEnabled && (
           <Grid item xs={12} sx={{ mb: 25 }}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
               <CommentInput slug={eventData.slug} addComment={addComment} />
               {comments.map((comment) => (
                 <Comment
