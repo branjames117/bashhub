@@ -170,4 +170,5 @@ class DateFormatter {
     return dailyPlan;
   }
 }
-module.exports = { DateFormatter: new DateFormatter() };
+
+export default new DateFormatter();

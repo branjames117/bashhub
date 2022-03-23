@@ -11,7 +11,7 @@ import {
   Avatar,
   Typography,
 } from '@mui/material';
-import { DateFormatter } from '../../utils/dateFormat';
+import DateFormatter from '../../utils/dateFormat';
 import Auth from '../../utils/auth';
 
 export default function Comment({ comment, removeComment, slug }) {

@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 import Auth from '../../utils/auth';
-import { DateFormatter } from '../../utils/dateFormat';
+import DateFormatter from '../../utils/dateFormat';
 
 import AttendButton from './AttendButton';
 

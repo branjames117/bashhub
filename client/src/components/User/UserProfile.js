@@ -9,7 +9,7 @@ import UserBio from './UserBio';
 import UserProfilePicture from './UserProfilePicture';
 import Banner from './Banner';
 import Loading from '../Loading';
-import { DateFormatter } from '../../utils/dateFormat';
+import DateFormatter from '../../utils/dateFormat';
 
 export default function UserProfile({ myUsername }) {
   const { username } = useParams();

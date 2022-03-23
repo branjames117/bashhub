@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../../utils/queries';
 import { Paper, Typography } from '@mui/material';
 import Auth from '../../utils/auth';
-import { DateFormatter } from '../../utils/dateFormat';
+import DateFormatter from '../../utils/dateFormat';
 
 import Banner from './Banner';
 

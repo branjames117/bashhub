@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Grid, Box } from '@mui/material';
-import { DateFormatter } from '../../utils/dateFormat';
+import DateFormatter from '../../utils/dateFormat';
 
 export default function Subevent({ subevent }) {
   return (

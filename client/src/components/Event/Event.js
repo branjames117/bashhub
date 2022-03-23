@@ -7,7 +7,7 @@ import { socket, SocketContext } from '../../context/socket';
 
 import { Grid, Paper } from '@mui/material';
 
-import { DateFormatter } from '../../utils/dateFormat';
+import DateFormatter from '../../utils/dateFormat';
 
 import Hero from './Hero';
 import Details from './Details';
