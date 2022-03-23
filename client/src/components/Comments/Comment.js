@@ -10,8 +10,9 @@ import {
   Avatar,
   Typography,
 } from '@mui/material';
+import { DateFormatter } from '../../utils/dateFormat';
 
-export default function Comment() {
+export default function Comment({ comment }) {
   return (
     <Box
       sx={{
@@ -30,8 +31,8 @@ export default function Comment() {
           <ListItemAvatar sx={{ mr: 3 }}>
             <Link to={`/bash/u/branjames117`}>
               <Avatar
-                alt='Remy Sharp'
-                src='/static/images/avatar/1.jpg'
+                alt={comment.author.username}
+                src={comment.author.avatar}
                 sx={{ width: 64, height: 64 }}
               />
             </Link>
@@ -46,8 +47,7 @@ export default function Comment() {
                   marginBottom: '15px',
                 }}
               >
-                {`These movies are so good. You're going to love being out here.
-              Come check them out!`}
+                {comment.body}
               </div>
             }
             secondary={
@@ -61,8 +61,9 @@ export default function Comment() {
                   }}
                   component='span'
                 >
-                  <Link to={`/bash/u/branjames117`}>
-                    posted by branjames117 on 12 Mar 2022 at 10:00 P.M.
+                  <Link to={`/bash/u/${comment.author.username}`}>
+                    posted by {comment.author.username} on{' '}
+                    {DateFormatter.dateFormat(comment.createdAt)}
                   </Link>
                 </Typography>
               </>

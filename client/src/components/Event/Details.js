@@ -1,5 +1,13 @@
 import { Link } from 'react-router-dom';
-import { Grid, Button, Paper, Typography, Chip } from '@mui/material';
+import {
+  Grid,
+  Box,
+  Button,
+  Paper,
+  Typography,
+  Chip,
+  Avatar,
+} from '@mui/material';
 
 import Auth from '../../utils/auth';
 import { DateFormatter } from '../../utils/dateFormat';
@@ -22,6 +30,7 @@ export default function Details({
   eventParent,
   attendees,
   setAttendees,
+  ownerAvatar,
 }) {
   return (
     <Grid item xs={12} sm={12} md={4} lg={4}>
@@ -64,6 +73,26 @@ export default function Details({
               />
             ))}
         </div>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          Created by
+          <Link
+            to={`/bash/u/${ownerName}`}
+            sx={{ display: 'flex', justifyContent: 'center' }}
+          >
+            <Avatar
+              alt={ownerName}
+              src={ownerAvatar}
+              sx={{ width: 128, height: 128, mt: 2 }}
+            />
+          </Link>
+        </Box>
         {eventParent && (
           <Link to={`/bash/e/${eventParent.slug}`}>
             <Button variant='contained' sx={{ width: '100%', my: 1 }}>
@@ -79,11 +108,6 @@ export default function Details({
             slug={slug}
           />
         )}
-        <Link to={`/bash/u/${ownerName}`}>
-          <Button variant='contained' sx={{ width: '100%', my: 1 }}>
-            Visit Manager's Profile
-          </Button>
-        </Link>
         {Auth.getProfile().data.username === ownerName && !eventParent && (
           <Link to={`/bash/create/${slug}`}>
             <Button variant='contained' sx={{ width: '100%', my: 1 }}>

@@ -71,6 +71,22 @@ export const ADD_EVENT = gql`
   }
 `;
 
+export const ADD_COMMENT = gql`
+  mutation addComment($event_slug: String!, $body: String!) {
+    addComment(event_slug: $event_slug, body: $body) {
+      comments {
+        author {
+          username
+          avatar
+        }
+        _id
+        body
+        createdAt
+      }
+    }
+  }
+`;
+
 export const ADD_ATTENDEE = gql`
   mutation addAttendee($event_id: ID!) {
     addAttendee(event_id: $event_id) {

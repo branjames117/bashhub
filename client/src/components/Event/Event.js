@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
+import { ADD_COMMENT } from '../../utils/mutations';
 import { QUERY_EVENT } from '../../utils/queries';
 
 import { Grid, Paper } from '@mui/material';
@@ -21,9 +22,39 @@ export default function Event() {
   const [eventData, setEventData] = useState({});
   const [subevents, setSubevents] = useState([]);
   const [attendees, setAttendees] = useState([]);
+  const [comments, setComments] = useState([]);
+  const bottomRef = useRef();
 
   const { data, loading } = useQuery(QUERY_EVENT, {
     variables: { slug: slug },
+  });
+
+  const [addComment] = useMutation(ADD_COMMENT, {
+    update(cache, { data: { addComment } }) {
+      // scroll user to bottom upon successful cache update
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      // cache could potentially not exist yet, so wrap in try catch block
+      try {
+        // read what's currently in the cache
+        const { event } = cache.readQuery({
+          query: QUERY_EVENT,
+          variables: { slug: slug },
+        });
+
+        console.log(event);
+
+        // prepend the newest comment to the front of the array
+        cache.writeQuery({
+          query: QUERY_EVENT,
+          variables: { slug: slug },
+          data: {
+            event: { ...event, comments: [...addComment.comments] },
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
   });
 
   useEffect(() => {
@@ -32,6 +63,7 @@ export default function Event() {
       setEventData(event);
       setSubevents(DateFormatter.sortSubevents(event.subevents));
       setAttendees(event.attendees);
+      setComments(event.comments);
     }
   }, [data, loading]);
 
@@ -63,6 +95,7 @@ export default function Event() {
           eventParent={eventData.eventParent}
           attendees={eventData.attendees}
           setAttendees={setAttendees}
+          ownerAvatar={eventData.ownerId?.avatar}
         />
 
         {/* Description */}
@@ -89,14 +122,19 @@ export default function Event() {
           </Grid>
         )}
 
-        {/* My Comments */}
-        <Grid item xs={12} sx={{ mb: 25 }}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <CommentInput />
-            <Comment />
-          </Paper>
-        </Grid>
+        {/* Comments */}
+        {eventData.commentsEnabled && (
+          <Grid item xs={12} sx={{ mb: 25 }}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <CommentInput slug={eventData.slug} addComment={addComment} />
+              {comments.map((comment) => (
+                <Comment comment={comment} key={comment._id} />
+              ))}
+            </Paper>
+          </Grid>
+        )}
       </Grid>
+      <div ref={bottomRef}></div>
     </>
   );
 }

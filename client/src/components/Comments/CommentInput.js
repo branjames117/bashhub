@@ -1,19 +1,28 @@
-import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
+import { TextField, Button } from '@mui/material';
 
-export default function CommentInput() {
+export default function CommentInput({ slug, addComment }) {
   const [comment, setComment] = useState('');
   const [buttonText, setButtonText] = useState('Submit');
+
   const handleChange = (e) => {
     setComment(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (comment.trim().length === 0) {
       setButtonText('Comment Cannot Be Empty');
+      return;
     } else {
       setButtonText('Comment Submitted');
     }
+
+    await addComment({
+      variables: {
+        event_slug: slug,
+        body: comment,
+      },
+    });
 
     setComment('');
     setTimeout(() => {

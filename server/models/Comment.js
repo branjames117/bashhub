@@ -3,20 +3,25 @@ const dateFormat = require('../../client/src/utils/dateFormat');
 
 const commentSchema = new Schema(
   {
-    commentBody: {
+    body: {
       type: String,
       required: true,
-      maxlength: 280,
+      minlength: 1,
+      maxlength: 512,
+    },
+    event_slug: {
+      type: String,
+      required: true,
     },
     author: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'User',
+      required: true,
+      default: null,
     },
     createdAt: {
       type: Date,
       default: Date.now,
-      get: (timestamp) => dateFormat(timestamp),
     },
     parent: {
       type: Schema.Types.ObjectId,

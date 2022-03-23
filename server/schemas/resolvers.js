@@ -32,10 +32,21 @@ const resolvers = {
       const eventData = await Event.findOne({
         slug,
       })
+        .populate('ownerId')
+        .populate({
+          path: 'comments',
+          populate: {
+            path: 'author',
+            model: 'User',
+            select: ['avatar', 'username'],
+          },
+        })
         .populate('tags')
         .populate('eventParent')
         .populate('subevents')
         .populate('attendees');
+
+      console.log(eventData.comments);
 
       return eventData;
     },
@@ -89,11 +100,10 @@ const resolvers = {
     },
     editBio: async (parent, { bio }, context) => {
       if (context.user) {
-        console.log(context.user);
         const user = await User.findOneAndUpdate(
           { _id: context.user._id },
           { bio }
-        );
+        ).select('-__v -password');
 
         return user;
       }
@@ -101,6 +111,10 @@ const resolvers = {
       throw new AuthenticationError('Not logged in');
     },
     addEvent: async (parent, { eventInput }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('You need to be logged in!');
+      }
+
       try {
         // create the tags in the database first, if they don't already exist
         tagsIdArr = [];
@@ -136,8 +150,6 @@ const resolvers = {
           'eventParent'
         );
 
-        console.log(returnedEvent);
-
         return returnedEvent;
       } catch (err) {
         console.log(err);
@@ -145,6 +157,10 @@ const resolvers = {
       }
     },
     addAttendee: async (parent, { event_id }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('You need to be logged in!');
+      }
+
       try {
         const eventId = mongoose.Types.ObjectId(event_id);
 
@@ -157,9 +173,9 @@ const resolvers = {
         });
 
         // then find and populate them both for return
-        const returnedUser = await User.findById(context.user._id).populate(
-          'eventsAttending'
-        );
+        const returnedUser = await User.findById(context.user._id)
+          .select('-__v -password')
+          .populate('eventsAttending');
 
         const returnedEvent = await Event.findById(eventId).populate(
           'attendees'
@@ -172,14 +188,12 @@ const resolvers = {
       }
     },
     removeAttendee: async (parent, { event_id }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('You need to be logged in!');
+      }
+
       try {
         const eventId = mongoose.Types.ObjectId(event_id);
-
-        // first find if the user is already attending this event
-        const user = await User.findOne({
-          _id: context.user._id,
-          eventsAttending: eventId,
-        });
 
         // user found, so let's take them out instead
         await User.findByIdAndUpdate(context.user._id, {
@@ -191,9 +205,9 @@ const resolvers = {
         });
 
         // then find and populate them both for return
-        const returnedUser = await User.findById(context.user._id).populate(
-          'eventsAttending'
-        );
+        const returnedUser = await User.findById(context.user._id)
+          .select('-__v -password')
+          .populate('eventsAttending');
 
         const returnedEvent = await Event.findById(eventId).populate(
           'attendees'
@@ -204,6 +218,47 @@ const resolvers = {
         console.log(err);
         throw new Error('User and event not updated');
       }
+    },
+    addComment: async (parent, { event_slug, body }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('You need to be logged in!');
+      }
+
+      // update user
+      await User.findOneAndUpdate(
+        { _id: context.user._id },
+        {
+          $push: {
+            comments: {
+              body,
+              author: context.user._id,
+              event_slug,
+            },
+          },
+        }
+      );
+
+      // update event
+      return await Event.findOneAndUpdate(
+        { slug: event_slug },
+        {
+          $push: {
+            comments: {
+              body,
+              author: context.user._id,
+              event_slug,
+            },
+          },
+        },
+        { new: true, runValidators: true }
+      ).populate({
+        path: 'comments',
+        populate: {
+          path: 'author',
+          model: 'User',
+          select: ['avatar', 'username'],
+        },
+      });
     },
   },
 };

@@ -113,9 +113,22 @@ export const QUERY_EVENT = gql`
       startTime
       endDate
       endTime
-      ownerId
+      ownerId {
+        _id
+        username
+        avatar
+      }
       ownerName
       url
+      comments {
+        author {
+          username
+          avatar
+        }
+        _id
+        body
+        createdAt
+      }
       ticketsUrl
       pricing
       commentsEnabled

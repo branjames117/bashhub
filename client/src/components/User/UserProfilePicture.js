@@ -92,7 +92,7 @@ export default function UserProfilePicture({ owned, currAvatar }) {
             }}
           />
           <Button
-            variant='contained'
+            variant='text'
             sx={{ width: '100%', my: 1 }}
             onClick={() => {
               fileInput.current.click();

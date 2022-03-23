@@ -13,6 +13,14 @@ const typeDefs = gql`
     eventsAttending: [Event]
   }
 
+  type Comment {
+    _id: ID
+    body: String
+    author: User
+    event_slug: String
+    createdAt: String
+  }
+
   type Tag {
     _id: ID
     name: String
@@ -29,7 +37,7 @@ const typeDefs = gql`
     createdAt: String
     endDate: String
     endTime: String
-    ownerId: ID
+    ownerId: User
     ownerName: String
     attendees: [User]
     url: String
@@ -40,6 +48,7 @@ const typeDefs = gql`
     hero: String
     heroId: String
     videoUrl: String
+    comments: [Comment]
     commentsEnabled: Boolean
     publicEnabled: Boolean
     eventParent: Event
@@ -97,6 +106,7 @@ const typeDefs = gql`
     addEvent(eventInput: EventInput): Event
     addAttendee(event_id: ID!): AttendanceUpdate
     removeAttendee(event_id: ID!): AttendanceUpdate
+    addComment(event_slug: String!, body: String!): Event
   }
 `;
 
