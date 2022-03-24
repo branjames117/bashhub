@@ -58,8 +58,10 @@ export default function Creator({ variant, _id, event }) {
       setIsSubevent(true);
       setEventData({ ...eventData, eventParent: _id });
     } else if (variant === 'editor') {
-      if (event?.eventParent?.length !== 0) {
+      if (event?.eventParent) {
         setIsSubevent(true);
+      } else {
+        setIsSubevent(false);
       }
       setIsEditor(true);
       setEventData({ ...event });
@@ -201,7 +203,8 @@ export default function Creator({ variant, _id, event }) {
       {activeStep === 5 && (
         <Paper square elevation={0} sx={{ p: 3 }}>
           <Typography>
-            {isSubevent ? 'Subevent' : 'Event'} created! You can manage your{' '}
+            {isSubevent ? 'Subevent' : 'Event'}{' '}
+            {isEditor ? 'updated!' : 'created!'} You can manage your{' '}
             {isSubevent ? 'sub' : ''}event by clicking EVENTS I'M MANAGING in
             the sidebar
             {isSubevent ? `, and navigating to this event's parent` : ''}.

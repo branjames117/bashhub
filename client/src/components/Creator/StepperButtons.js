@@ -61,9 +61,7 @@ export default function StepperButtons({
             events: [...data.events, addEvent],
           },
         });
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
     },
   });
 

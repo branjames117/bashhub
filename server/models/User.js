@@ -49,6 +49,7 @@ const userSchema = new Schema(
     avatar: {
       type: String,
       trim: true,
+      get: (url) => url.replace('http', 'https'),
     },
     avatarId: {
       type: String,

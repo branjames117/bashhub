@@ -77,6 +77,7 @@ const eventSchema = new Schema(
     },
     hero: {
       type: String,
+      get: (url) => url.replace('http', 'https'),
     },
     heroId: {
       type: String,

@@ -40,7 +40,7 @@ export default function Editor() {
       });
 
       event.tags = tags;
-      event.eventParent = event?.eventParent._id;
+      event.eventParent = event?.eventParent?._id;
 
       setEvent(event);
       setLoaded(true);
