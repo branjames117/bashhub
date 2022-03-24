@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 
 import { ADD_EVENT } from '../../utils/mutations';
-import { QUERY_ME } from '../../utils/queries';
+import { QUERY_EVENTS, QUERY_ME } from '../../utils/queries';
 import { QUERY_EVENT } from '../../utils/queries';
 
 import { Box, Button } from '@mui/material';
@@ -17,18 +17,8 @@ export default function StepperButtons({
   const [addEvent] = useMutation(ADD_EVENT, {
     update(cache, { data: { addEvent } }) {
       try {
-        // if event is just an event, update the QUERY_ME cache
-        if (!addEvent.eventParent) {
-          const { me } = cache.readQuery({ query: QUERY_ME });
-
-          cache.writeQuery({
-            query: QUERY_ME,
-            data: {
-              me: { ...me, eventsManaged: [...me.eventsManaged] },
-            },
-          });
-        } else {
-          // otherwise, update the query QUERY_EVENT cache
+        // if event is a subevent, update the QUERY_EVENT cache
+        if (addEvent.eventParent) {
           const { event } = cache.readQuery({
             query: QUERY_EVENT,
             variables: {
@@ -49,7 +39,28 @@ export default function StepperButtons({
                   },
             },
           });
+        } else {
+          // if event is just an event, update the QUERY_ME cache
+          const { me } = cache.readQuery({ query: QUERY_ME });
+
+          cache.writeQuery({
+            query: QUERY_ME,
+            data: {
+              me: { ...me, eventsManaged: [...me.eventsManaged] },
+            },
+          });
         }
+      } catch (e) {}
+
+      try {
+        const data = cache.readQuery({ query: QUERY_EVENTS });
+
+        cache.writeQuery({
+          query: QUERY_EVENTS,
+          data: {
+            events: [...data.events, addEvent],
+          },
+        });
       } catch (e) {
         console.error(e);
       }
