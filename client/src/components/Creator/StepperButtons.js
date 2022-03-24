@@ -53,14 +53,16 @@ export default function StepperButtons({
       } catch (e) {}
 
       try {
-        const data = cache.readQuery({ query: QUERY_EVENTS });
+        if (!addEvent.eventParent) {
+          const data = cache.readQuery({ query: QUERY_EVENTS });
 
-        cache.writeQuery({
-          query: QUERY_EVENTS,
-          data: {
-            events: [...data.events, addEvent],
-          },
-        });
+          cache.writeQuery({
+            query: QUERY_EVENTS,
+            data: {
+              events: [...data.events, addEvent],
+            },
+          });
+        }
       } catch (e) {}
     },
   });
