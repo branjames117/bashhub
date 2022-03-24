@@ -110,7 +110,14 @@ const resolvers = {
         throw new AuthenticationError('You need to be logged in!');
       }
 
+      console.log('made it');
+
       try {
+        // check if event slug already exists in db, in which case, this is an event edit and not an event creation
+        const eventExists = await Event.findOne({
+          slug: eventInput.slug,
+        }).select('_id');
+
         // create the tags in the database first, if they don't already exist
         tagsIdArr = [];
 
@@ -126,26 +133,42 @@ const resolvers = {
 
         eventInput.tags = tagsIdArr;
 
-        // then create the event itself using an array of the updated tag IDs
-        const event = await Event.create(eventInput);
+        let event;
+        if (eventExists) {
+          // if event already exists, just update it
+          event = await Event.findByIdAndUpdate(eventExists._id, eventInput, {
+            new: true,
+          })
+            .populate('eventParent')
+            .populate('tags')
+            .populate('ownerId')
+            .populate('subevents');
 
-        // then, if the event is a child of another event, add its id to the subevents field of the parent
-        if (event.eventParent) {
-          await Event.findByIdAndUpdate(event.eventParent, {
-            $push: { subevents: event._id },
+          return event;
+        } else {
+          // then create the event itself using an array of the updated tag IDs
+          event = await Event.create(eventInput);
+
+          // then, if the event is a child of another event, add its id to the subevents field of the parent
+          if (event.eventParent) {
+            await Event.findByIdAndUpdate(event.eventParent, {
+              $push: { subevents: event._id },
+            });
+          }
+
+          // then add the created events ID to the user's eventsManaged array
+          await User.findByIdAndUpdate(context.user._id, {
+            $push: { eventsManaged: event._id },
           });
+
+          const returnedEvent = await Event.findById(event._id)
+            .populate('eventParent')
+            .populate('tags')
+            .populate('ownerId')
+            .populate('subevents');
+
+          return returnedEvent;
         }
-
-        // then add the created events ID to the user's eventsManaged array
-        await User.findByIdAndUpdate(context.user._id, {
-          $push: { eventsManaged: event._id },
-        });
-
-        const returnedEvent = await Event.findById(event._id).populate(
-          'eventParent'
-        );
-
-        return returnedEvent;
       } catch (err) {
         console.log(err);
         throw new Error('Event not created');

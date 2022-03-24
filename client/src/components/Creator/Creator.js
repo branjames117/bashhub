@@ -42,17 +42,23 @@ const defaultEvent = {
   slug: '',
 };
 
-export default function Creator({ variant, _id }) {
+export default function Creator({ variant, _id, event }) {
   const [activeStep, setActiveStep] = useState(0);
   const [eventData, setEventData] = useState(defaultEvent);
   const [slugTaken, setSlugTaken] = useState(false);
   const [isSubevent, setIsSubevent] = useState(false);
+  const [isEditor, setIsEditor] = useState(false);
+  const [startTimeEnabled, setStartTimeEnabled] = useState(false);
+  const [endDateEnabled, setEndDateEnabled] = useState(false);
+  const [endTimeEnabled, setEndTimeEnabled] = useState(false);
   const [checkingVariant, setCheckingVariant] = useState(true);
 
   const handleReset = () => {
     setActiveStep(0);
     if (variant === 'subevent') {
       setEventData({ ...defaultEvent, eventParent: _id });
+    } else if (variant === 'editor') {
+      setEventData({ ...event });
     } else {
       setEventData(defaultEvent);
     }
@@ -63,6 +69,13 @@ export default function Creator({ variant, _id }) {
     if (variant === 'subevent') {
       setIsSubevent(true);
       setEventData({ ...eventData, eventParent: _id });
+    } else if (variant === 'editor') {
+      console.log(event);
+      if (event?.eventParent?.length !== 0) {
+        setIsSubevent(true);
+      }
+      setIsEditor(true);
+      setEventData({ ...event });
     }
 
     setCheckingVariant(false);
@@ -79,7 +92,7 @@ export default function Creator({ variant, _id }) {
       }}
     >
       <Typography variant='h5' sx={{ mb: 3 }}>
-        Create New {isSubevent ? 'Subevent' : 'Event'}
+        {isEditor ? 'Edit' : 'Create New'} {isSubevent ? 'Subevent' : 'Event'}
       </Typography>
       <Typography variant='inherit'>
         Follow these steps to get your {isSubevent ? 'Subevent' : 'Event'} page
@@ -90,8 +103,10 @@ export default function Creator({ variant, _id }) {
         <Step>
           <StepLabel>
             {isSubevent
-              ? 'Choose a name and URL for your subevent.'
-              : 'Choose a name, URL, and type for your event.'}{' '}
+              ? `Choose a name ${!isEditor ? 'and URL' : ''} for your subevent.`
+              : `Choose a name ${
+                  !isEditor ? ', URL, ' : ''
+                } and type for your event.`}{' '}
             *
           </StepLabel>
           <StepContent>
@@ -101,6 +116,7 @@ export default function Creator({ variant, _id }) {
               slugTaken={slugTaken}
               setSlugTaken={setSlugTaken}
               isSubevent={isSubevent}
+              isEditor={isEditor}
             />
             <StepperButtons
               activeStep={activeStep}
@@ -121,6 +137,12 @@ export default function Creator({ variant, _id }) {
               slugTaken={slugTaken}
               setActiveStep={setActiveStep}
               isSubevent={isSubevent}
+              startTimeEnabled={startTimeEnabled}
+              setStartTimeEnabled={setStartTimeEnabled}
+              endDateEnabled={endDateEnabled}
+              setEndDateEnabled={setEndDateEnabled}
+              endTimeEnabled={endTimeEnabled}
+              setEndTimeEnabled={setEndTimeEnabled}
             />
             <StepperButtons
               activeStep={activeStep}

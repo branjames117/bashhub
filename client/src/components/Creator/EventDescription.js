@@ -42,7 +42,7 @@ The bathroom isn't working, so don't drink too much before you get here.`
       />
       <Typography sx={{ mt: 2 }}>
         Create a few tags to give potential attendees a quick overview. After
-        adding a tag, you can click it to remove it. (Limit 5 tags, 16
+        adding a tag, you can click it to remove it. (Limit 10 tags, 16
         characters each.)
       </Typography>
       {isSubevent && (
@@ -69,8 +69,8 @@ The bathroom isn't working, so don't drink too much before you get here.`
         onClick={() => {
           if (
             tag.trim() !== '' &&
-            eventData.tags.indexOf(tag) === -1 &&
-            eventData.tags.length < 5
+            eventData.tags.indexOf(tag.name) === -1 &&
+            eventData.tags.length < 10
           ) {
             setEventData({
               ...eventData,

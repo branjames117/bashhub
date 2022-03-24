@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useRef } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { QUERY_SLUG } from '../../utils/queries';
 
@@ -9,7 +10,6 @@ import {
   Radio,
   TextField,
 } from '@mui/material';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 const eventTypes = [
   'Party',
@@ -29,6 +29,7 @@ export default function EventType({
   slugTaken,
   setSlugTaken,
   isSubevent,
+  isEditor,
 }) {
   const slugRef = useRef();
 
@@ -43,9 +44,11 @@ export default function EventType({
   const [slug, { data }] = useLazyQuery(QUERY_SLUG);
 
   const checkSlugAvailability = useCallback(async () => {
-    await slug({ variables: { slug: slugRef.current.value } });
-    setSlugTaken(data?.slug?._id ? true : false);
-  }, [setSlugTaken, slug, data]);
+    if (!isEditor) {
+      await slug({ variables: { slug: slugRef.current.value } });
+      setSlugTaken(data?.slug?._id ? true : false);
+    }
+  }, [isEditor, setSlugTaken, slug, data]);
 
   useEffect(() => {
     checkSlugAvailability();
@@ -68,19 +71,21 @@ export default function EventType({
         onChange={handleChange}
         sx={{ width: '100%', my: 2 }}
       />
-      <TextField
-        variant='outlined'
-        label='Event Slug (Generates URL) *'
-        autoComplete='off'
-        inputRef={slugRef}
-        placeholder='delorean-summer-daze'
-        error={slugTaken}
-        helperText={slugTaken ? 'Slug already in use.' : ''}
-        name='slug'
-        value={eventData.slug.trim()}
-        onChange={handleChange}
-        sx={{ width: '100%', my: 2 }}
-      />
+      {!isEditor && (
+        <TextField
+          variant='outlined'
+          label='Event Slug (Generates URL, cannot be changed later) *'
+          autoComplete='off'
+          inputRef={slugRef}
+          placeholder='delorean-summer-daze'
+          error={slugTaken}
+          helperText={slugTaken ? 'Slug already in use.' : ''}
+          name='slug'
+          value={eventData.slug.trim().toLowercase()}
+          onChange={handleChange}
+          sx={{ width: '100%', my: 2 }}
+        />
+      )}
       {slugTaken && <div>Slug taken</div>}
       {!isSubevent && (
         <FormControl>

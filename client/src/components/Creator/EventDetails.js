@@ -56,7 +56,7 @@ export default function EventDetails({ eventData, setEventData, isSubevent }) {
             error={eventData.pricing.length > 64}
             helperText={
               eventData.pricing.length > 64
-                ? 'Pricing must be < 64 characters.'
+                ? 'Pricing description must be < 64 characters.'
                 : ''
             }
             value={eventData.pricing}

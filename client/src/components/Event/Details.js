@@ -108,6 +108,13 @@ export default function Details({
             slug={slug}
           />
         )}
+        {Auth.getProfile().data.username === ownerName && (
+          <Link to={`/bash/edit/${slug}`}>
+            <Button variant='contained' sx={{ width: '100%', my: 1 }}>
+              Edit This Event
+            </Button>
+          </Link>
+        )}
         {Auth.getProfile().data.username === ownerName && !eventParent && (
           <Link to={`/bash/create/${slug}`}>
             <Button variant='contained' sx={{ width: '100%', my: 1 }}>

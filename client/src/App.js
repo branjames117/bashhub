@@ -57,6 +57,11 @@ const client = new ApolloClient({
               return incoming;
             },
           },
+          eventsManaging: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
         },
       },
     },
@@ -97,6 +102,10 @@ function App() {
               <Route
                 path='/bash/create/:slug'
                 element={<Dashboard variant='subeventCreator' />}
+              />
+              <Route
+                path='/bash/edit/:slug'
+                element={<Dashboard variant='editor' />}
               />
               <Route
                 path='*'

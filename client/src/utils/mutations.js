@@ -46,7 +46,11 @@ export const ADD_EVENT = gql`
       startTime
       endDate
       endTime
-      ownerId
+      ownerId {
+        _id
+        username
+        avatar
+      }
       ownerName
       url
       ticketsUrl

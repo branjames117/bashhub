@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   FormGroup,
   FormControlLabel,
@@ -13,6 +11,7 @@ import DateAdapter from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import moment from 'moment';
 
 export default function EventTime({
   eventData,
@@ -20,11 +19,13 @@ export default function EventTime({
   slugTaken,
   setActiveStep,
   isSubevent,
+  startTimeEnabled,
+  setStartTimeEnabled,
+  endDateEnabled,
+  setEndDateEnabled,
+  endTimeEnabled,
+  setEndTimeEnabled,
 }) {
-  const [startTimeEnabled, setStartTimeEnabled] = useState(false);
-  const [endDateEnabled, setEndDateEnabled] = useState(false);
-  const [endTimeEnabled, setEndTimeEnabled] = useState(false);
-
   // if user tried to sneak to step 2 with an in-use slug, knock them back
   if (slugTaken) {
     setTimeout(() => {
@@ -42,7 +43,7 @@ export default function EventTime({
           label='Start Date'
           aria-labelledby='startDate'
           inputFormat='MM/DD/yyyy'
-          value={eventData.startDate}
+          value={moment(eventData.startDate - 0)}
           onChange={(value) => {
             const date = new Date(value);
             if (date.getTime()) {
@@ -76,7 +77,7 @@ export default function EventTime({
             label='Start Time'
             value={eventData.startTime}
             onChange={(value) => {
-              const date = new Date(value);
+              const date = new Date(value - 0);
               if (date.getTime()) {
                 setEventData({ ...eventData, startTime: value });
               }
@@ -112,7 +113,7 @@ export default function EventTime({
             inputFormat='MM/DD/yyyy'
             value={eventData.endDate}
             onChange={(value) => {
-              const date = new Date(value);
+              const date = new Date(value - 0);
               if (date.getTime()) {
                 setEventData({ ...eventData, endDate: value });
               }
@@ -144,7 +145,7 @@ export default function EventTime({
             label='End Time'
             value={eventData.endTime}
             onChange={(value) => {
-              const date = new Date(value);
+              const date = new Date(value - 0);
               if (date.getTime()) {
                 setEventData({ ...eventData, endTime: value });
               }

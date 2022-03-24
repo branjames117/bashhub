@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 
 // materials
@@ -28,6 +26,7 @@ import Event from '../components/Event/Event';
 import SubEvent from '../components/SubEvent';
 import Creator from '../components/Creator/Creator';
 import SubeventCreator from '../components/Creator/SubeventCreator';
+import Editor from '../components/Creator/Editor';
 import ManagedEvents from '../components/User/ManagedEvents';
 import AttendingEvents from '../components/User/AttendingEvents';
 
@@ -37,15 +36,11 @@ export default function Dashboard({ variant }) {
 
   const [open, setOpen] = useState(false);
 
-  const { data, loading } = useQuery(QUERY_ME);
-
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  return loading ? (
-    <></>
-  ) : (
+  return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <CssBaseline />
       <AppBar position='absolute' open={open}>
@@ -124,6 +119,7 @@ export default function Dashboard({ variant }) {
           {variant === 'event' && <Event />}
           {variant === 'subevent' && <SubEvent />}
           {variant === 'creator' && <Creator />}
+          {variant === 'editor' && <Editor />}
           {variant === 'subeventCreator' && <SubeventCreator />}
         </Container>
       </Box>

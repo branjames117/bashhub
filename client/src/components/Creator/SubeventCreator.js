@@ -16,7 +16,7 @@ export default function SubeventCreator() {
   });
 
   if (!loading) {
-    if (data.event && data.event.ownerId !== userData._id) {
+    if (data.event && data.event.ownerName !== userData.username) {
       window.location.assign(`/bash/e/${slug}`);
     }
   }

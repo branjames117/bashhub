@@ -23,7 +23,7 @@ export default function StepperButtons({
           cache.writeQuery({
             query: QUERY_ME,
             data: {
-              me: { ...me, eventsManaged: [addEvent, ...me.eventsManaged] },
+              me: { ...me, eventsManaged: [...me.eventsManaged] },
             },
           });
         } else {
@@ -39,7 +39,7 @@ export default function StepperButtons({
             query: QUERY_EVENT,
             variables: { slug: addEvent.eventParent.slug },
             data: {
-              event: { ...event, subevents: [addEvent, ...event.subevents] },
+              event: { ...event, subevents: [...event.subevents] },
             },
           });
         }
