@@ -18,8 +18,6 @@ export default function Editor() {
     variables: { slug: slug },
   });
 
-  console.log(data?.event);
-
   if (!loading) {
     if (data.event && data.event.ownerName !== userData.username) {
       window.location.assign(`/bash/e/${slug}`);
@@ -42,9 +40,7 @@ export default function Editor() {
       });
 
       event.tags = tags;
-      console.log(event?.eventParent);
       event.eventParent = event?.eventParent._id;
-      console.log(event.eventParent);
 
       setEvent(event);
       setLoaded(true);

@@ -48,6 +48,11 @@ const client = new ApolloClient({
               return incoming;
             },
           },
+          subevents: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
         },
       },
       User: {

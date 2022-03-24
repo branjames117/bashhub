@@ -5,7 +5,6 @@ import {
   Step,
   StepLabel,
   StepContent,
-  Button,
   Paper,
   Typography,
 } from '@mui/material';
@@ -53,24 +52,12 @@ export default function Creator({ variant, _id, event }) {
   const [endTimeEnabled, setEndTimeEnabled] = useState(false);
   const [checkingVariant, setCheckingVariant] = useState(true);
 
-  const handleReset = () => {
-    setActiveStep(0);
-    if (variant === 'subevent') {
-      setEventData({ ...defaultEvent, eventParent: _id });
-    } else if (variant === 'editor') {
-      setEventData({ ...event });
-    } else {
-      setEventData(defaultEvent);
-    }
-  };
-
   useEffect(() => {
     // if we're creating a subevent, add the subevent's parent's ID to the creator object
     if (variant === 'subevent') {
       setIsSubevent(true);
       setEventData({ ...eventData, eventParent: _id });
     } else if (variant === 'editor') {
-      console.log(event);
       if (event?.eventParent?.length !== 0) {
         setIsSubevent(true);
       }
@@ -206,6 +193,7 @@ export default function Creator({ variant, _id, event }) {
               activeStep={activeStep}
               setActiveStep={setActiveStep}
               eventData={eventData}
+              isEditor={isEditor}
             />
           </StepContent>
         </Step>
@@ -218,9 +206,6 @@ export default function Creator({ variant, _id, event }) {
             the sidebar
             {isSubevent ? `, and navigating to this event's parent` : ''}.
           </Typography>
-          <Button onClick={handleReset} sx={{ mt: 3, ml: 2 }}>
-            Create Another Event
-          </Button>
         </Paper>
       )}
     </Box>

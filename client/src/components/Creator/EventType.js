@@ -35,7 +35,12 @@ export default function EventType({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEventData({ ...eventData, [name]: value });
+    // keep the slug lowercased
+    if (name === 'slug') {
+      setEventData({ ...eventData, slug: value.toLowerCase() });
+    } else {
+      setEventData({ ...eventData, [name]: value });
+    }
     if (name === 'slug') {
       checkSlugAvailability();
     }
@@ -45,7 +50,7 @@ export default function EventType({
 
   const checkSlugAvailability = useCallback(async () => {
     if (!isEditor) {
-      await slug({ variables: { slug: slugRef.current.value } });
+      await slug({ variables: { slug: slugRef.current.value.toLowerCase() } });
       setSlugTaken(data?.slug?._id ? true : false);
     }
   }, [isEditor, setSlugTaken, slug, data]);
@@ -81,7 +86,7 @@ export default function EventType({
           error={slugTaken}
           helperText={slugTaken ? 'Slug already in use.' : ''}
           name='slug'
-          value={eventData.slug.trim().toLowercase()}
+          value={eventData.slug.trim()}
           onChange={handleChange}
           sx={{ width: '100%', my: 2 }}
         />

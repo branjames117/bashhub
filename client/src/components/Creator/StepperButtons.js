@@ -12,6 +12,7 @@ export default function StepperButtons({
   activeStep,
   setActiveStep,
   slugTaken,
+  isEditor,
 }) {
   const [addEvent] = useMutation(ADD_EVENT, {
     update(cache, { data: { addEvent } }) {
@@ -35,11 +36,17 @@ export default function StepperButtons({
             },
           });
 
+          // two different write queries depending on if this is a subevent edit
           cache.writeQuery({
             query: QUERY_EVENT,
             variables: { slug: addEvent.eventParent.slug },
             data: {
-              event: { ...event, subevents: [...event.subevents] },
+              event: isEditor
+                ? { ...event, subevents: [...event.subevents] }
+                : {
+                    ...event,
+                    subevents: [...event.subevents, addEvent],
+                  },
             },
           });
         }

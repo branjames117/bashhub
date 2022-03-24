@@ -110,8 +110,6 @@ const resolvers = {
         throw new AuthenticationError('You need to be logged in!');
       }
 
-      console.log('made it');
-
       try {
         // check if event slug already exists in db, in which case, this is an event edit and not an event creation
         const eventExists = await Event.findOne({
