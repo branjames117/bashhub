@@ -25,7 +25,9 @@ export default function Banner({
           margin: '20px 0',
           borderRadius: '10px',
           backgroundImage: `${
-            hero ? `url(${hero})` : `url(../../images/${eventType}.jpg)`
+            hero
+              ? `url(${hero})`
+              : `url(../../images/${eventType.replace(' ', '')}.jpg)`
           }`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',

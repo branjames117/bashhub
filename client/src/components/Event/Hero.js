@@ -15,7 +15,10 @@ export default function Hero({ hero, name, eventType, eventParent }) {
               backgroundImage: `${
                 eventParent.hero
                   ? `url(${eventParent.hero})`
-                  : `url(../../images/${eventParent.eventType}.jpg)`
+                  : `url(../../images/${eventParent.eventType.replace(
+                      ' ',
+                      ''
+                    )}.jpg)`
               }`,
               backgroundColor: 'black',
               color: 'white',
@@ -52,7 +55,7 @@ export default function Hero({ hero, name, eventType, eventParent }) {
             !eventParent
               ? hero
                 ? `url(${hero})`
-                : `url(../../images/${eventType}.jpg)`
+                : `url(../../images/${eventType.replace(' ', '')}.jpg)`
               : `url(../../images/Subevent.jpg)`
           }`,
           backgroundColor: 'black',
