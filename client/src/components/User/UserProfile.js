@@ -91,13 +91,6 @@ export default function UserProfile({ myUsername }) {
             ))}
         </Paper>
       </Grid>
-
-      {/* My Comments */}
-      <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-          My Comments
-        </Paper>
-      </Grid>
     </Grid>
   );
 }
