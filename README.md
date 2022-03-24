@@ -22,6 +22,8 @@ Clone this repository, then in the root directory run an `npm install` to instal
 
 Create a user account with an email, username and password. Using the menu to the left, you can browse events, create new events, manage your events, and see what events you're attending. Comments can be left on event pages. A demonstration version of the app is currently deployed on Heroku [here](https://bash-hub.herokuapp.com/).
 
+![Screenshot](./screenshot.jpg)
+
 ## License
 
 [The MIT License](https://mit-license.org/)
