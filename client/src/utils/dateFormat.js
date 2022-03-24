@@ -169,6 +169,38 @@ class DateFormatter {
 
     return dailyPlan;
   }
+
+  getTimeString(startDate, startTime, endDate, endTime) {
+    if (startTime && endDate && endTime) {
+      return `${startDate} @ ${startTime} to ${endDate} @ ${endTime}`;
+    }
+
+    if (startTime && endDate && !endTime) {
+      return `${startDate} @ ${startTime} to ${endDate}`;
+    }
+
+    if (startTime && !endDate && endTime) {
+      return `${startDate} @ ${startTime} to ${endTime}`;
+    }
+
+    if (!startTime && endDate && endTime) {
+      return `${startDate} to ${endDate} @ ${endTime}`;
+    }
+
+    if (!startTime && !endDate && endTime) {
+      return `${startDate} until ${endTime}`;
+    }
+
+    if (startTime && !endDate && !endTime) {
+      return `${startDate} @ ${startTime}`;
+    }
+
+    if (!startTime && endDate && !endTime) {
+      return `${startDate} to ${endDate}`;
+    }
+
+    return `${startDate}`;
+  }
 }
 
 export default new DateFormatter();

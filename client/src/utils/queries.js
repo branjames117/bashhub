@@ -166,6 +166,41 @@ export const QUERY_EVENT = gql`
   }
 `;
 
+export const QUERY_EVENTS = gql`
+  query events {
+    events {
+      _id
+      name
+      slug
+      location
+      eventType
+      description
+      hero
+      videoUrl
+      startDate
+      startTime
+      endDate
+      endTime
+      ownerId {
+        _id
+        username
+        avatar
+      }
+      ownerName
+      url
+      ticketsUrl
+      pricing
+      commentsEnabled
+      publicEnabled
+      createdAt
+      tags {
+        _id
+        name
+      }
+    }
+  }
+`;
+
 export const QUERY_SUBEVENTS = gql`
   query subevents($_id: ID!) {
     subevents(_id: $_id) {

@@ -1,16 +1,23 @@
 import { Link } from 'react-router-dom';
-import { Typography, List, Button, Divider } from '@mui/material';
+import { List, Button, Divider } from '@mui/material';
 import {
   AddCircle,
   AccountCircle,
   Assignment,
   DirectionsCar,
+  LocationSearching,
 } from '@mui/icons-material';
 import Auth from '../utils/auth';
 
 export default function SideMenu({ setOpen }) {
   return (
     <List component='nav' sx={{ pl: 1 }}>
+      <Link to={`/bash/`} onClick={() => setOpen(false)}>
+        <Button sx={{ my: 2 }}>
+          <LocationSearching sx={{ mr: 1 }} /> Browse Events
+        </Button>
+      </Link>
+      <Divider />
       <Link
         to={`/bash/u/${Auth.getProfile().data.username}`}
         onClick={() => setOpen(false)}

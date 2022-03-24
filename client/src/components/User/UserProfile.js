@@ -24,6 +24,8 @@ export default function UserProfile({ myUsername }) {
     // is logged in user same as profile? if so, give them control
     if (username === myUsername) {
       setOwned(true);
+    } else {
+      setOwned(false);
     }
   }, [myUsername, username, loading, userData]);
 

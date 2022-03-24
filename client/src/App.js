@@ -83,7 +83,11 @@ function App() {
           <ThemeProvider theme={theme}>
             <Routes>
               <Route path='/' element={<Login />} />
-              <Route path='/bash' element={<Dashboard />} />
+              <Route path='/bash' element={<Dashboard variant='browser' />} />
+              <Route
+                path='/bash/u/:username'
+                element={<Dashboard variant='user' />}
+              />
               <Route
                 path='/bash/u/:username'
                 element={<Dashboard variant='user' />}

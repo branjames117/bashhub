@@ -85,6 +85,7 @@ const typeDefs = gql`
     users: [User]
     user(username: String!): User
     event(slug: String!): Event
+    events: [Event]
     slug(slug: String!): Event
     subevents(_id: ID!): [Event]
   }

@@ -46,6 +46,14 @@ const resolvers = {
 
       return eventData;
     },
+    events: async (parent) => {
+      const eventData = await Event.find({ eventParent: null })
+        .sort([['startDate', 1]])
+        .populate('ownerId')
+        .populate('tags');
+
+      return eventData;
+    },
     me: async (parent, args, context) => {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
