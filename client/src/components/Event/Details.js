@@ -44,17 +44,19 @@ export default function Details({
         }}
       >
         <Typography variant='h5'>Details</Typography>
-        <Typography>
-          {DateFormatter.getDate(startDate)}{' '}
-          {startTime && `@ ${DateFormatter.getTime(startTime)}`}
+        <Typography
+          sx={{
+            overflowX: 'hidden',
+            whiteSpace: 'pre-line',
+          }}
+        >
+          {DateFormatter.getTimeString(
+            DateFormatter.getDate(startDate),
+            DateFormatter.getTime(startTime),
+            DateFormatter.getDate(endDate),
+            DateFormatter.getTime(endTime)
+          )}
         </Typography>
-        {endDate ||
-          (endTime && (
-            <Typography>
-              to {DateFormatter.getDate(endDate)}
-              {endTime && `@ ${DateFormatter.getTime(endTime)}`}
-            </Typography>
-          ))}
         <Typography sx={{ overflowX: 'hidden', whiteSpace: 'pre-line' }}>
           {location}
         </Typography>

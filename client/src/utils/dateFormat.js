@@ -172,19 +172,19 @@ class DateFormatter {
 
   getTimeString(startDate, startTime, endDate, endTime) {
     if (startTime && endDate && endTime) {
-      return `${startDate} @ ${startTime} to ${endDate} @ ${endTime}`;
+      return `${startDate}, ${startTime}\nto ${endDate}, ${endTime}`;
     }
 
     if (startTime && endDate && !endTime) {
-      return `${startDate} @ ${startTime} to ${endDate}`;
+      return `${startDate}, ${startTime}\nto ${endDate}`;
     }
 
     if (startTime && !endDate && endTime) {
-      return `${startDate} @ ${startTime} to ${endTime}`;
+      return `${startDate}, ${startTime}\nto ${endTime}`;
     }
 
     if (!startTime && endDate && endTime) {
-      return `${startDate} to ${endDate} @ ${endTime}`;
+      return `${startDate}\nto ${endDate}, ${endTime}`;
     }
 
     if (!startTime && !endDate && endTime) {
@@ -192,7 +192,7 @@ class DateFormatter {
     }
 
     if (startTime && !endDate && !endTime) {
-      return `${startDate} @ ${startTime}`;
+      return `${startDate}, ${startTime}`;
     }
 
     if (!startTime && endDate && !endTime) {
