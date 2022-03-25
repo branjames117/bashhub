@@ -13,6 +13,7 @@ export default function StepperButtons({
   setActiveStep,
   slugTaken,
   isEditor,
+  validUrls,
 }) {
   const [addEvent] = useMutation(ADD_EVENT, {
     update(cache, { data: { addEvent } }) {
@@ -99,7 +100,10 @@ export default function StepperButtons({
             (activeStep === 0 && !eventData.name.trim()) ||
             (activeStep === 0 && !eventData.slug.trim()) ||
             (activeStep === 0 && slugTaken) ||
-            (activeStep === 2 && !eventData.location.trim())
+            (activeStep === 2 && !eventData.location.trim()) ||
+            !validUrls.url ||
+            !validUrls.ticketsUrl ||
+            !validUrls.videoUrl
           }
           onClick={handleNext}
           sx={{ mt: 1, mr: 1 }}

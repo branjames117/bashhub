@@ -51,6 +51,11 @@ export default function Creator({ variant, _id, event }) {
   const [endDateEnabled, setEndDateEnabled] = useState(false);
   const [endTimeEnabled, setEndTimeEnabled] = useState(false);
   const [checkingVariant, setCheckingVariant] = useState(true);
+  const [validUrls, setValidUrls] = useState({
+    url: true,
+    videoUrl: true,
+    ticketsUrl: true,
+  });
 
   useEffect(() => {
     // if we're creating a subevent, add the subevent's parent's ID to the creator object
@@ -190,12 +195,15 @@ export default function Creator({ variant, _id, event }) {
               eventData={eventData}
               setEventData={setEventData}
               isSubevent={isSubevent}
+              validUrls={validUrls}
+              setValidUrls={setValidUrls}
             />
             <StepperButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}
               eventData={eventData}
               isEditor={isEditor}
+              validUrls={validUrls}
             />
           </StepContent>
         </Step>
