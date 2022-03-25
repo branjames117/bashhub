@@ -101,9 +101,9 @@ export default function StepperButtons({
             (activeStep === 0 && !eventData.slug.trim()) ||
             (activeStep === 0 && slugTaken) ||
             (activeStep === 2 && !eventData.location.trim()) ||
-            !validUrls?.url ||
-            !validUrls?.ticketsUrl ||
-            !validUrls?.videoUrl
+            (activeStep === 4 && !validUrls?.url) ||
+            (activeStep === 4 && !validUrls?.ticketsUrl) ||
+            (activeStep === 4 && !validUrls?.videoUrl)
           }
           onClick={handleNext}
           sx={{ mt: 1, mr: 1 }}
