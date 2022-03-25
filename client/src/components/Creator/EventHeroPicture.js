@@ -6,9 +6,11 @@ export default function EventHeroPicture({ eventData, setEventData }) {
   const [hero, setHero] = useState(eventData.hero);
   const [heroId, setHeroId] = useState(eventData.heroId);
   const [buttonText, setButtonText] = useState('Upload Hero Image');
+  const [imageUploaded, setImageUploaded] = useState(false);
 
   const fileInput = useRef();
   const fileUpload = useRef();
+  const formRef = useRef();
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
@@ -32,6 +34,7 @@ export default function EventHeroPicture({ eventData, setEventData }) {
 
       setHero(data.url);
       setHeroId(data.public_id);
+      setImageUploaded(true);
       setEventData({ ...eventData, hero: data.url, heroId: data.public_id });
     } catch (err) {
       console.error(err);
@@ -53,6 +56,9 @@ export default function EventHeroPicture({ eventData, setEventData }) {
 
       setHero('');
       setHeroId('');
+      formRef.current.reset();
+      setButtonText('Upload Hero Image');
+      setImageUploaded(false);
       setEventData({ ...eventData, hero, heroId });
     } catch (err) {
       console.error(err);
@@ -81,12 +87,12 @@ export default function EventHeroPicture({ eventData, setEventData }) {
       ></div>
 
       <form
+        ref={formRef}
         id='image-form'
         name='image-form'
         action='/api/images/upload'
         encType='multipart/form-data'
         method='post'
-        onSubmit={handleImageUpload}
       >
         <input
           ref={fileInput}
@@ -99,8 +105,8 @@ export default function EventHeroPicture({ eventData, setEventData }) {
             const filenameArr = newFilename.split('.');
             const fileExt = filenameArr[filenameArr.length - 1];
             if (fileExt === 'jpg' || fileExt === 'jpeg' || fileExt === 'png') {
-              fileUpload.current.click();
               setButtonText('Image Uploaded');
+              fileUpload.current.click();
             } else {
               setButtonText('File must be JPEG or PNG!');
             }
@@ -110,7 +116,9 @@ export default function EventHeroPicture({ eventData, setEventData }) {
           variant='contained'
           sx={{ width: '100%', my: 1 }}
           onClick={() => {
-            fileInput.current.click();
+            if (!imageUploaded) {
+              fileInput.current.click();
+            }
           }}
         >
           {buttonText}
@@ -118,17 +126,20 @@ export default function EventHeroPicture({ eventData, setEventData }) {
         <Button
           variant='contained'
           sx={{ width: '100%', my: 1 }}
-          onClick={handleImageDelete}
+          onClick={(e) => {
+            setButtonText('Upload Hero Image');
+            handleImageDelete(e);
+          }}
         >
           Delete
         </Button>
         {/* Hidden submit button, clicked after file is chosen. */}
         <button
           ref={fileUpload}
-          type='submit'
           name='upload'
           id='upload'
           style={{ display: 'none' }}
+          onClick={(e) => handleImageUpload(e)}
         ></button>
       </form>
     </Paper>
