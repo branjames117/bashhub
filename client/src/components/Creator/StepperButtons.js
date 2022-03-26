@@ -47,7 +47,7 @@ export default function StepperButtons({
           cache.writeQuery({
             query: QUERY_ME,
             data: {
-              me: { ...me, eventsManaged: [...me.eventsManaged] },
+              me: { ...me, eventsManaged: [...me.eventsManaged, addEvent] },
             },
           });
         }

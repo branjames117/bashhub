@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Grid,
@@ -8,6 +9,10 @@ import {
   Chip,
   Avatar,
 } from '@mui/material';
+
+import { useMutation } from '@apollo/client';
+import { QUERY_EVENT, QUERY_ME, QUERY_EVENTS } from '../../utils/queries';
+import { REMOVE_EVENT } from '../../utils/mutations';
 
 import Auth from '../../utils/auth';
 import DateFormatter from '../../utils/dateFormat';
@@ -32,6 +37,81 @@ export default function Details({
   setAttendees,
   ownerAvatar,
 }) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const [removeEvent] = useMutation(REMOVE_EVENT, {
+    update(cache, { data: { removeEvent } }) {
+      try {
+        // if event is a subevent, update the QUERY_EVENT cache
+        if (eventParent?._id) {
+          const { event } = cache.readQuery({
+            query: QUERY_EVENT,
+            variables: {
+              slug: eventParent?.slug,
+            },
+          });
+          // two different write queries depending on if this is a subevent edit
+          cache.writeQuery({
+            query: QUERY_EVENT,
+            variables: { slug: eventParent?.slug },
+            data: {
+              event: {
+                ...event,
+                subevents: [
+                  ...event.subevents.filter((event) => event._id !== _id),
+                ],
+              },
+            },
+          });
+        } else {
+          // if event is just an event, update the QUERY_ME cache
+          const { me } = cache.readQuery({ query: QUERY_ME });
+          cache.writeQuery({
+            query: QUERY_ME,
+            data: {
+              me: {
+                ...me,
+                eventsManaged: [
+                  ...me.eventsManaged.filter((event) => event._id !== _id),
+                ],
+              },
+            },
+          });
+        }
+      } catch (e) {}
+      try {
+        if (!eventParent?._id) {
+          const data = cache.readQuery({ query: QUERY_EVENTS });
+          cache.writeQuery({
+            query: QUERY_EVENTS,
+            data: {
+              events: [...data.events.filter((event) => event._id !== _id)],
+            },
+          });
+        }
+      } catch (e) {}
+    },
+  });
+
+  const deleteHandler = async () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+    } else {
+      try {
+        await removeEvent({
+          variables: {
+            event_id: _id,
+            event_parent_id: eventParent?._id || null,
+          },
+        });
+
+        window.location.replace('/bash/manage-events');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
   return (
     <Grid item xs={12} sm={12} md={4} lg={4}>
       <Paper
@@ -116,6 +196,17 @@ export default function Details({
               Edit This Event
             </Button>
           </Link>
+        )}
+        {Auth.getProfile().data.username === ownerName && (
+          <Button
+            variant='contained'
+            onClick={deleteHandler}
+            sx={{ width: '100%', backgroundColor: 'red', my: 1 }}
+          >
+            {confirmDelete
+              ? 'Click Again to Delete Forever'
+              : 'Delete This Event'}
+          </Button>
         )}
         {Auth.getProfile().data.username === ownerName && !eventParent && (
           <Link to={`/bash/create/${slug}`}>

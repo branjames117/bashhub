@@ -62,7 +62,7 @@ const client = new ApolloClient({
               return incoming;
             },
           },
-          eventsManaging: {
+          eventsManaged: {
             merge(existing, incoming) {
               return incoming;
             },

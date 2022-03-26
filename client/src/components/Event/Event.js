@@ -90,12 +90,14 @@ export default function Event() {
   });
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && data) {
       const { event } = data;
       setEventData(event);
-      setSubevents(DateFormatter.sortSubevents(event.subevents));
-      setAttendees(event.attendees);
-      setComments(event.comments);
+      setSubevents(
+        event?.subevents && DateFormatter.sortSubevents(event?.subevents)
+      );
+      setAttendees(event?.attendees);
+      setComments(event?.comments);
     }
   }, [data, loading]);
 

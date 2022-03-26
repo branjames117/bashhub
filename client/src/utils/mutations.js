@@ -75,6 +75,14 @@ export const ADD_EVENT = gql`
   }
 `;
 
+export const REMOVE_EVENT = gql`
+  mutation removeEvent($event_id: ID!, $event_parent_id: ID) {
+    removeEvent(event_id: $event_id, event_parent_id: $event_parent_id) {
+      _id
+    }
+  }
+`;
+
 export const ADD_COMMENT = gql`
   mutation addComment($event_slug: String!, $body: String!) {
     addComment(event_slug: $event_slug, body: $body) {

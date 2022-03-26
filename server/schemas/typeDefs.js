@@ -105,6 +105,7 @@ const typeDefs = gql`
     addUser(email: String!, username: String, password: String!): Auth
     editBio(bio: String): User
     addEvent(eventInput: EventInput): Event
+    removeEvent(event_id: ID!, event_parent_id: ID): Event
     addAttendee(event_id: ID!): AttendanceUpdate
     removeAttendee(event_id: ID!): AttendanceUpdate
     addComment(event_slug: String!, body: String!): Event

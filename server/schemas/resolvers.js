@@ -180,6 +180,49 @@ const resolvers = {
         throw new Error('Event not created');
       }
     },
+    removeEvent: async (parent, { event_id, event_parent_id }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('You need to be logged in!');
+      }
+
+      try {
+        // delete the event
+        const event = await Event.findOneAndDelete({
+          _id: event_id,
+        }).select('_id subevents');
+
+        // if event_parent_id is provided, event is a subevent and must also be removed from the parents subevents array
+        if (event_parent_id) {
+          await Event.findByIdAndUpdate(event_parent_id, {
+            $pull: { subevents: event_id },
+          });
+        } else {
+          // if event is not a subevent, remove from user's managedEvents
+          await User.findByIdAndUpdate(context.user._id, {
+            $pull: { eventsManaged: event_id },
+          });
+
+          // // and delete the event from every user's attendingEvents array
+          await User.updateMany(
+            { eventsAttending: event_id },
+            {
+              $pull: { eventsAttending: event_id },
+            }
+          );
+
+          // and delete all subevents the event was parent to
+          // is there a more performant way to do this?
+          for (subevent of event.subevents) {
+            await Event.findByIdAndDelete(subevent);
+          }
+        }
+
+        return event;
+      } catch (err) {
+        console.log(err);
+        throw new Error('Event not created');
+      }
+    },
     addAttendee: async (parent, { event_id }, context) => {
       if (!context.user) {
         throw new AuthenticationError('You need to be logged in!');

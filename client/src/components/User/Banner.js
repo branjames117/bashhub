@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 import DateFormatter from '../../utils/dateFormat';
 
@@ -45,6 +45,7 @@ export default function Banner({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            position: 'relative',
           }}
         >
           <Typography variant='h6'>{name}</Typography>
