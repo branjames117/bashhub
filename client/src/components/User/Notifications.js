@@ -35,7 +35,6 @@ export default function Notifications({ setNotificationCount }) {
     setNotificationCount(0);
     if (!loading) {
       const { notifications } = data;
-      console.log(notifications);
       setNotifications(notifications);
     }
   }, [refetch, setNotificationCount, data, loading]);

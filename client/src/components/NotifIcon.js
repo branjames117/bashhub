@@ -20,7 +20,6 @@ export default function NotifIcon({ notificationCount, setNotificationCount }) {
   useEffect(() => {
     if (!loading) {
       const { notifCount } = data;
-      console.log(notifCount);
       setNotificationCount(notifCount);
     }
   }, [setNotificationCount, data, loading]);
