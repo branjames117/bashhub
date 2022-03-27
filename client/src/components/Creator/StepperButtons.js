@@ -19,6 +19,7 @@ export default function StepperButtons({
     update(cache, { data: { addEvent } }) {
       try {
         // if event is a subevent, update the QUERY_EVENT cache
+        // caching the QUERY_EVENT may be unnecessary now since I'm just refetching the data upon Event component load anyway, but keeping this here for legacy
         if (addEvent.eventParent) {
           const { event } = cache.readQuery({
             query: QUERY_EVENT,

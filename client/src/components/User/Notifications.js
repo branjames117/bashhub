@@ -37,7 +37,7 @@ export default function Notifications({ setNotificationCount }) {
       const { notifications } = data;
       setNotifications(notifications);
     }
-  }, [refetch, setNotificationCount, data, loading]);
+  }, [setNotificationCount, data, loading]);
 
   return loading ? (
     <Loading />

@@ -5,7 +5,7 @@ import { ADD_COMMENT, REMOVE_COMMENT } from '../../utils/mutations';
 import { QUERY_EVENT } from '../../utils/queries';
 import { socket, SocketContext } from '../../context/socket';
 
-import { Grid, Paper } from '@mui/material';
+import { Grid, Paper, Button } from '@mui/material';
 
 import DateFormatter from '../../utils/dateFormat';
 
@@ -30,7 +30,7 @@ export default function Event() {
   const [comments, setComments] = useState([]);
   const bottomRef = useRef();
 
-  const { data, loading } = useQuery(QUERY_EVENT, {
+  const { data, loading, refetch } = useQuery(QUERY_EVENT, {
     variables: { slug: slug },
   });
 
@@ -93,6 +93,8 @@ export default function Event() {
   });
 
   useEffect(() => {
+    // using useQuery's refetch to refresh comments and any other event changes on data load
+    refetch();
     if (!loading && data) {
       const { event } = data;
       setEventData(event);
@@ -102,7 +104,7 @@ export default function Event() {
       setAttendees(event?.attendees);
       setComments(event?.comments);
     }
-  }, [data, loading]);
+  }, [refetch, data, loading]);
 
   return loading || !eventData ? (
     <Loading />
@@ -169,6 +171,13 @@ export default function Event() {
                 flexDirection: 'column',
               }}
             >
+              <Button
+                onClick={() =>
+                  bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                Scroll to Bottom
+              </Button>
               <CommentInput slug={eventData.slug} addComment={addComment} />
               {comments.map((comment) => (
                 <Comment
