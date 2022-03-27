@@ -1,6 +1,6 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { default: mongoose } = require('mongoose');
-const { User, Event, Tag } = require('../models');
+const { User, Event, Tag, Notification } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -67,6 +67,40 @@ const resolvers = {
         );
 
         return userData;
+      }
+
+      throw new AuthenticationError('Not logged in');
+    },
+    notifications: async (parent, args, context) => {
+      if (context.user) {
+        const notifications = await Notification.find({
+          toId: context.user._id,
+        })
+          .populate('toId')
+          .populate('fromId')
+          .populate('subject')
+          .sort([['createdAt', -1]]);
+
+        await Notification.updateMany(
+          {
+            toId: context.user._id,
+          },
+          { read: true }
+        );
+
+        return notifications;
+      }
+
+      throw new AuthenticationError('Not logged in');
+    },
+    notifCount: async (parent, args, context) => {
+      if (context.user) {
+        const notifCount = await Notification.find({
+          toId: context.user._id,
+          read: false,
+        }).count();
+
+        return notifCount;
       }
 
       throw new AuthenticationError('Not logged in');

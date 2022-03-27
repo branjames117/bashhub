@@ -40,6 +40,36 @@ export const QUERY_USER = gql`
   }
 `;
 
+export const QUERY_NOTIFICATIONS = gql`
+  query notifications {
+    notifications {
+      toId {
+        _id
+        username
+      }
+      fromId {
+        _id
+        username
+      }
+      subject {
+        _id
+        slug
+        name
+      }
+      notifType
+      read
+      createdAt
+      _id
+    }
+  }
+`;
+
+export const QUERY_NOTIF_COUNT = gql`
+  query notifCount {
+    notifCount
+  }
+`;
+
 export const QUERY_SLUG = gql`
   query slug($slug: String!) {
     slug(slug: $slug) {

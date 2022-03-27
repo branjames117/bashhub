@@ -36,11 +36,14 @@ export default function Event() {
 
   const [addComment] = useMutation(ADD_COMMENT, {
     update(cache, { data: { addComment } }) {
-      // send signal to server notifying event owner that a comment was left
-      socket.emit('newComment', {
-        from: Auth.getProfile().data.username,
-        to: eventData.ownerName,
-      });
+      // send signal to server notifying event owner that a comment was left, only if commenter is not also the event owner
+      if (Auth.getProfile().data._id !== eventData?.ownerId?._id) {
+        socket.emit('newComment', {
+          from: Auth.getProfile().data._id,
+          to: eventData.ownerId._id,
+          subject: eventData._id,
+        });
+      }
       // scroll user to bottom upon successful cache update
       bottomRef.current.scrollIntoView({ behavior: 'smooth' });
       // cache could potentially not exist yet, so wrap in try catch block

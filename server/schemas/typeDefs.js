@@ -26,6 +26,16 @@ const typeDefs = gql`
     name: String
   }
 
+  type Notification {
+    _id: ID
+    fromId: User
+    toId: User
+    subject: Event
+    read: Boolean
+    createdAt: String
+    notifType: String
+  }
+
   type Event {
     _id: ID
     name: String
@@ -88,6 +98,8 @@ const typeDefs = gql`
     events: [Event]
     slug(slug: String!): Event
     subevents(_id: ID!): [Event]
+    notifications: [Notification]
+    notifCount: Int
   }
 
   type Auth {

@@ -16,6 +16,7 @@ const { authMiddleware } = require('./utils/auth');
 
 const { typeDefs, resolvers } = require('./schemas');
 const { db } = require('./config/connection');
+const { Notification } = require('./models/');
 
 const routes = require('./routes');
 
@@ -70,7 +71,7 @@ io.use((socket, next) => {
 
   // check if user is already in onlineUsers array
   const index = onlineUsers.findIndex(
-    (onlineUser) => onlineUser.username === user.username
+    (onlineUser) => onlineUser._id === user._id
   );
 
   // if not, push to array
@@ -81,20 +82,29 @@ io.use((socket, next) => {
     onlineUsers[index].socket = socket.id;
   }
 
-  console.log(user.username, 'has connected.');
+  console.log(user._id, 'has connected.');
 
-  socket.on('newComment', ({ from, to }) => {
+  socket.on('newComment', ({ from, to, subject }) => {
     console.log(
-      `A new comment was created by ${from}. Notify ${to} immediately!`
+      `A new comment was created by ${from} on ${subject}. Notify ${to} immediately!`
     );
+    // create the notification in the database
+    Notification.create({
+      fromId: from,
+      toId: to,
+      notifType: 'comment',
+      subject,
+    });
+
     // check if TO:user is online
-    const index = onlineUsers.findIndex(
-      (onlineUser) => onlineUser.username === to
-    );
+    const index = onlineUsers.findIndex((onlineUser) => onlineUser._id === to);
 
     if (index !== -1) {
       // to do - create a new notification for the user in the DB, this happens regardless of whether the user is online
       // if the user IS online, send a signal to them that they have a new notification
+      io.to(onlineUsers[index].socket).emit('newNotification', {
+        status: 'ok',
+      });
       // to do - add a notifications field to the user
       // Notification schema needs an _id, event_name, event_slug, createdAt, author, and a read status: 'Author commented on EventName (link: eventslug) at 12 March 2022 at 10:00 PM.'
       // when user visits their Notifications page, it updates all current Notifications in their array to read = true

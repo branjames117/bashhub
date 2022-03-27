@@ -93,6 +93,10 @@ function App() {
                 element={<Dashboard variant='user' />}
               />
               <Route
+                path='/bash/notifs'
+                element={<Dashboard variant='notifications' />}
+              />
+              <Route
                 path='/bash/manage-events'
                 element={<Dashboard variant='manager' />}
               />

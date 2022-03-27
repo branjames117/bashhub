@@ -9,13 +9,11 @@ import {
   Typography,
   Divider,
   IconButton,
-  Badge,
   Container,
   Button,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 
 // components
 import AppBar from '../components/AppBar';
@@ -30,12 +28,15 @@ import Editor from '../components/Creator/Editor';
 import ManagedEvents from '../components/User/ManagedEvents';
 import AttendingEvents from '../components/User/AttendingEvents';
 import BrowseEvents from '../components/Event/BrowseEvents';
+import NotifIcon from '../components/NotifIcon';
+import Notifications from '../components/User/Notifications';
 
 export default function Dashboard({ variant }) {
   // if user is not logged in, kick them back to login page
   if (!Auth.loggedIn()) window.location.assign('/');
 
   const [open, setOpen] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -70,11 +71,10 @@ export default function Dashboard({ variant }) {
           >
             Bash Hub
           </Typography>
-          <IconButton color='inherit'>
-            <Badge badgeContent={4} color='secondary'>
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <NotifIcon
+            notificationCount={notificationCount}
+            setNotificationCount={setNotificationCount}
+          />
           <Button
             variant='text'
             sx={{ color: '#fff', pl: 3 }}
@@ -118,6 +118,9 @@ export default function Dashboard({ variant }) {
           {variant === 'browser' && <BrowseEvents />}
           {variant === 'manager' && <ManagedEvents />}
           {variant === 'attending' && <AttendingEvents />}
+          {variant === 'notifications' && (
+            <Notifications setNotificationCount={setNotificationCount} />
+          )}
           {variant === 'event' && <Event />}
           {variant === 'subevent' && <SubEvent />}
           {variant === 'creator' && <Creator />}
