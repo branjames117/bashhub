@@ -83,42 +83,47 @@ function App() {
           <ThemeProvider theme={theme}>
             <Routes>
               <Route path='/' element={<Login />} />
-              <Route path='/bash' element={<Dashboard variant='browser' />} />
               <Route
-                path='/bash/u/:username'
-                element={<Dashboard variant='user' />}
+                path='/bash'
+                element={<Dashboard variant='browser' client={client} />}
               />
               <Route
                 path='/bash/u/:username'
-                element={<Dashboard variant='user' />}
+                element={<Dashboard variant='user' client={client} />}
+              />
+              <Route
+                path='/bash/u/:username'
+                element={<Dashboard variant='user' client={client} />}
               />
               <Route
                 path='/bash/notifs'
-                element={<Dashboard variant='notifications' />}
+                element={<Dashboard variant='notifications' client={client} />}
               />
               <Route
                 path='/bash/manage-events'
-                element={<Dashboard variant='manager' />}
+                element={<Dashboard variant='manager' client={client} />}
               />
               <Route
                 path='/bash/attending'
-                element={<Dashboard variant='attending' />}
+                element={<Dashboard variant='attending' client={client} />}
               />
               <Route
                 path='/bash/e/:slug'
-                element={<Dashboard variant='event' />}
+                element={<Dashboard variant='event' client={client} />}
               />
               <Route
                 path='/bash/create'
-                element={<Dashboard variant='creator' />}
+                element={<Dashboard variant='creator' client={client} />}
               />
               <Route
                 path='/bash/create/:slug'
-                element={<Dashboard variant='subeventCreator' />}
+                element={
+                  <Dashboard variant='subeventCreator' client={client} />
+                }
               />
               <Route
                 path='/bash/edit/:slug'
-                element={<Dashboard variant='editor' />}
+                element={<Dashboard variant='editor' client={client} />}
               />
               <Route
                 path='*'

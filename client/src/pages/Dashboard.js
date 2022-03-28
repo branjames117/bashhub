@@ -31,7 +31,7 @@ import BrowseEvents from '../components/Event/BrowseEvents';
 import NotifIcon from '../components/NotifIcon';
 import Notifications from '../components/User/Notifications';
 
-export default function Dashboard({ variant }) {
+export default function Dashboard({ variant, client }) {
   // if user is not logged in, kick them back to login page
   if (!Auth.loggedIn()) window.location.assign('/');
 
@@ -74,6 +74,7 @@ export default function Dashboard({ variant }) {
           <NotifIcon
             notificationCount={notificationCount}
             setNotificationCount={setNotificationCount}
+            client={client}
           />
           <Button
             variant='text'

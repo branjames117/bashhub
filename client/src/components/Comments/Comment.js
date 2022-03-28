@@ -40,7 +40,7 @@ export default function Comment({ comment, removeComment, slug }) {
       >
         <ListItem alignItems='flex-start'>
           <ListItemAvatar sx={{ mr: 3 }}>
-            <Link to={`/bash/u/branjames117`}>
+            <Link to={`/bash/u/${comment.author.username}`}>
               <Avatar
                 alt={comment.author.username}
                 src={comment.author.avatar}

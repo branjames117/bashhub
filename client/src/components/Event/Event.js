@@ -30,7 +30,7 @@ export default function Event() {
   const [comments, setComments] = useState([]);
   const bottomRef = useRef();
 
-  const { data, loading, refetch } = useQuery(QUERY_EVENT, {
+  const { data, loading } = useQuery(QUERY_EVENT, {
     variables: { slug: slug },
   });
 
@@ -42,6 +42,7 @@ export default function Event() {
           from: Auth.getProfile().data._id,
           to: eventData.ownerId._id,
           subject: eventData._id,
+          slug,
         });
       }
       // scroll user to bottom upon successful cache update
@@ -94,7 +95,6 @@ export default function Event() {
 
   useEffect(() => {
     // using useQuery's refetch to refresh comments and any other event changes on data load
-    refetch();
     if (!loading && data) {
       const { event } = data;
       setEventData(event);
@@ -104,7 +104,7 @@ export default function Event() {
       setAttendees(event?.attendees);
       setComments(event?.comments);
     }
-  }, [refetch, data, loading]);
+  }, [data, loading]);
 
   return loading || !eventData ? (
     <Loading />
