@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_USER, LOGIN_USER } from '../utils/mutations';
 
@@ -7,7 +8,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  Link,
   Paper,
   Box,
   Grid,
@@ -222,25 +222,33 @@ export default function Login() {
 
             <Grid container>
               <Grid item xs>
-                <Link href='#' variant='body2'>
-                  Forgot password?
-                </Link>
+                <Box sx={{ cursor: 'pointer' }}>Forgot password?</Box>
               </Grid>
               <Grid item>
-                <Link
-                  href='#'
+                <Box
+                  sx={{ cursor: 'pointer' }}
                   onClick={() => {
                     setErrorMessage('');
                     setLoginMode(!loginMode);
                   }}
-                  variant='body2'
                 >
                   {loginMode
                     ? "Don't have an account? Sign up!"
                     : 'Already have an account? Log in!'}
-                </Link>
+                </Box>
               </Grid>
             </Grid>
+
+            <Link to={`/bash`}>
+              <Button
+                variant='text'
+                type='submit'
+                fullWidth
+                sx={{ mt: 3, mb: 2 }}
+              >
+                I'll Just Browse for Now
+              </Button>
+            </Link>
             {errorMessage && (
               <Typography
                 sx={{
