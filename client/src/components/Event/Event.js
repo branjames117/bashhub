@@ -162,7 +162,7 @@ export default function Event() {
         )}
 
         {/* Comments */}
-        {eventData.commentsEnabled && (
+        {eventData.commentsEnabled && Auth.loggedIn() && (
           <Grid item xs={12} sx={{ mb: 25 }}>
             <Paper
               sx={{

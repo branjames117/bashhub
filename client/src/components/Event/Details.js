@@ -182,7 +182,7 @@ export default function Details({
             </Button>
           </Link>
         )}
-        {!eventParent && (
+        {Auth.loggedIn() && !eventParent && (
           <AttendButton
             event_id={_id}
             attendees={attendees}
@@ -190,14 +190,14 @@ export default function Details({
             slug={slug}
           />
         )}
-        {Auth.getProfile().data.username === ownerName && (
+        {Auth.loggedIn() && Auth.getProfile().data.username === ownerName && (
           <Link to={`/bash/edit/${slug}`}>
             <Button variant='contained' sx={{ width: '100%', my: 1 }}>
               Edit This Event
             </Button>
           </Link>
         )}
-        {Auth.getProfile().data.username === ownerName && (
+        {Auth.loggedIn() && Auth.getProfile().data.username === ownerName && (
           <Button
             variant='contained'
             onClick={deleteHandler}
@@ -208,13 +208,15 @@ export default function Details({
               : 'Delete This Event'}
           </Button>
         )}
-        {Auth.getProfile().data.username === ownerName && !eventParent && (
-          <Link to={`/bash/create/${slug}`}>
-            <Button variant='contained' sx={{ width: '100%', my: 1 }}>
-              Add Subevent
-            </Button>
-          </Link>
-        )}
+        {Auth.loggedIn() &&
+          Auth.getProfile().data.username === ownerName &&
+          !eventParent && (
+            <Link to={`/bash/create/${slug}`}>
+              <Button variant='contained' sx={{ width: '100%', my: 1 }}>
+                Add Subevent
+              </Button>
+            </Link>
+          )}
       </Paper>
     </Grid>
   );

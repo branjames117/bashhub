@@ -60,7 +60,7 @@ export default function UserProfilePicture({ owned, currAvatar }) {
           borderRadius: '10px',
         }}
       ></div>
-      {owned && (
+      {Auth.loggedIn() && owned && (
         <form
           id='image-form'
           name='image-form'

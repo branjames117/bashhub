@@ -5,6 +5,8 @@ import { QUERY_USER } from '../../utils/queries';
 import { Paper, Typography, Button } from '@mui/material';
 import { TextareaAutosize } from '@mui/base';
 
+import Auth from '../../utils/auth';
+
 export default function UserBio({ username, owned, currBio }) {
   const [changeBio, setChangeBio] = useState(false);
   const [bio, setBio] = useState(currBio);
@@ -79,13 +81,13 @@ export default function UserBio({ username, owned, currBio }) {
         </div>
       )}
 
-      {owned && changeBio && (
+      {Auth.loggedIn() && owned && changeBio && (
         <Button variant='text' onClick={updateBio}>
           Submit Changes
         </Button>
       )}
 
-      {owned && !changeBio && (
+      {Auth.loggedIn() && owned && !changeBio && (
         <Button variant='text' onClick={() => setChangeBio(!changeBio)}>
           Edit My Bio
         </Button>

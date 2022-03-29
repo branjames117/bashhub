@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
 
 // materials
@@ -32,9 +33,6 @@ import NotifIcon from '../components/NotifIcon';
 import Notifications from '../components/User/Notifications';
 
 export default function Dashboard({ variant, client }) {
-  // if user is not logged in, kick them back to login page
-  if (!Auth.loggedIn()) window.location.assign('/');
-
   const [open, setOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -71,18 +69,28 @@ export default function Dashboard({ variant, client }) {
           >
             Bash Hub
           </Typography>
-          <NotifIcon
-            notificationCount={notificationCount}
-            setNotificationCount={setNotificationCount}
-            client={client}
-          />
-          <Button
-            variant='text'
-            sx={{ color: '#fff', pl: 3 }}
-            onClick={() => Auth.logout()}
-          >
-            Logout
-          </Button>
+          {Auth.loggedIn() && (
+            <NotifIcon
+              notificationCount={notificationCount}
+              setNotificationCount={setNotificationCount}
+              client={client}
+            />
+          )}
+          {Auth.loggedIn() ? (
+            <Button
+              variant='text'
+              sx={{ color: '#fff', pl: 3 }}
+              onClick={() => Auth.logout()}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Link to={`/`}>
+              <Button variant='text' sx={{ color: '#fff', pl: 3 }}>
+                Log In / Sign Up
+              </Button>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer variant='permanent' open={open}>

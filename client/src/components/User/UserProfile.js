@@ -10,6 +10,7 @@ import UserProfilePicture from './UserProfilePicture';
 import Banner from './Banner';
 import Loading from '../Loading';
 import DateFormatter from '../../utils/dateFormat';
+import Auth from '../../utils/auth';
 
 export default function UserProfile({ myUsername }) {
   const { username } = useParams();
@@ -47,50 +48,54 @@ export default function UserProfile({ myUsername }) {
       </Grid>
 
       {/* Event's I'm Managing */}
-      <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-          <Typography variant='h5'>Events I'm Managing</Typography>
-          {userData &&
-            userData?.user?.eventsManaged.map((event) => (
-              <Banner
-                key={event._id}
-                _id={event._id}
-                slug={event.slug}
-                hero={event.hero}
-                name={event.name}
-                eventType={event.eventType}
-                startDate={DateFormatter.getDate(event.startDate)}
-                startTime={DateFormatter.getTime(event.startTime)}
-                endDate={DateFormatter.getDate(event.endDate)}
-                endTime={DateFormatter.getTime(event.endTime)}
-                location={event.location}
-              />
-            ))}
-        </Paper>
-      </Grid>
+      {Auth.loggedIn() && owned && (
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Typography variant='h5'>Events I'm Managing</Typography>
+            {userData &&
+              userData?.user?.eventsManaged.map((event) => (
+                <Banner
+                  key={event._id}
+                  _id={event._id}
+                  slug={event.slug}
+                  hero={event.hero}
+                  name={event.name}
+                  eventType={event.eventType}
+                  startDate={DateFormatter.getDate(event.startDate)}
+                  startTime={DateFormatter.getTime(event.startTime)}
+                  endDate={DateFormatter.getDate(event.endDate)}
+                  endTime={DateFormatter.getTime(event.endTime)}
+                  location={event.location}
+                />
+              ))}
+          </Paper>
+        </Grid>
+      )}
 
       {/* Events I'm Attending */}
-      <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-          <Typography variant='h5'>Events I'm Attending</Typography>
-          {userData &&
-            userData?.user?.eventsAttending.map((event) => (
-              <Banner
-                key={event._id}
-                _id={event._id}
-                slug={event.slug}
-                hero={event.hero}
-                name={event.name}
-                eventType={event.eventType}
-                startDate={DateFormatter.getDate(event.startDate)}
-                startTime={DateFormatter.getTime(event.startTime)}
-                endDate={DateFormatter.getDate(event.endDate)}
-                endTime={DateFormatter.getTime(event.endTime)}
-                location={event.location}
-              />
-            ))}
-        </Paper>
-      </Grid>
+      {Auth.loggedIn() && owned && (
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Typography variant='h5'>Events I'm Attending</Typography>
+            {userData &&
+              userData?.user?.eventsAttending.map((event) => (
+                <Banner
+                  key={event._id}
+                  _id={event._id}
+                  slug={event.slug}
+                  hero={event.hero}
+                  name={event.name}
+                  eventType={event.eventType}
+                  startDate={DateFormatter.getDate(event.startDate)}
+                  startTime={DateFormatter.getTime(event.startTime)}
+                  endDate={DateFormatter.getDate(event.endDate)}
+                  endTime={DateFormatter.getTime(event.endTime)}
+                  location={event.location}
+                />
+              ))}
+          </Paper>
+        </Grid>
+      )}
     </Grid>
   );
 }
